@@ -12,7 +12,6 @@
 	for ($i=0; $i <$max ; $i++) {
 		
 		$query = "SELECT curso_instrumento FROM curso WHERE curso_id = '".$cursos[$i]."'";
-		
 		$resultado = $dbh->query($query)->fetch();
 		
 		$query = "INSERT INTO aluno 

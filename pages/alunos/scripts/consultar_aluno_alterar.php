@@ -40,6 +40,6 @@
 				
 			echo "</select>
 		</div>";
-		echo "<input type='hidden' name='oldid' value='''".$oldid."'>";
+		echo "<input type='hidden' name='oldid' value=".$oldid.">";
 	
 ?>
