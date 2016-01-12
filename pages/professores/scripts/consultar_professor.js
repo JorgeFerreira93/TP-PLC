@@ -9,7 +9,7 @@ $(function(){
     }
 	var v1 = vars["id"];
 	
-	var res = "scripts/consultar_aluno.php?id='" + v1 + "'";
+	var res = "scripts/consultar_professor.php?id='" + v1 + "'";
 	
-	$("#tab_alunos").load(res);
+	$("#tab_professores").load(res);
 });

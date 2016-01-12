@@ -26,9 +26,9 @@
 				<td>".$professor['professor_nome']."</td>
 				<td>".$curso['curso_designacao']."</td>
 				<td>
-					<a href='consultar_aluno.html?id=".$professor['professor_id']."'><i class='fa fa-search fa-fw'></i></a>					
-					<a href='scripts/remover_aluno.php?id=".$professor['professor_id']."'><i class='fa fa-times fa-fw'></i></a>
-					<a href='scripts/remover_aluno.php?id=".$professor['professor_id']."'><i class='fa fa-pencil fa-fw'></i></a>
+					<a href='consultar_professor.html?id=".$professor['professor_id']."'><i class='fa fa-search fa-fw'></i></a>					
+					<a href='scripts/remover_professor.php?id=".$professor['professor_id']."'><i class='fa fa-times fa-fw'></i></a>
+					<a href='alterar_professor.html?id=".$professor['professor_id']."'><i class='fa fa-pencil fa-fw'></i></a>
 				</td></tr>";
 	}
 	echo "</tbody>";
