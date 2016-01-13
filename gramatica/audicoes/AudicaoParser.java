@@ -875,7 +875,7 @@ public class AudicaoParser extends Parser {
 			setState(115);
 			match(T__10);
 
-									Element filho = doc.createElement("atuacao");
+									Element filho = doc.createElement("alunos");
 									pai.appendChild(filho);
 								
 			setState(118); 
@@ -940,7 +940,7 @@ public class AudicaoParser extends Parser {
 			setState(124);
 			match(T__15);
 
-							Element filho = doc.createElement("atuacao");
+							Element filho = doc.createElement("aluno");
 							pai.appendChild(filho);
 						
 			setState(126);
@@ -1145,7 +1145,7 @@ public class AudicaoParser extends Parser {
 			setState(142);
 			match(T__10);
 
-												Element filho = doc.createElement("atuacao");
+												Element filho = doc.createElement("professores");
 												pai.appendChild(filho);
 											
 			setState(145); 
@@ -1210,7 +1210,7 @@ public class AudicaoParser extends Parser {
 			setState(151);
 			match(T__19);
 
-									Element filho = doc.createElement("atuacao");
+									Element filho = doc.createElement("professor");
 									pai.appendChild(filho);
 								
 			setState(153);
@@ -1266,7 +1266,7 @@ public class AudicaoParser extends Parser {
 			setState(157);
 			match(T__10);
 
-									Element filho = doc.createElement("atuacao");
+									Element filho = doc.createElement("pecas");
 									pai.appendChild(filho);
 								
 			setState(160); 
@@ -1331,7 +1331,7 @@ public class AudicaoParser extends Parser {
 			setState(166);
 			match(T__21);
 
-							Element filho = doc.createElement("atuacao");
+							Element filho = doc.createElement("peca");
 							pai.appendChild(filho);
 						
 			setState(168);

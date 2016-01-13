@@ -330,7 +330,7 @@ designacao [Element pai]
 
 alunos [Element pai]
 	  : 'ALUNOS' '{' {
-						Element filho = doc.createElement("atuacao");
+						Element filho = doc.createElement("alunos");
 						pai.appendChild(filho);
 					}
 		(aluno[filho])+ '}'
@@ -338,7 +338,7 @@ alunos [Element pai]
 
 aluno [Element pai]
       : 'ALUNO'{
-				Element filho = doc.createElement("atuacao");
+				Element filho = doc.createElement("aluno");
 				pai.appendChild(filho);
 			}
 	  	nome[filho]
@@ -376,7 +376,7 @@ id [Element pai]
 
 professores [Element pai]
            : 'PROFESSORES' '{' {
-									Element filho = doc.createElement("atuacao");
+									Element filho = doc.createElement("professores");
 									pai.appendChild(filho);
 								}
 			(professor[filho])+ '}'
@@ -384,7 +384,7 @@ professores [Element pai]
 
 professor [Element pai]
 		 : 'PROFESSOR'{
-						Element filho = doc.createElement("atuacao");
+						Element filho = doc.createElement("professor");
 						pai.appendChild(filho);
 					}
 		  	nome[filho]
@@ -393,7 +393,7 @@ professor [Element pai]
 
 pecas [Element pai]
 	 : 'PECAS' '{' {
-						Element filho = doc.createElement("atuacao");
+						Element filho = doc.createElement("pecas");
 						pai.appendChild(filho);
 					}
 		(peca[filho])+ '}'
@@ -401,7 +401,7 @@ pecas [Element pai]
 
 peca [Element pai]
 	: 'PECA' {
-				Element filho = doc.createElement("atuacao");
+				Element filho = doc.createElement("peca");
 				pai.appendChild(filho);
 			}
 
