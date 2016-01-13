@@ -1,4 +1,5 @@
 METADATA
+	ID Aud1
 	TITULO "audicao1"
 	SUBTITULO "audicao experimental"
 	TEMA "tema1"
