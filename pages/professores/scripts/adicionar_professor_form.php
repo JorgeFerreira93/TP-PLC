@@ -2,7 +2,7 @@
 
 	$dbh = new PDO('mysql:host=localhost;dbname=gamu', 'root', 'root');
 
-	$query = "INSERT INTO professor (`professor_id`, `professor_nome`, `professor_data_nasc`, `professor_habilitacao`, `professor_curso`)
+	$query = "INSERT INTO professor
 				VALUES (
 				'".$_REQUEST['id']."',
 				'".$_REQUEST['nome']."',
