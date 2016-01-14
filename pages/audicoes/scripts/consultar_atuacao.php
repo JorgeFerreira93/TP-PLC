@@ -88,7 +88,7 @@
 	echo "<thead>
 			<tr>
 				<th>ID</th>
-				<th>NOME</th>
+				<th>TÍTULO</th>
 				<th><th>
 			</tr>
 		</thead>";
