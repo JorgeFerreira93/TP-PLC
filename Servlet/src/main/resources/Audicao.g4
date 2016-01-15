@@ -21,7 +21,7 @@ grammar Audicao;
         }
 
         public String toString(){
-            return id + ", " + subtitulo + ", " + tema;
+            return id + ", " + titulo + ", " + subtitulo + ", " + tema + ", " + data + ", " + hora + ", " + local + ", " + organizador + ", " + duracao;
         }
     }
 
@@ -71,7 +71,9 @@ s returns[String a]
         metadata[audicao]
         atuacoes[con, audicao.atuacoes, erro]
         {
-            if(erro.haErro()){
+            if(!erro.haErro()){
+
+                System.out.println(audicao.toString());
 
                 String json = "{\"erro\": \"true\",\"alunos\": [ ";
 
@@ -100,12 +102,26 @@ s returns[String a]
                 $a = json;
             }
             else{
-                for(Atuacao a: audicao.atuacoes){
-                    System.out.println("Atuacao 1:");
-                    System.out.println(a.alunos.toString());
-                    System.out.println(a.professores.toString());
-                    System.out.println(a.pecas.toString());
-                }
+                try {
+                    PreparedStatement ps = con.prepareStatement("INSERT INTO audicao(Designacao) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                    ps.setString(1, audicao.id);
+                    ps.setString(2, audicao.titulo);
+                    ps.setString(3, audicao.subtitulo);
+                    ps.setString(4, audicao.tema);
+                    ps.setString(5, audicao.data);
+                    ps.setString(6, audicao.hora);
+                    ps.setString(7, audicao.local);
+                    System.out.println(ps.toString());
+                    //ps.executeUpdate();
+                 } catch (SQLException e) {
+                     e.printStackTrace();
+                 } finally {
+                     try {
+                         con.close();
+                     } catch (Exception e) {
+                         e.printStackTrace();
+                     }
+                 }
             }
 
             try {
@@ -118,8 +134,8 @@ s returns[String a]
   ;
 
 metadata[Audicao audicao]: 'METADATA'
-		  audId {audicao.titulo = $audId.text;}
-		  titulo
+		  audId[audicao]
+		  titulo[audicao]
 		  subtitulo[audicao]
           tema[audicao]
           data[audicao]
@@ -129,7 +145,7 @@ metadata[Audicao audicao]: 'METADATA'
           duracao[audicao]
 		;
 
-titulo: 'TITULO' DADOS
+titulo[Audicao audicao]: 'TITULO' DADOS {audicao.titulo = $DADOS.text;}
 	  ;
 
 subtitulo[Audicao audicao]: 'SUBTITULO' DADOS {audicao.subtitulo = $DADOS.text;}
@@ -186,7 +202,6 @@ aluno[Connection con, Atuacao at, Erro erro]
             try {
                 String nome;
                 PreparedStatement ps = con.prepareStatement("SELECT 1 FROM aluno WHERE aluno_id = '" + $id.idd + "'");
-	  	        System.out.println("SELECT aluno_nome FROM aluno WHERE aluno_id = '" + $id.idd + "'");
                 ResultSet rs = ps.executeQuery();
                 if(rs.next()) {
                     at.alunos.add($id.idd);
@@ -204,8 +219,8 @@ nome
     : 'NOME' DADOS
 	;
 
-audId
-  : 'ID' ID
+audId[Audicao audicao]
+  : 'ID' ID {audicao.id = $ID.text;}
   ;
 
 id returns[String idd]
@@ -243,12 +258,11 @@ pecas[Connection con, Atuacao at, Erro erro]
 
 peca[Connection con, Atuacao at, Erro erro]
 	: 'PECA'
-		titulo
+		'TITULO' DADOS
 		id{
             try {
                 String nome;
                 PreparedStatement ps = con.prepareStatement("SELECT 1 FROM obra WHERE obra_id = '" + $id.idd + "'");
-System.out.println("SELECT 1 FROM obra WHERE obra_id = '" + $id.idd + "'");
                 ResultSet rs = ps.executeQuery();
                 if(rs.next()) {
                     at.pecas.add($id.idd);

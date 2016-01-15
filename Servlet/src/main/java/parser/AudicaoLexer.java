@@ -95,7 +95,7 @@ public class AudicaoLexer extends Lexer {
 	        }
 
 	        public String toString(){
-	            return id + ", " + subtitulo + ", " + tema;
+	            return id + ", " + titulo + ", " + subtitulo + ", " + tema + ", " + data + ", " + hora + ", " + local + ", " + organizador + ", " + duracao;
 	        }
 	    }
 
