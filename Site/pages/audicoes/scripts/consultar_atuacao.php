@@ -19,7 +19,7 @@
 				ON p.professor_id=ap.professor_id 
 				WHERE atuacao_id = ".$_REQUEST['id'];
 	$professores = $dbh->query($qstring);
-	echo $qstring;
+
 
 	$qstring = "SELECT * FROM obra AS o
 				INNER JOIN atuacao_obra AS ao
@@ -29,7 +29,19 @@
 
 
 	echo "<p><b>Designação:</b> ".$atuacao['atuacao_designacao']."</p><hr/>";
-	echo "<p><b>Professores:</b></p><br/>";
+	echo "<p><b>Dados:</b></p>";
+
+	//echo "<p><b>Professores:</b></p><br/>";
+	echo "<div class='panel-body'>
+		<div class='panel-group' id='accordion'>";
+	echo "<div class='panel panel-default'>
+		<div class='panel-heading'>
+			<h4 class='panel-title'>
+				<a class='collapsed' aria-expanded='false' href='#profs' data-toggle='collapse' data-parent='#accordion'><b>Professores:</b></a>
+			</h4>
+		</div>
+		<div class='pannel-collapse collapse' id='profs' aria-expanded='false' style='height: 0px;'>
+			<div class='pannel-body'>";
 	echo "<table class='table table-striped table-bordered table-hover' id='dataTables-example'>";
 	echo "<thead>
 			<tr>
@@ -54,9 +66,19 @@
 	}
 	echo "</tbody>";
 
-	echo "</table><hr/>";
+	echo "</table>";
+	echo "</div></div></div>";
 
-	echo "<p><b>Alunos:</b></p><br/>";
+
+	//echo "<p><b>Alunos:</b></p><br/>";
+	echo "<div class='panel panel-default'>
+		<div class='panel-heading'>
+			<h4 class='panel-title'>
+				<a class='collapsed' aria-expanded='false' href='#aluns' data-toggle='collapse' data-parent='#accordion'><b>Alunos:</b></a>
+			</h4>
+		</div>
+		<div class='pannel-collapse collapse' id='aluns' aria-expanded='false' style='height: 0px;'>
+			<div class='pannel-body'>";
 	echo "<table class='table table-striped table-bordered table-hover' id='dataTables-example'>";
 	echo "<thead>
 			<tr>
@@ -81,9 +103,18 @@
 	}
 	echo "</tbody>";
 
-	echo "</table><hr/>";
+	echo "</table>";
+	echo "</div></div></div>";
 
-	echo "<p><b>Obras:</b></p><br/>";
+	//echo "<p><b>Obras:</b></p><br/>";
+	echo "<div class='panel panel-default'>
+		<div class='panel-heading'>
+			<h4 class='panel-title'>
+				<a class='collapsed' aria-expanded='false' href='#obrs' data-toggle='collapse' data-parent='#accordion'><b>Obras:</b></a>
+			</h4>
+		</div>
+		<div class='pannel-collapse collapse' id='obrs' aria-expanded='false' style='height: 0px;'>
+			<div class='pannel-body'>";
 	echo "<table class='table table-striped table-bordered table-hover' id='dataTables-example'>";
 	echo "<thead>
 			<tr>
@@ -109,5 +140,6 @@
 	echo "</tbody>";
 
 	echo "</table>";
+	echo "</div></div></div></div></div>"
 	
 ?>
