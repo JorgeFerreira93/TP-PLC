@@ -39,7 +39,7 @@ public class FileUploadController {
                 CommonTokenStream tokens = new CommonTokenStream(lexer);
                 AudicaoParser parser = new AudicaoParser(tokens);
 
-                parser.s();
+                return parser.s().a;
 
 
                 /*
@@ -47,7 +47,7 @@ public class FileUploadController {
                 * Manda-o para o parser do antlr e faz as cenas                *
                 * */
 
-                return "Li bem o ficheiro";
+                //return "Li bem o ficheiro";
             } catch (Exception e) {
                 return "Houve um erro qql" + e.getMessage();
             }

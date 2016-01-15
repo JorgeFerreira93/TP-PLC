@@ -2,25 +2,34 @@ $(document).ready(function(){
 	
 	$("#exemploForm").submit(function(){
 		
-		//var url = "http://localhost:8080/upload";
 		$.ajax({
 			url: $(this).attr('action'),
 			type: $(this).attr('method'),
             enctype: 'multipart/form-data',
 			//data: $(this).serialize(),
 			data: new FormData($(this)[0]),
-			success: function(html) {
-				alert(html);
+			success: function(res) {
+				var json = JSON.parse(res);
+				if(json.erro === "true"){
+					var aux = "";
+					for(var i in json.alunos){
+						aux += "<p>O aluno '" + json.alunos[i] + "' não existe</p><hr/>";
+					}
+					for(var i in json.professores){
+						aux += "<p>O professor '" + json.professores[i] + "' não existe</p><hr/>";
+					}
+					for(var i in json.obras){
+						aux += "<p>A obra '" + json.obras[i] + "' não existe</p><hr/>";
+					}
+					$("#erro").html(aux);
+				}
 			},
 			cache: false,
 			contentType: false,
 			processData: false
 		});
 		
+		
 		return false;
-		/*
-		$.post("teste.php", {"url": "http://localhost:8080/upload", "type": 'POST'}, function(res){
-			alert(res);
-		});*/
 	});
 })

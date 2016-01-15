@@ -18,7 +18,7 @@ ATUACOES {
 				ID A1
 			ALUNO
 				NOME "aluno2"
-				ID A2
+				ID ABB2
 		}
 		PROFESSORES {
 			PROFESSOR

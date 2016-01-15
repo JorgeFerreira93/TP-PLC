@@ -71,25 +71,53 @@ s returns[String a]
         metadata[audicao]
         atuacoes[con, audicao.atuacoes, erro]
         {
-                     for(Atuacao a: audicao.atuacoes){
-                        System.out.println("Atuacao 1:");
-                         System.out.println(a.alunos.toString());
-                         System.out.println(a.professores.toString());
-                         System.out.println(a.pecas.toString());
-                     }
+            if(erro.haErro()){
 
-                            if(erro.haErro()){
-                            System.out.println(erro.alunos.toString());
-                            								System.out.println(erro.professores.toString());
-                            								System.out.println(erro.pecas.toString());
-                            }
+                String json = "{\"erro\": \"true\",\"alunos\": [ ";
 
+                for(String s: erro.alunos){
+                    json += "\"" + s + "\",";
+                }
+                json = json.substring(0, json.length() - 1);
+                json += "],\"professores\": [ ";
 
-                            try {
-                                con.close();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                for(String s: erro.professores){
+                    json += "\"" + s + "\",";
+                }
+                json = json.substring(0, json.length() - 1);
+                json += "],\"obras\": [ ";
+
+                for(String s: erro.pecas){
+                    json += "\"" + s + "\",";
+                }
+
+                json = json.substring(0, json.length() - 1);
+
+                json += "]}";
+
+                System.out.println(json);
+
+                $a = json;
+
+                System.out.println(erro.alunos.toString());
+                System.out.println(erro.professores.toString());
+                System.out.println(erro.pecas.toString());
+            }
+            else{
+                for(Atuacao a: audicao.atuacoes){
+                    System.out.println("Atuacao 1:");
+                    System.out.println(a.alunos.toString());
+                    System.out.println(a.professores.toString());
+                    System.out.println(a.pecas.toString());
+                }
+            }
+
+            try {
+                con.close();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                }
         }
   ;
 
