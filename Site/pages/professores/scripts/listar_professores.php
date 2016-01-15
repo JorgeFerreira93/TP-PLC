@@ -5,7 +5,7 @@
 	$qstring = "SELECT * FROM professor";
 	$resultado = $dbh->query($qstring);
 	
-	echo "<table class='table table-striped table-bordered table-hover' id='dataTables-example'>";
+	echo "<table class='table table-striped table-bordered table-hover' id='proftable'>";
 	echo "<thead>
 			<tr>
 				<th>ID</th>
@@ -37,7 +37,7 @@
 
 	echo " <script>
     $(document).ready(function() {
-        $('#alunostable').DataTable({
+        $('#proftable').DataTable({
                 responsive: true
         });
     });
