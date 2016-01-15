@@ -10,21 +10,21 @@
 	$qstring = "SELECT * FROM aluno AS a
 				INNER JOIN atuacao_aluno AS aa 
 				ON a.aluno_id=aa.aluno_id 
-				WHERE actuacao_id = ".$_REQUEST['id'];
+				WHERE atuacao_id = ".$_REQUEST['id'];
 	$alunos = $dbh->query($qstring);
 
 
 	$qstring = "SELECT * FROM professor AS p
 				INNER JOIN atuacao_professor AS ap
 				ON p.professor_id=ap.professor_id 
-				WHERE actuacao_id = ".$_REQUEST['id'];
+				WHERE atuacao_id = ".$_REQUEST['id'];
 	$professores = $dbh->query($qstring);
-
+	echo $qstring;
 
 	$qstring = "SELECT * FROM obra AS o
 				INNER JOIN atuacao_obra AS ao
 				ON o.obra_id=ao.obra_id 
-				WHERE actuacao_id = ".$_REQUEST['id'];
+				WHERE atuacao_id = ".$_REQUEST['id'];
 	$obras = $dbh->query($qstring);
 
 
@@ -35,7 +35,7 @@
 			<tr>
 				<th>ID</th>
 				<th>NOME</th>
-				<th><th>
+				<th></th>
 			</tr>
 		</thead>";
 
@@ -62,7 +62,7 @@
 			<tr>
 				<th>ID</th>
 				<th>NOME</th>
-				<th><th>
+				<th></th>
 			</tr>
 		</thead>";
 
@@ -75,7 +75,7 @@
 		echo "<td>".$aluno['aluno_id']."</td>
 				<td>".$aluno['aluno_nome']."</td>
 				<td>
-					<a href='../obras/consultar_aluno.html?id=".$aluno['aluno_id']."'><i class='fa fa-search fa-fw'></i></a>
+					<a href='../alunos/consultar_aluno.html?id=".$aluno['aluno_id']."'><i class='fa fa-search fa-fw'></i></a>
 				</td>
 			</tr>";
 	}
@@ -89,7 +89,7 @@
 			<tr>
 				<th>ID</th>
 				<th>TÍTULO</th>
-				<th><th>
+				<th></th>
 			</tr>
 		</thead>";
 

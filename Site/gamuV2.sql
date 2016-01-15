@@ -474,6 +474,7 @@ CREATE TABLE IF NOT EXISTS `audicao` (
   `audicao_id` varchar(50) CHARACTER SET utf8 NOT NULL,
   `audicao_titulo` varchar(100) CHARACTER SET utf8 NOT NULL,
   `audicao_subtitulo` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `audicao_tema` varchar(100) CHARACTER SET utf8 NOT NULL,
   `audicao_data` date NOT NULL,
   `audicao_hora` varchar(20) CHARACTER SET utf8 NOT NULL,
   `audicao_local` varchar(100) CHARACTER SET utf8 NOT NULL,
