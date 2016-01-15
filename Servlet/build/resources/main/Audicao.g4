@@ -14,7 +14,7 @@ grammar Audicao;
     public class Audicao {
 
         public String id, titulo, subtitulo, tema, data, hora, local, organizador, duracao = "";
-        public ArrayList<String> atuacoes;
+        public ArrayList<Atuacao> atuacoes;
 
         public Audicao(){
             this.atuacoes = new ArrayList<>();
@@ -52,11 +52,15 @@ s returns[String a]
                 e.printStackTrace();
             }
         } :
-        metadata[audicao] {
-            System.out.println(audicao.toString());
-        }
+        metadata[audicao]
         atuacoes[con, audicao.atuacoes, erros]
         {
+                     System.out.println("Tudo: " + audicao.atuacoes.size());
+
+                     for(Atuacao a: audicao.atuacoes){
+                         System.out.println(a.alunos.toString());
+                     }
+
                             try {
                                 con.close();
                             } catch (Exception e) {
@@ -104,17 +108,17 @@ duracao[Audicao audicao]
        : 'DURACAO' DADOS {audicao.duracao = $DADOS.text;}
 	   ;
 
-atuacoes[Connection con, ArrayList<String> ats, HashMap<String, String> erros]:
+atuacoes[Connection con, ArrayList<Atuacao> ats, HashMap<String, String> erros]:
         {Atuacao atuacao = new Atuacao();}
         'ATUACOES' '{'
-            (atuacao[con, atuacao, erros] )+
+            (atuacao[con, atuacao, erros] {ats.add(atuacao); atuacao = new Atuacao();} )+
         '}'
 		;
 
 atuacao[Connection con, Atuacao at, HashMap<String, String> erros]
 	   : 'ATUACAO'
        designacao[at]
-       alunos[con, erros]
+       alunos[con, at, erros]
        professores?
        pecas
 	   ;
@@ -123,27 +127,24 @@ designacao[Atuacao at]
 		  : 'DESIGNACAO' DADOS {at.designacao = $DADOS.text;}
 		  ;
 
-alunos[Connection con, HashMap<String, String> erros]
-	  : 'ALUNOS' '{' aluno[con, erros]+ '}'
+alunos[Connection con, Atuacao at, HashMap<String, String> erros]
+	  : 'ALUNOS' '{' aluno[con, at, erros]+ '}'
 	  ;
 
-aluno[Connection con, HashMap<String, String> erros]
+aluno[Connection con, Atuacao at, HashMap<String, String> erros]
       : 'ALUNO'
 	  	nome
 	  	id {
-
-
             try {
                 String nome;
-                PreparedStatement ps = con.prepareStatement("SELECT aluno_nome FROM aluno WHERE aluno_id = '" + $id.text + "'");
-	  	        System.out.println("SELECT aluno_nome FROM aluno WHERE aluno_id = '" + $id.text + "'");
+                PreparedStatement ps = con.prepareStatement("SELECT 1 FROM aluno WHERE aluno_id = '" + $id.idd + "'");
+	  	        System.out.println("SELECT aluno_nome FROM aluno WHERE aluno_id = '" + $id.idd + "'");
                 ResultSet rs = ps.executeQuery();
                 if(rs.next()) {
-                    nome = rs.getString(1);
-                    System.out.println("dsa");
+                    at.alunos.add($id.idd);
                 }
                 else{
-                    erros.put("Aluno", $id.text);
+                    erros.put("Aluno", $id.idd);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -159,8 +160,8 @@ audId
   : 'ID' ID
   ;
 
-id
-  : 'ID' ID
+id returns[String idd]
+  : 'ID' ID {$idd = $ID.text;}
   ;
 
 professores

@@ -88,7 +88,7 @@ public class AudicaoLexer extends Lexer {
 	    public class Audicao {
 
 	        public String id, titulo, subtitulo, tema, data, hora, local, organizador, duracao = "";
-	        public ArrayList<String> atuacoes;
+	        public ArrayList<Atuacao> atuacoes;
 
 	        public Audicao(){
 	            this.atuacoes = new ArrayList<>();
