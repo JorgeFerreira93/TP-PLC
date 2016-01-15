@@ -125,6 +125,22 @@ public class AudicaoParser extends Parser {
 	        }
 	    }
 
+	    public class Erro {
+	        public ArrayList<String> alunos;
+	        public ArrayList<String> professores;
+	        public ArrayList<String> pecas;
+
+	        public Erro(){
+	            this.alunos = new ArrayList<>();
+	            this.professores = new ArrayList<>();
+	            this.pecas = new ArrayList<>();
+	        }
+
+	        public boolean haErro(){
+	            return !(this.alunos.isEmpty() && this.professores.isEmpty() && this.pecas.isEmpty());
+	        }
+	    }
+
 	public AudicaoParser(TokenStream input) {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
@@ -157,7 +173,7 @@ public class AudicaoParser extends Parser {
 
 		            Connection con = null;
 		            Audicao audicao = new Audicao();
-		            HashMap<String, String> erros = new HashMap<>();
+		            Erro erro = new Erro();
 
 		            try{
 		                con = Connect.connect();
@@ -172,11 +188,21 @@ public class AudicaoParser extends Parser {
 			setState(44);
 			metadata(audicao);
 			setState(45);
-			atuacoes(con, audicao.atuacoes, erros);
+			atuacoes(con, audicao.atuacoes, erro);
 
 			                     for(Atuacao a: audicao.atuacoes){
+			                        System.out.println("Atuacao 1:");
 			                         System.out.println(a.alunos.toString());
+			                         System.out.println(a.professores.toString());
+			                         System.out.println(a.pecas.toString());
 			                     }
+
+			                            if(erro.haErro()){
+			                            System.out.println(erro.alunos.toString());
+			                            								System.out.println(erro.professores.toString());
+			                            								System.out.println(erro.pecas.toString());
+			                            }
+
 
 			                            try {
 			                                con.close();
@@ -633,7 +659,7 @@ public class AudicaoParser extends Parser {
 	public static class AtuacoesContext extends ParserRuleContext {
 		public Connection con;
 		public ArrayList<Atuacao> ats;
-		public HashMap<String, String> erros;
+		public Erro erro;
 		public List<AtuacaoContext> atuacao() {
 			return getRuleContexts(AtuacaoContext.class);
 		}
@@ -641,11 +667,11 @@ public class AudicaoParser extends Parser {
 			return getRuleContext(AtuacaoContext.class,i);
 		}
 		public AtuacoesContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public AtuacoesContext(ParserRuleContext parent, int invokingState, Connection con, ArrayList<Atuacao> ats, HashMap<String, String> erros) {
+		public AtuacoesContext(ParserRuleContext parent, int invokingState, Connection con, ArrayList<Atuacao> ats, Erro erro) {
 			super(parent, invokingState);
 			this.con = con;
 			this.ats = ats;
-			this.erros = erros;
+			this.erro = erro;
 		}
 		@Override public int getRuleIndex() { return RULE_atuacoes; }
 		@Override
@@ -658,8 +684,8 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final AtuacoesContext atuacoes(Connection con,ArrayList<Atuacao> ats,HashMap<String, String> erros) throws RecognitionException {
-		AtuacoesContext _localctx = new AtuacoesContext(_ctx, getState(), con, ats, erros);
+	public final AtuacoesContext atuacoes(Connection con,ArrayList<Atuacao> ats,Erro erro) throws RecognitionException {
+		AtuacoesContext _localctx = new AtuacoesContext(_ctx, getState(), con, ats, erro);
 		enterRule(_localctx, 20, RULE_atuacoes);
 		int _la;
 		try {
@@ -677,7 +703,7 @@ public class AudicaoParser extends Parser {
 				{
 				{
 				setState(94);
-				atuacao(con, atuacao, erros);
+				atuacao(con, atuacao, erro);
 				ats.add(atuacao); atuacao = new Atuacao();
 				}
 				}
@@ -703,7 +729,7 @@ public class AudicaoParser extends Parser {
 	public static class AtuacaoContext extends ParserRuleContext {
 		public Connection con;
 		public Atuacao at;
-		public HashMap<String, String> erros;
+		public Erro erro;
 		public DesignacaoContext designacao() {
 			return getRuleContext(DesignacaoContext.class,0);
 		}
@@ -717,11 +743,11 @@ public class AudicaoParser extends Parser {
 			return getRuleContext(ProfessoresContext.class,0);
 		}
 		public AtuacaoContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public AtuacaoContext(ParserRuleContext parent, int invokingState, Connection con, Atuacao at, HashMap<String, String> erros) {
+		public AtuacaoContext(ParserRuleContext parent, int invokingState, Connection con, Atuacao at, Erro erro) {
 			super(parent, invokingState);
 			this.con = con;
 			this.at = at;
-			this.erros = erros;
+			this.erro = erro;
 		}
 		@Override public int getRuleIndex() { return RULE_atuacao; }
 		@Override
@@ -734,8 +760,8 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final AtuacaoContext atuacao(Connection con,Atuacao at,HashMap<String, String> erros) throws RecognitionException {
-		AtuacaoContext _localctx = new AtuacaoContext(_ctx, getState(), con, at, erros);
+	public final AtuacaoContext atuacao(Connection con,Atuacao at,Erro erro) throws RecognitionException {
+		AtuacaoContext _localctx = new AtuacaoContext(_ctx, getState(), con, at, erro);
 		enterRule(_localctx, 22, RULE_atuacao);
 		int _la;
 		try {
@@ -746,18 +772,18 @@ public class AudicaoParser extends Parser {
 			setState(104);
 			designacao(at);
 			setState(105);
-			alunos(con, at, erros);
+			alunos(con, at, erro);
 			setState(107);
 			_la = _input.LA(1);
 			if (_la==T__18) {
 				{
 				setState(106);
-				professores();
+				professores(con, at, erro);
 				}
 			}
 
 			setState(109);
-			pecas();
+			pecas(con, at, erro);
 			}
 		}
 		catch (RecognitionException re) {
@@ -818,7 +844,7 @@ public class AudicaoParser extends Parser {
 	public static class AlunosContext extends ParserRuleContext {
 		public Connection con;
 		public Atuacao at;
-		public HashMap<String, String> erros;
+		public Erro erro;
 		public List<AlunoContext> aluno() {
 			return getRuleContexts(AlunoContext.class);
 		}
@@ -826,11 +852,11 @@ public class AudicaoParser extends Parser {
 			return getRuleContext(AlunoContext.class,i);
 		}
 		public AlunosContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public AlunosContext(ParserRuleContext parent, int invokingState, Connection con, Atuacao at, HashMap<String, String> erros) {
+		public AlunosContext(ParserRuleContext parent, int invokingState, Connection con, Atuacao at, Erro erro) {
 			super(parent, invokingState);
 			this.con = con;
 			this.at = at;
-			this.erros = erros;
+			this.erro = erro;
 		}
 		@Override public int getRuleIndex() { return RULE_alunos; }
 		@Override
@@ -843,8 +869,8 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final AlunosContext alunos(Connection con,Atuacao at,HashMap<String, String> erros) throws RecognitionException {
-		AlunosContext _localctx = new AlunosContext(_ctx, getState(), con, at, erros);
+	public final AlunosContext alunos(Connection con,Atuacao at,Erro erro) throws RecognitionException {
+		AlunosContext _localctx = new AlunosContext(_ctx, getState(), con, at, erro);
 		enterRule(_localctx, 26, RULE_alunos);
 		int _la;
 		try {
@@ -861,7 +887,7 @@ public class AudicaoParser extends Parser {
 				{
 				{
 				setState(117);
-				aluno(con, at, erros);
+				aluno(con, at, erro);
 				}
 				}
 				setState(120); 
@@ -886,7 +912,7 @@ public class AudicaoParser extends Parser {
 	public static class AlunoContext extends ParserRuleContext {
 		public Connection con;
 		public Atuacao at;
-		public HashMap<String, String> erros;
+		public Erro erro;
 		public IdContext id;
 		public NomeContext nome() {
 			return getRuleContext(NomeContext.class,0);
@@ -895,11 +921,11 @@ public class AudicaoParser extends Parser {
 			return getRuleContext(IdContext.class,0);
 		}
 		public AlunoContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public AlunoContext(ParserRuleContext parent, int invokingState, Connection con, Atuacao at, HashMap<String, String> erros) {
+		public AlunoContext(ParserRuleContext parent, int invokingState, Connection con, Atuacao at, Erro erro) {
 			super(parent, invokingState);
 			this.con = con;
 			this.at = at;
-			this.erros = erros;
+			this.erro = erro;
 		}
 		@Override public int getRuleIndex() { return RULE_aluno; }
 		@Override
@@ -912,8 +938,8 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final AlunoContext aluno(Connection con,Atuacao at,HashMap<String, String> erros) throws RecognitionException {
-		AlunoContext _localctx = new AlunoContext(_ctx, getState(), con, at, erros);
+	public final AlunoContext aluno(Connection con,Atuacao at,Erro erro) throws RecognitionException {
+		AlunoContext _localctx = new AlunoContext(_ctx, getState(), con, at, erro);
 		enterRule(_localctx, 28, RULE_aluno);
 		try {
 			enterOuterAlt(_localctx, 1);
@@ -934,7 +960,7 @@ public class AudicaoParser extends Parser {
 			                    at.alunos.add(((AlunoContext)_localctx).id.idd);
 			                }
 			                else{
-			                    erros.put("Aluno", ((AlunoContext)_localctx).id.idd);
+			                    erro.alunos.add(((AlunoContext)_localctx).id.idd);
 			                }
 			            } catch (SQLException e) {
 			                e.printStackTrace();
@@ -1074,14 +1100,21 @@ public class AudicaoParser extends Parser {
 	}
 
 	public static class ProfessoresContext extends ParserRuleContext {
+		public Connection con;
+		public Atuacao at;
+		public Erro erro;
 		public List<ProfessorContext> professor() {
 			return getRuleContexts(ProfessorContext.class);
 		}
 		public ProfessorContext professor(int i) {
 			return getRuleContext(ProfessorContext.class,i);
 		}
-		public ProfessoresContext(ParserRuleContext parent, int invokingState) {
+		public ProfessoresContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
+		public ProfessoresContext(ParserRuleContext parent, int invokingState, Connection con, Atuacao at, Erro erro) {
 			super(parent, invokingState);
+			this.con = con;
+			this.at = at;
+			this.erro = erro;
 		}
 		@Override public int getRuleIndex() { return RULE_professores; }
 		@Override
@@ -1094,8 +1127,8 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final ProfessoresContext professores() throws RecognitionException {
-		ProfessoresContext _localctx = new ProfessoresContext(_ctx, getState());
+	public final ProfessoresContext professores(Connection con,Atuacao at,Erro erro) throws RecognitionException {
+		ProfessoresContext _localctx = new ProfessoresContext(_ctx, getState(), con, at, erro);
 		enterRule(_localctx, 36, RULE_professores);
 		int _la;
 		try {
@@ -1112,7 +1145,7 @@ public class AudicaoParser extends Parser {
 				{
 				{
 				setState(141);
-				professor();
+				professor(con, at, erro);
 				}
 				}
 				setState(144); 
@@ -1135,14 +1168,22 @@ public class AudicaoParser extends Parser {
 	}
 
 	public static class ProfessorContext extends ParserRuleContext {
+		public Connection con;
+		public Atuacao at;
+		public Erro erro;
+		public IdContext id;
 		public NomeContext nome() {
 			return getRuleContext(NomeContext.class,0);
 		}
 		public IdContext id() {
 			return getRuleContext(IdContext.class,0);
 		}
-		public ProfessorContext(ParserRuleContext parent, int invokingState) {
+		public ProfessorContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
+		public ProfessorContext(ParserRuleContext parent, int invokingState, Connection con, Atuacao at, Erro erro) {
 			super(parent, invokingState);
+			this.con = con;
+			this.at = at;
+			this.erro = erro;
 		}
 		@Override public int getRuleIndex() { return RULE_professor; }
 		@Override
@@ -1155,8 +1196,8 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final ProfessorContext professor() throws RecognitionException {
-		ProfessorContext _localctx = new ProfessorContext(_ctx, getState());
+	public final ProfessorContext professor(Connection con,Atuacao at,Erro erro) throws RecognitionException {
+		ProfessorContext _localctx = new ProfessorContext(_ctx, getState(), con, at, erro);
 		enterRule(_localctx, 38, RULE_professor);
 		try {
 			enterOuterAlt(_localctx, 1);
@@ -1166,7 +1207,23 @@ public class AudicaoParser extends Parser {
 			setState(149);
 			nome();
 			setState(150);
-			id();
+			((ProfessorContext)_localctx).id = id();
+
+			                  try {
+			                      String nome;
+			                      PreparedStatement ps = con.prepareStatement("SELECT 1 FROM professor WHERE professor_id = '" + ((ProfessorContext)_localctx).id.idd + "'");
+
+			                      ResultSet rs = ps.executeQuery();
+			                      if(rs.next()) {
+			                          at.professores.add(((ProfessorContext)_localctx).id.idd);
+			                      }
+			                      else{
+			                          erro.professores.add(((ProfessorContext)_localctx).id.idd);
+			                      }
+			                  } catch (SQLException e) {
+			                      e.printStackTrace();
+			                  }
+			            
 			}
 		}
 		catch (RecognitionException re) {
@@ -1181,14 +1238,21 @@ public class AudicaoParser extends Parser {
 	}
 
 	public static class PecasContext extends ParserRuleContext {
+		public Connection con;
+		public Atuacao at;
+		public Erro erro;
 		public List<PecaContext> peca() {
 			return getRuleContexts(PecaContext.class);
 		}
 		public PecaContext peca(int i) {
 			return getRuleContext(PecaContext.class,i);
 		}
-		public PecasContext(ParserRuleContext parent, int invokingState) {
+		public PecasContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
+		public PecasContext(ParserRuleContext parent, int invokingState, Connection con, Atuacao at, Erro erro) {
 			super(parent, invokingState);
+			this.con = con;
+			this.at = at;
+			this.erro = erro;
 		}
 		@Override public int getRuleIndex() { return RULE_pecas; }
 		@Override
@@ -1201,32 +1265,32 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final PecasContext pecas() throws RecognitionException {
-		PecasContext _localctx = new PecasContext(_ctx, getState());
+	public final PecasContext pecas(Connection con,Atuacao at,Erro erro) throws RecognitionException {
+		PecasContext _localctx = new PecasContext(_ctx, getState(), con, at, erro);
 		enterRule(_localctx, 40, RULE_pecas);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(152);
-			match(T__20);
 			setState(153);
+			match(T__20);
+			setState(154);
 			match(T__10);
-			setState(155); 
+			setState(156); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(154);
-				peca();
+				setState(155);
+				peca(con, at, erro);
 				}
 				}
-				setState(157); 
+				setState(158); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==T__21 );
-			setState(159);
+			setState(160);
 			match(T__11);
 			}
 		}
@@ -1242,14 +1306,22 @@ public class AudicaoParser extends Parser {
 	}
 
 	public static class PecaContext extends ParserRuleContext {
+		public Connection con;
+		public Atuacao at;
+		public Erro erro;
+		public IdContext id;
 		public TituloContext titulo() {
 			return getRuleContext(TituloContext.class,0);
 		}
 		public IdContext id() {
 			return getRuleContext(IdContext.class,0);
 		}
-		public PecaContext(ParserRuleContext parent, int invokingState) {
+		public PecaContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
+		public PecaContext(ParserRuleContext parent, int invokingState, Connection con, Atuacao at, Erro erro) {
 			super(parent, invokingState);
+			this.con = con;
+			this.at = at;
+			this.erro = erro;
 		}
 		@Override public int getRuleIndex() { return RULE_peca; }
 		@Override
@@ -1262,18 +1334,35 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final PecaContext peca() throws RecognitionException {
-		PecaContext _localctx = new PecaContext(_ctx, getState());
+	public final PecaContext peca(Connection con,Atuacao at,Erro erro) throws RecognitionException {
+		PecaContext _localctx = new PecaContext(_ctx, getState(), con, at, erro);
 		enterRule(_localctx, 42, RULE_peca);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(161);
-			match(T__21);
 			setState(162);
-			titulo();
+			match(T__21);
 			setState(163);
-			id();
+			titulo();
+			setState(164);
+			((PecaContext)_localctx).id = id();
+
+			            try {
+			                String nome;
+			                PreparedStatement ps = con.prepareStatement("SELECT 1 FROM obra WHERE obra_id = '" + ((PecaContext)_localctx).id.idd + "'");
+			System.out.println("SELECT 1 FROM obra WHERE obra_id = '" + ((PecaContext)_localctx).id.idd + "'");
+			                ResultSet rs = ps.executeQuery();
+			                if(rs.next()) {
+			                    at.pecas.add(((PecaContext)_localctx).id.idd);
+
+			                }
+			                else{
+			                    erro.pecas.add(((PecaContext)_localctx).id.idd);
+			                }
+			            } catch (SQLException e) {
+			                e.printStackTrace();
+			            }
+			          
 			}
 		}
 		catch (RecognitionException re) {
@@ -1288,7 +1377,7 @@ public class AudicaoParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\35\u00a8\4\2\t\2"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\35\u00aa\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\3\2\3\2\3\2\3\2\3\3"+
@@ -1298,13 +1387,13 @@ public class AudicaoParser extends Parser {
 		"\16\fe\3\f\3\f\3\r\3\r\3\r\3\r\5\rn\n\r\3\r\3\r\3\16\3\16\3\16\3\16\3"+
 		"\17\3\17\3\17\6\17y\n\17\r\17\16\17z\3\17\3\17\3\20\3\20\3\20\3\20\3\20"+
 		"\3\21\3\21\3\21\3\22\3\22\3\22\3\23\3\23\3\23\3\23\3\24\3\24\3\24\6\24"+
-		"\u0091\n\24\r\24\16\24\u0092\3\24\3\24\3\25\3\25\3\25\3\25\3\26\3\26\3"+
-		"\26\6\26\u009e\n\26\r\26\16\26\u009f\3\26\3\26\3\27\3\27\3\27\3\27\3\27"+
-		"\2\2\30\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,\2\2\u0096\2.\3"+
-		"\2\2\2\4\62\3\2\2\2\6>\3\2\2\2\bA\3\2\2\2\nE\3\2\2\2\fI\3\2\2\2\16M\3"+
-		"\2\2\2\20Q\3\2\2\2\22U\3\2\2\2\24Y\3\2\2\2\26]\3\2\2\2\30i\3\2\2\2\32"+
-		"q\3\2\2\2\34u\3\2\2\2\36~\3\2\2\2 \u0083\3\2\2\2\"\u0086\3\2\2\2$\u0089"+
-		"\3\2\2\2&\u008d\3\2\2\2(\u0096\3\2\2\2*\u009a\3\2\2\2,\u00a3\3\2\2\2."+
+		"\u0091\n\24\r\24\16\24\u0092\3\24\3\24\3\25\3\25\3\25\3\25\3\25\3\26\3"+
+		"\26\3\26\6\26\u009f\n\26\r\26\16\26\u00a0\3\26\3\26\3\27\3\27\3\27\3\27"+
+		"\3\27\3\27\2\2\30\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,\2\2\u0098"+
+		"\2.\3\2\2\2\4\62\3\2\2\2\6>\3\2\2\2\bA\3\2\2\2\nE\3\2\2\2\fI\3\2\2\2\16"+
+		"M\3\2\2\2\20Q\3\2\2\2\22U\3\2\2\2\24Y\3\2\2\2\26]\3\2\2\2\30i\3\2\2\2"+
+		"\32q\3\2\2\2\34u\3\2\2\2\36~\3\2\2\2 \u0083\3\2\2\2\"\u0086\3\2\2\2$\u0089"+
+		"\3\2\2\2&\u008d\3\2\2\2(\u0096\3\2\2\2*\u009b\3\2\2\2,\u00a4\3\2\2\2."+
 		"/\5\4\3\2/\60\5\26\f\2\60\61\b\2\1\2\61\3\3\2\2\2\62\63\7\3\2\2\63\64"+
 		"\5\"\22\2\64\65\b\3\1\2\65\66\5\6\4\2\66\67\5\b\5\2\678\5\n\6\289\5\f"+
 		"\7\29:\5\16\b\2:;\5\20\t\2;<\5\22\n\2<=\5\24\13\2=\5\3\2\2\2>?\7\4\2\2"+
@@ -1326,11 +1415,11 @@ public class AudicaoParser extends Parser {
 		"(\25\2\u0090\u008f\3\2\2\2\u0091\u0092\3\2\2\2\u0092\u0090\3\2\2\2\u0092"+
 		"\u0093\3\2\2\2\u0093\u0094\3\2\2\2\u0094\u0095\7\16\2\2\u0095\'\3\2\2"+
 		"\2\u0096\u0097\7\26\2\2\u0097\u0098\5 \21\2\u0098\u0099\5$\23\2\u0099"+
-		")\3\2\2\2\u009a\u009b\7\27\2\2\u009b\u009d\7\r\2\2\u009c\u009e\5,\27\2"+
-		"\u009d\u009c\3\2\2\2\u009e\u009f\3\2\2\2\u009f\u009d\3\2\2\2\u009f\u00a0"+
-		"\3\2\2\2\u00a0\u00a1\3\2\2\2\u00a1\u00a2\7\16\2\2\u00a2+\3\2\2\2\u00a3"+
-		"\u00a4\7\30\2\2\u00a4\u00a5\5\6\4\2\u00a5\u00a6\5$\23\2\u00a6-\3\2\2\2"+
-		"\7emz\u0092\u009f";
+		"\u009a\b\25\1\2\u009a)\3\2\2\2\u009b\u009c\7\27\2\2\u009c\u009e\7\r\2"+
+		"\2\u009d\u009f\5,\27\2\u009e\u009d\3\2\2\2\u009f\u00a0\3\2\2\2\u00a0\u009e"+
+		"\3\2\2\2\u00a0\u00a1\3\2\2\2\u00a1\u00a2\3\2\2\2\u00a2\u00a3\7\16\2\2"+
+		"\u00a3+\3\2\2\2\u00a4\u00a5\7\30\2\2\u00a5\u00a6\5\6\4\2\u00a6\u00a7\5"+
+		"$\23\2\u00a7\u00a8\b\27\1\2\u00a8-\3\2\2\2\7emz\u0092\u00a0";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -37,13 +37,29 @@ grammar Audicao;
             this.pecas = new ArrayList<>();
         }
     }
+
+    public class Erro {
+        public ArrayList<String> alunos;
+        public ArrayList<String> professores;
+        public ArrayList<String> pecas;
+
+        public Erro(){
+            this.alunos = new ArrayList<>();
+            this.professores = new ArrayList<>();
+            this.pecas = new ArrayList<>();
+        }
+
+        public boolean haErro(){
+            return !(this.alunos.isEmpty() && this.professores.isEmpty() && this.pecas.isEmpty());
+        }
+    }
 }
 
 s returns[String a]
     @init{
             Connection con = null;
             Audicao audicao = new Audicao();
-            HashMap<String, String> erros = new HashMap<>();
+            Erro erro = new Erro();
 
             try{
                 con = Connect.connect();
@@ -53,11 +69,21 @@ s returns[String a]
             }
         } :
         metadata[audicao]
-        atuacoes[con, audicao.atuacoes, erros]
+        atuacoes[con, audicao.atuacoes, erro]
         {
                      for(Atuacao a: audicao.atuacoes){
+                        System.out.println("Atuacao 1:");
                          System.out.println(a.alunos.toString());
+                         System.out.println(a.professores.toString());
+                         System.out.println(a.pecas.toString());
                      }
+
+                            if(erro.haErro()){
+                            System.out.println(erro.alunos.toString());
+                            								System.out.println(erro.professores.toString());
+                            								System.out.println(erro.pecas.toString());
+                            }
+
 
                             try {
                                 con.close();
@@ -106,30 +132,30 @@ duracao[Audicao audicao]
        : 'DURACAO' DADOS {audicao.duracao = $DADOS.text;}
 	   ;
 
-atuacoes[Connection con, ArrayList<Atuacao> ats, HashMap<String, String> erros]:
+atuacoes[Connection con, ArrayList<Atuacao> ats, Erro erro]:
         {Atuacao atuacao = new Atuacao();}
         'ATUACOES' '{'
-            (atuacao[con, atuacao, erros] {ats.add(atuacao); atuacao = new Atuacao();} )+
+            (atuacao[con, atuacao, erro] {ats.add(atuacao); atuacao = new Atuacao();} )+
         '}'
 		;
 
-atuacao[Connection con, Atuacao at, HashMap<String, String> erros]
+atuacao[Connection con, Atuacao at, Erro erro]
 	   : 'ATUACAO'
        designacao[at]
-       alunos[con, at, erros]
-       professores?
-       pecas
+       alunos[con, at, erro]
+       professores[con, at, erro]?
+       pecas[con, at, erro]
 	   ;
 
 designacao[Atuacao at]
 		  : 'DESIGNACAO' DADOS {at.designacao = $DADOS.text;}
 		  ;
 
-alunos[Connection con, Atuacao at, HashMap<String, String> erros]
-	  : 'ALUNOS' '{' aluno[con, at, erros]+ '}'
+alunos[Connection con, Atuacao at, Erro erro]
+	  : 'ALUNOS' '{' aluno[con, at, erro]+ '}'
 	  ;
 
-aluno[Connection con, Atuacao at, HashMap<String, String> erros]
+aluno[Connection con, Atuacao at, Erro erro]
       : 'ALUNO'
 	  	nome
 	  	id {
@@ -142,7 +168,7 @@ aluno[Connection con, Atuacao at, HashMap<String, String> erros]
                     at.alunos.add($id.idd);
                 }
                 else{
-                    erros.put("Aluno", $id.idd);
+                    erro.alunos.add($id.idd);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -162,25 +188,55 @@ id returns[String idd]
   : 'ID' ID {$idd = $ID.text;}
   ;
 
-professores
-           : 'PROFESSORES' '{' professor+ '}'
+professores[Connection con, Atuacao at, Erro erro]
+           : 'PROFESSORES' '{' professor[con, at, erro]+ '}'
 		   ;
 
-professor
+professor[Connection con, Atuacao at, Erro erro]
 		 : 'PROFESSOR'
 		  	nome
-		  	id
+		  	id{
+                  try {
+                      String nome;
+                      PreparedStatement ps = con.prepareStatement("SELECT 1 FROM professor WHERE professor_id = '" + $id.idd + "'");
+
+                      ResultSet rs = ps.executeQuery();
+                      if(rs.next()) {
+                          at.professores.add($id.idd);
+                      }
+                      else{
+                          erro.professores.add($id.idd);
+                      }
+                  } catch (SQLException e) {
+                      e.printStackTrace();
+                  }
+            }
 		 ;
 
-pecas
-	 : 'PECAS' '{' peca+
-		 '}'
+pecas[Connection con, Atuacao at, Erro erro]
+	 : 'PECAS' '{' peca[con, at, erro]+ '}'
 	 ;
 
-peca
+peca[Connection con, Atuacao at, Erro erro]
 	: 'PECA'
 		titulo
-		id
+		id{
+            try {
+                String nome;
+                PreparedStatement ps = con.prepareStatement("SELECT 1 FROM obra WHERE obra_id = '" + $id.idd + "'");
+System.out.println("SELECT 1 FROM obra WHERE obra_id = '" + $id.idd + "'");
+                ResultSet rs = ps.executeQuery();
+                if(rs.next()) {
+                    at.pecas.add($id.idd);
+
+                }
+                else{
+                    erro.pecas.add($id.idd);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+          }
 	;
 
 

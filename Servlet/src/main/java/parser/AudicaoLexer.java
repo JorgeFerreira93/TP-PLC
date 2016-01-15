@@ -112,6 +112,22 @@ public class AudicaoLexer extends Lexer {
 	        }
 	    }
 
+	    public class Erro {
+	        public ArrayList<String> alunos;
+	        public ArrayList<String> professores;
+	        public ArrayList<String> pecas;
+
+	        public Erro(){
+	            this.alunos = new ArrayList<>();
+	            this.professores = new ArrayList<>();
+	            this.pecas = new ArrayList<>();
+	        }
+
+	        public boolean haErro(){
+	            return !(this.alunos.isEmpty() && this.professores.isEmpty() && this.pecas.isEmpty());
+	        }
+	    }
+
 
 	public AudicaoLexer(CharStream input) {
 		super(input);
