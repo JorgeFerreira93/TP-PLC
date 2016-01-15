@@ -5,7 +5,9 @@
 	$qstring = "SELECT * FROM aluno";
 	$resultado = $dbh->query($qstring);
 	
-	echo "<table class='table table-striped table-bordered table-hover' id='dataTables-example'>";
+
+	
+	echo "<table class='table table-striped table-bordered table-hover' id='alunostable'>";
 	echo "<thead>
 			<tr>
 				<th>ID</th>
@@ -30,6 +32,13 @@
 				</td></tr>";
 	}
 	echo "</tbody>";
-
 	echo "</table>";
+
+	echo " <script>
+    $(document).ready(function() {
+        $('#alunostable').DataTable({
+                responsive: true
+        });
+    });
+    </script>";
 ?>

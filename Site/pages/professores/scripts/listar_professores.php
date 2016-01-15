@@ -34,4 +34,12 @@
 	echo "</tbody>";
 
 	echo "</table>";
+
+	echo " <script>
+    $(document).ready(function() {
+        $('#alunostable').DataTable({
+                responsive: true
+        });
+    });
+    </script>";
 ?>
