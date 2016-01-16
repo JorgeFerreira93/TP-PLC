@@ -1,4 +1,4 @@
-// Generated from C:/xampp/htdocs/TP_PLC/gramatica/audicoes\Audicao.g4 by ANTLR 4.5.1
+// Generated from C:/xampp/htdocs/TP_PLC/Site/gramatica/audicoes\Audicao.g4 by ANTLR 4.5.1
 
         import java.util.*;
         import java.io.File;
@@ -14,6 +14,8 @@
         import org.w3c.dom.Attr;
         import org.w3c.dom.Document;
         import org.w3c.dom.Element;
+
+        import java.sql.*;
 
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -99,6 +101,48 @@ public class AudicaoLexer extends Lexer {
 				Document doc;
 				Element rootElement;
 				String file;
+				String connection;
+
+				public String query(String query,String coluna) throws SQLException
+				{
+					String result = null;
+					Properties p = new Properties();
+					p.put("user","root");
+					p.put("password","root");
+					Connection c = DriverManager.getConnection("jdbc:mysql://localhost:8080/gamu",p);
+
+					Statement stmt = null;
+
+					try{
+						stmt = c.createStatement();
+						ResultSet rs = stmt.executeQuery(query);
+	                    result = rs.getString(coluna);
+					}catch (SQLException e ) {
+						 System.out.println(e);
+					 } finally {
+						 if (stmt != null) { stmt.close(); }
+					 }
+					 return result;
+				}
+
+				public void insert(String query) throws SQLException
+				{
+					Properties p = new Properties();
+					p.put("user","root");
+					p.put("password","root");
+					Connection c = DriverManager.getConnection("jdbc:mysql://localhost:8080/gamu",p);
+
+					Statement stmt = null;
+
+					try{
+						stmt = c.createStatement();
+						int rs = stmt.executeUpdate(query);
+					}catch (SQLException e ) {
+						  System.out.println(e);
+					 } finally {
+						 if (stmt != null) { stmt.close(); }
+					 }
+				}
 
 
 	public AudicaoLexer(CharStream input) {

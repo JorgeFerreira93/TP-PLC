@@ -1,4 +1,4 @@
-// Generated from C:/xampp/htdocs/TP_PLC/gramatica/audicoes\Audicao.g4 by ANTLR 4.5.1
+// Generated from C:/xampp/htdocs/TP_PLC/Site/gramatica/audicoes\Audicao.g4 by ANTLR 4.5.1
 
         import java.util.*;
         import java.io.File;
@@ -14,6 +14,8 @@
         import org.w3c.dom.Attr;
         import org.w3c.dom.Document;
         import org.w3c.dom.Element;
+
+        import java.sql.*;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -112,12 +114,56 @@ public class AudicaoParser extends Parser {
 				Document doc;
 				Element rootElement;
 				String file;
+				String connection;
+
+				public String query(String query,String coluna) throws SQLException
+				{
+					String result = null;
+					Properties p = new Properties();
+					p.put("user","root");
+					p.put("password","root");
+					Connection c = DriverManager.getConnection("jdbc:mysql://localhost:8080/gamu",p);
+
+					Statement stmt = null;
+
+					try{
+						stmt = c.createStatement();
+						ResultSet rs = stmt.executeQuery(query);
+	                    result = rs.getString(coluna);
+					}catch (SQLException e ) {
+						 System.out.println(e);
+					 } finally {
+						 if (stmt != null) { stmt.close(); }
+					 }
+					 return result;
+				}
+
+				public void insert(String query) throws SQLException
+				{
+					Properties p = new Properties();
+					p.put("user","root");
+					p.put("password","root");
+					Connection c = DriverManager.getConnection("jdbc:mysql://localhost:8080/gamu",p);
+
+					Statement stmt = null;
+
+					try{
+						stmt = c.createStatement();
+						int rs = stmt.executeUpdate(query);
+					}catch (SQLException e ) {
+						  System.out.println(e);
+					 } finally {
+						 if (stmt != null) { stmt.close(); }
+					 }
+				}
 
 	public AudicaoParser(TokenStream input) {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 	public static class SContext extends ParserRuleContext {
+		public MetadataContext metadata;
+		public AtuacoesContext atuacoes;
 		public MetadataContext metadata() {
 			return getRuleContext(MetadataContext.class,0);
 		}
@@ -158,9 +204,20 @@ public class AudicaoParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(44);
-			metadata();
+			((SContext)_localctx).metadata = metadata();
 			setState(45);
-			atuacoes();
+			((SContext)_localctx).atuacoes = atuacoes(((SContext)_localctx).metadata.audicaoId);
+
+			    		try{
+							insert(((SContext)_localctx).metadata.query);
+							insert(((SContext)_localctx).atuacoes.atuacoesInsert);
+							insert(((SContext)_localctx).atuacoes.alunosInsert);
+							insert(((SContext)_localctx).atuacoes.professoresInsert);
+							insert(((SContext)_localctx).atuacoes.pecasInsert);
+						}catch (SQLException e ) {
+							  System.out.println(e);
+						 }
+			    	
 			}
 
 					try{
@@ -187,6 +244,17 @@ public class AudicaoParser extends Parser {
 	}
 
 	public static class MetadataContext extends ParserRuleContext {
+		public String audicaoId;
+		public String query;
+		public AudIdContext audId;
+		public TituloContext titulo;
+		public SubtituloContext subtitulo;
+		public TemaContext tema;
+		public DataContext data;
+		public HoraContext hora;
+		public LocalContext local;
+		public OrganizadorContext organizador;
+		public DuracaoContext duracao;
 		public AudIdContext audId() {
 			return getRuleContext(AudIdContext.class,0);
 		}
@@ -234,30 +302,37 @@ public class AudicaoParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(47);
+			setState(48);
 			match(T__0);
 
 									Element filho = doc.createElement("metadata");
 			                        rootElement.appendChild(filho);
 								
-			setState(49);
-			audId(filho);
 			setState(50);
-			titulo(filho);
-			setState(51);
-			subtitulo(filho);
+			((MetadataContext)_localctx).audId = audId(filho);
+
+						  	((MetadataContext)_localctx).audicaoId =  ((MetadataContext)_localctx).audId.dados;
+						  
 			setState(52);
-			tema(filho);
+			((MetadataContext)_localctx).titulo = titulo(filho);
 			setState(53);
-			data(filho);
+			((MetadataContext)_localctx).subtitulo = subtitulo(filho);
 			setState(54);
-			hora(filho);
+			((MetadataContext)_localctx).tema = tema(filho);
 			setState(55);
-			local(filho);
+			((MetadataContext)_localctx).data = data(filho);
 			setState(56);
-			organizador(filho);
+			((MetadataContext)_localctx).hora = hora(filho);
 			setState(57);
-			duracao(filho);
+			((MetadataContext)_localctx).local = local(filho);
+			setState(58);
+			((MetadataContext)_localctx).organizador = organizador(filho);
+			setState(59);
+			((MetadataContext)_localctx).duracao = duracao(filho);
+
+			 				((MetadataContext)_localctx).query =  "INSERT INTO `audicao` (`audicao_id`, `audicao_titulo`, `audicao_subtitulo`, `audicao_tema`, `audicao_data`, `audicao_hora`, `audicao_local`, `audicao_responsavel`, `audicao_duracao`) VALUES (`"+((MetadataContext)_localctx).audId.dados+"`, `"+((MetadataContext)_localctx).titulo.dados+"`, `"+((MetadataContext)_localctx).subtitulo.dados+"`, `"+((MetadataContext)_localctx).tema.dados+"`, `"+((MetadataContext)_localctx).data.dados+"`, `"+((MetadataContext)_localctx).hora.dados+"`, `"+((MetadataContext)_localctx).local.dados+"`, `"+((MetadataContext)_localctx).organizador.dados+"`, `"+((MetadataContext)_localctx).duracao.dados+"`);";
+
+			 			
 			}
 		}
 		catch (RecognitionException re) {
@@ -273,6 +348,7 @@ public class AudicaoParser extends Parser {
 
 	public static class TituloContext extends ParserRuleContext {
 		public Element pai;
+		public String dados;
 		public Token DADOS;
 		public TerminalNode DADOS() { return getToken(AudicaoParser.DADOS, 0); }
 		public TituloContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
@@ -297,14 +373,15 @@ public class AudicaoParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(59);
+			setState(62);
 			match(T__1);
-			setState(60);
+			setState(63);
 			((TituloContext)_localctx).DADOS = match(DADOS);
 
 										Element filho = doc.createElement("titulo");
 										filho.appendChild(doc.createTextNode((((TituloContext)_localctx).DADOS!=null?((TituloContext)_localctx).DADOS.getText():null).replaceAll("\"", "")));
 										pai.appendChild(filho);
+										((TituloContext)_localctx).dados = (((TituloContext)_localctx).DADOS!=null?((TituloContext)_localctx).DADOS.getText():null).replaceAll("\"", "");
 									
 			}
 		}
@@ -321,6 +398,7 @@ public class AudicaoParser extends Parser {
 
 	public static class SubtituloContext extends ParserRuleContext {
 		public Element pai;
+		public String dados;
 		public Token DADOS;
 		public TerminalNode DADOS() { return getToken(AudicaoParser.DADOS, 0); }
 		public SubtituloContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
@@ -345,14 +423,15 @@ public class AudicaoParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(63);
+			setState(66);
 			match(T__2);
-			setState(64);
+			setState(67);
 			((SubtituloContext)_localctx).DADOS = match(DADOS);
 
 											Element filho = doc.createElement("subtitulo");
 											filho.appendChild(doc.createTextNode((((SubtituloContext)_localctx).DADOS!=null?((SubtituloContext)_localctx).DADOS.getText():null).replaceAll("\"", "")));
 											pai.appendChild(filho);
+											((SubtituloContext)_localctx).dados = (((SubtituloContext)_localctx).DADOS!=null?((SubtituloContext)_localctx).DADOS.getText():null).replaceAll("\"", "");
 										
 			}
 		}
@@ -369,6 +448,7 @@ public class AudicaoParser extends Parser {
 
 	public static class TemaContext extends ParserRuleContext {
 		public Element pai;
+		public String dados;
 		public Token DADOS;
 		public TerminalNode DADOS() { return getToken(AudicaoParser.DADOS, 0); }
 		public TemaContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
@@ -393,14 +473,15 @@ public class AudicaoParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(67);
+			setState(70);
 			match(T__3);
-			setState(68);
+			setState(71);
 			((TemaContext)_localctx).DADOS = match(DADOS);
 
 								Element filho = doc.createElement("tema");
 								filho.appendChild(doc.createTextNode((((TemaContext)_localctx).DADOS!=null?((TemaContext)_localctx).DADOS.getText():null).replaceAll("\"", "")));
 								pai.appendChild(filho);
+								((TemaContext)_localctx).dados = (((TemaContext)_localctx).DADOS!=null?((TemaContext)_localctx).DADOS.getText():null).replaceAll("\"", "");
 							
 			}
 		}
@@ -417,6 +498,7 @@ public class AudicaoParser extends Parser {
 
 	public static class DataContext extends ParserRuleContext {
 		public Element pai;
+		public String dados;
 		public Token DADOS;
 		public TerminalNode DADOS() { return getToken(AudicaoParser.DADOS, 0); }
 		public DataContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
@@ -441,14 +523,15 @@ public class AudicaoParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(71);
+			setState(74);
 			match(T__4);
-			setState(72);
+			setState(75);
 			((DataContext)_localctx).DADOS = match(DADOS);
 
 								Element filho = doc.createElement("data");
 								filho.appendChild(doc.createTextNode((((DataContext)_localctx).DADOS!=null?((DataContext)_localctx).DADOS.getText():null).replaceAll("\"", "")));
 								pai.appendChild(filho);
+								((DataContext)_localctx).dados = (((DataContext)_localctx).DADOS!=null?((DataContext)_localctx).DADOS.getText():null).replaceAll("\"", "");
 							
 			}
 		}
@@ -465,6 +548,7 @@ public class AudicaoParser extends Parser {
 
 	public static class HoraContext extends ParserRuleContext {
 		public Element pai;
+		public String dados;
 		public Token DADOS;
 		public TerminalNode DADOS() { return getToken(AudicaoParser.DADOS, 0); }
 		public HoraContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
@@ -489,14 +573,15 @@ public class AudicaoParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(75);
+			setState(78);
 			match(T__5);
-			setState(76);
+			setState(79);
 			((HoraContext)_localctx).DADOS = match(DADOS);
 
 								Element filho = doc.createElement("hora");
 								filho.appendChild(doc.createTextNode((((HoraContext)_localctx).DADOS!=null?((HoraContext)_localctx).DADOS.getText():null).replaceAll("\"", "")));
 								pai.appendChild(filho);
+								((HoraContext)_localctx).dados = (((HoraContext)_localctx).DADOS!=null?((HoraContext)_localctx).DADOS.getText():null).replaceAll("\"", "");
 							
 			}
 		}
@@ -513,6 +598,7 @@ public class AudicaoParser extends Parser {
 
 	public static class LocalContext extends ParserRuleContext {
 		public Element pai;
+		public String dados;
 		public Token DADOS;
 		public TerminalNode DADOS() { return getToken(AudicaoParser.DADOS, 0); }
 		public LocalContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
@@ -537,14 +623,15 @@ public class AudicaoParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(79);
+			setState(82);
 			match(T__6);
-			setState(80);
+			setState(83);
 			((LocalContext)_localctx).DADOS = match(DADOS);
 
 									Element filho = doc.createElement("local");
 									filho.appendChild(doc.createTextNode((((LocalContext)_localctx).DADOS!=null?((LocalContext)_localctx).DADOS.getText():null).replaceAll("\"", "")));
 									pai.appendChild(filho);
+									((LocalContext)_localctx).dados = (((LocalContext)_localctx).DADOS!=null?((LocalContext)_localctx).DADOS.getText():null).replaceAll("\"", "");
 								
 			}
 		}
@@ -561,6 +648,7 @@ public class AudicaoParser extends Parser {
 
 	public static class OrganizadorContext extends ParserRuleContext {
 		public Element pai;
+		public String dados;
 		public Token DADOS;
 		public TerminalNode DADOS() { return getToken(AudicaoParser.DADOS, 0); }
 		public OrganizadorContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
@@ -585,14 +673,15 @@ public class AudicaoParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(83);
+			setState(86);
 			match(T__7);
-			setState(84);
+			setState(87);
 			((OrganizadorContext)_localctx).DADOS = match(DADOS);
 
 												Element filho = doc.createElement("organizador");
 												filho.appendChild(doc.createTextNode((((OrganizadorContext)_localctx).DADOS!=null?((OrganizadorContext)_localctx).DADOS.getText():null).replaceAll("\"", "")));
 												pai.appendChild(filho);
+												((OrganizadorContext)_localctx).dados = (((OrganizadorContext)_localctx).DADOS!=null?((OrganizadorContext)_localctx).DADOS.getText():null).replaceAll("\"", "");
 											
 			}
 		}
@@ -609,6 +698,7 @@ public class AudicaoParser extends Parser {
 
 	public static class DuracaoContext extends ParserRuleContext {
 		public Element pai;
+		public String dados;
 		public Token DADOS;
 		public TerminalNode DADOS() { return getToken(AudicaoParser.DADOS, 0); }
 		public DuracaoContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
@@ -633,14 +723,15 @@ public class AudicaoParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(87);
+			setState(90);
 			match(T__8);
-			setState(88);
+			setState(91);
 			((DuracaoContext)_localctx).DADOS = match(DADOS);
 
 										Element filho = doc.createElement("duracao");
 										filho.appendChild(doc.createTextNode((((DuracaoContext)_localctx).DADOS!=null?((DuracaoContext)_localctx).DADOS.getText():null).replaceAll("\"", "")));
 										pai.appendChild(filho);
+										((DuracaoContext)_localctx).dados = (((DuracaoContext)_localctx).DADOS!=null?((DuracaoContext)_localctx).DADOS.getText():null).replaceAll("\"", "");
 									
 			}
 		}
@@ -656,14 +747,23 @@ public class AudicaoParser extends Parser {
 	}
 
 	public static class AtuacoesContext extends ParserRuleContext {
+		public String audicaoId;
+		public String atuacoesInsert;
+		public String alunosInsert;
+		public String professoresInsert;
+		public String pecasInsert;
+		public AtuacaoContext a1;
+		public AtuacaoContext a2;
 		public List<AtuacaoContext> atuacao() {
 			return getRuleContexts(AtuacaoContext.class);
 		}
 		public AtuacaoContext atuacao(int i) {
 			return getRuleContext(AtuacaoContext.class,i);
 		}
-		public AtuacoesContext(ParserRuleContext parent, int invokingState) {
+		public AtuacoesContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
+		public AtuacoesContext(ParserRuleContext parent, int invokingState, String audicaoId) {
 			super(parent, invokingState);
+			this.audicaoId = audicaoId;
 		}
 		@Override public int getRuleIndex() { return RULE_atuacoes; }
 		@Override
@@ -676,37 +776,50 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final AtuacoesContext atuacoes() throws RecognitionException {
-		AtuacoesContext _localctx = new AtuacoesContext(_ctx, getState());
+	public final AtuacoesContext atuacoes(String audicaoId) throws RecognitionException {
+		AtuacoesContext _localctx = new AtuacoesContext(_ctx, getState(), audicaoId);
 		enterRule(_localctx, 20, RULE_atuacoes);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(91);
+			setState(94);
 			match(T__9);
-			setState(92);
+			setState(95);
 			match(T__10);
 
 										Element filho = doc.createElement("atuacoes");
 										rootElement.appendChild(filho);
 									
-			setState(95); 
+			setState(97);
+			((AtuacoesContext)_localctx).a1 = atuacao(filho, _localctx.audicaoId);
+			((AtuacoesContext)_localctx).atuacoesInsert =  ((AtuacoesContext)_localctx).a1.query;
+						 							((AtuacoesContext)_localctx).alunosInsert =  _localctx.alunosInsert+((AtuacoesContext)_localctx).a1.alunosInsert;
+										       		((AtuacoesContext)_localctx).professoresInsert =  _localctx.alunosInsert+((AtuacoesContext)_localctx).a1.professoresInsert;
+										       		((AtuacoesContext)_localctx).pecasInsert =  _localctx.alunosInsert+((AtuacoesContext)_localctx).a1.pecasInsert;
+			setState(104);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			do {
+			while (_la==T__12) {
 				{
 				{
-				setState(94);
-				atuacao(filho);
+				setState(99);
+				((AtuacoesContext)_localctx).a2 = atuacao(filho, _localctx.audicaoId);
+				((AtuacoesContext)_localctx).atuacoesInsert =  _localctx.atuacoesInsert+", "+((AtuacoesContext)_localctx).a2.query;
+														((AtuacoesContext)_localctx).alunosInsert =  _localctx.alunosInsert+((AtuacoesContext)_localctx).a2.alunosInsert;
+											       		((AtuacoesContext)_localctx).professoresInsert =  _localctx.alunosInsert+((AtuacoesContext)_localctx).a2.professoresInsert;
+											       		((AtuacoesContext)_localctx).pecasInsert =  _localctx.alunosInsert+((AtuacoesContext)_localctx).a2.pecasInsert;
 				}
 				}
-				setState(97); 
+				setState(106);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( _la==T__12 );
-			setState(99);
+			}
+			setState(107);
 			match(T__11);
+			((AtuacoesContext)_localctx).atuacoesInsert =  _localctx.atuacoesInsert+";";
+
+													
 			}
 		}
 		catch (RecognitionException re) {
@@ -722,6 +835,19 @@ public class AudicaoParser extends Parser {
 
 	public static class AtuacaoContext extends ParserRuleContext {
 		public Element pai;
+		public String audicaoId;
+		public String query;
+		public String alunosInsert;
+		public String professoresInsert;
+		public String pecasInsert;
+		public IdContext id;
+		public DesignacaoContext designacao;
+		public AlunosContext alunos;
+		public ProfessoresContext professores;
+		public PecasContext pecas;
+		public IdContext id() {
+			return getRuleContext(IdContext.class,0);
+		}
 		public DesignacaoContext designacao() {
 			return getRuleContext(DesignacaoContext.class,0);
 		}
@@ -735,9 +861,10 @@ public class AudicaoParser extends Parser {
 			return getRuleContext(ProfessoresContext.class,0);
 		}
 		public AtuacaoContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public AtuacaoContext(ParserRuleContext parent, int invokingState, Element pai) {
+		public AtuacaoContext(ParserRuleContext parent, int invokingState, Element pai, String audicaoId) {
 			super(parent, invokingState);
 			this.pai = pai;
+			this.audicaoId = audicaoId;
 		}
 		@Override public int getRuleIndex() { return RULE_atuacao; }
 		@Override
@@ -750,34 +877,56 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final AtuacaoContext atuacao(Element pai) throws RecognitionException {
-		AtuacaoContext _localctx = new AtuacaoContext(_ctx, getState(), pai);
+	public final AtuacaoContext atuacao(Element pai,String audicaoId) throws RecognitionException {
+		AtuacaoContext _localctx = new AtuacaoContext(_ctx, getState(), pai, audicaoId);
 		enterRule(_localctx, 22, RULE_atuacao);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(101);
+			setState(110);
 			match(T__12);
 
 									Element filho = doc.createElement("atuacao");
 									pai.appendChild(filho);
 								
-			setState(103);
-			designacao(filho);
-			setState(104);
-			alunos(filho);
-			setState(106);
+			setState(112);
+			((AtuacaoContext)_localctx).id = id(filho);
+			setState(113);
+			((AtuacaoContext)_localctx).designacao = designacao(filho);
+
+				       		String q = "SELECT atuacao_id FROM atuacao WHERE atuacao_id="+((AtuacaoContext)_localctx).id.dados;
+				       		String r = null;
+				       		try{
+								r = query(q,"atuacao_id");
+							}catch (SQLException e ) {
+								  System.out.println(e);
+							 }
+							if(r!=null)
+							{
+								System.out.println("Atuacao com id "+((AtuacaoContext)_localctx).id.dados+" já existe!!!");
+								System.exit(1);
+							}
+				       		((AtuacaoContext)_localctx).query =  "INSERT INTO `atuacao` (`atuacao_id`, `atuacao_designacao`, `atuacao_audicao`) VALUES (`"+((AtuacaoContext)_localctx).id.dados+"`, `"+((AtuacaoContext)_localctx).designacao.dados+"`, `"+_localctx.audicaoId+"`)";
+				       
+			setState(115);
+			((AtuacaoContext)_localctx).alunos = alunos(filho,((AtuacaoContext)_localctx).id.dados);
+			setState(117);
 			_la = _input.LA(1);
 			if (_la==T__18) {
 				{
-				setState(105);
-				professores(filho);
+				setState(116);
+				((AtuacaoContext)_localctx).professores = professores(filho,((AtuacaoContext)_localctx).id.dados);
 				}
 			}
 
-			setState(108);
-			pecas(filho);
+			setState(119);
+			((AtuacaoContext)_localctx).pecas = pecas(filho,((AtuacaoContext)_localctx).id.dados);
+
+				       		((AtuacaoContext)_localctx).alunosInsert =  ((AtuacaoContext)_localctx).alunos.alunosInsert;
+				       		((AtuacaoContext)_localctx).professoresInsert =  ((AtuacaoContext)_localctx).professores.professoresInsert;
+				       		((AtuacaoContext)_localctx).pecasInsert =  ((AtuacaoContext)_localctx).pecas.pecasInsert;
+				       
 			}
 		}
 		catch (RecognitionException re) {
@@ -793,6 +942,7 @@ public class AudicaoParser extends Parser {
 
 	public static class DesignacaoContext extends ParserRuleContext {
 		public Element pai;
+		public String dados;
 		public Token DADOS;
 		public TerminalNode DADOS() { return getToken(AudicaoParser.DADOS, 0); }
 		public DesignacaoContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
@@ -817,14 +967,15 @@ public class AudicaoParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(110);
+			setState(122);
 			match(T__13);
-			setState(111);
+			setState(123);
 			((DesignacaoContext)_localctx).DADOS = match(DADOS);
 
 											Element filho = doc.createElement("designacao");
 											filho.appendChild(doc.createTextNode((((DesignacaoContext)_localctx).DADOS!=null?((DesignacaoContext)_localctx).DADOS.getText():null).replaceAll("\"", "")));
 											pai.appendChild(filho);
+											((DesignacaoContext)_localctx).dados = (((DesignacaoContext)_localctx).DADOS!=null?((DesignacaoContext)_localctx).DADOS.getText():null).replaceAll("\"", "");
 										
 			}
 		}
@@ -841,6 +992,10 @@ public class AudicaoParser extends Parser {
 
 	public static class AlunosContext extends ParserRuleContext {
 		public Element pai;
+		public String atuacao_id;
+		public String alunosInsert;
+		public AlunoContext a1;
+		public AlunoContext a2;
 		public List<AlunoContext> aluno() {
 			return getRuleContexts(AlunoContext.class);
 		}
@@ -848,9 +1003,10 @@ public class AudicaoParser extends Parser {
 			return getRuleContext(AlunoContext.class,i);
 		}
 		public AlunosContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public AlunosContext(ParserRuleContext parent, int invokingState, Element pai) {
+		public AlunosContext(ParserRuleContext parent, int invokingState, Element pai, String atuacao_id) {
 			super(parent, invokingState);
 			this.pai = pai;
+			this.atuacao_id = atuacao_id;
 		}
 		@Override public int getRuleIndex() { return RULE_alunos; }
 		@Override
@@ -863,37 +1019,42 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final AlunosContext alunos(Element pai) throws RecognitionException {
-		AlunosContext _localctx = new AlunosContext(_ctx, getState(), pai);
+	public final AlunosContext alunos(Element pai,String atuacao_id) throws RecognitionException {
+		AlunosContext _localctx = new AlunosContext(_ctx, getState(), pai, atuacao_id);
 		enterRule(_localctx, 26, RULE_alunos);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(114);
+			setState(126);
 			match(T__14);
-			setState(115);
+			setState(127);
 			match(T__10);
 
 									Element filho = doc.createElement("alunos");
 									pai.appendChild(filho);
 								
-			setState(118); 
+			setState(129);
+			((AlunosContext)_localctx).a1 = aluno(filho,atuacao_id);
+			((AlunosContext)_localctx).alunosInsert =  ((AlunosContext)_localctx).a1.query;
+			setState(136);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			do {
+			while (_la==T__15) {
 				{
 				{
-				setState(117);
-				aluno(filho);
+				setState(131);
+				((AlunosContext)_localctx).a2 = aluno(filho,atuacao_id);
+				((AlunosContext)_localctx).alunosInsert =  _localctx.alunosInsert+", "+((AlunosContext)_localctx).a2.query;
 				}
 				}
-				setState(120); 
+				setState(138);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( _la==T__15 );
-			setState(122);
+			}
+			setState(139);
 			match(T__11);
+			((AlunosContext)_localctx).alunosInsert =  _localctx.alunosInsert+";";
 			}
 		}
 		catch (RecognitionException re) {
@@ -909,6 +1070,9 @@ public class AudicaoParser extends Parser {
 
 	public static class AlunoContext extends ParserRuleContext {
 		public Element pai;
+		public String atuacao_id;
+		public String query;
+		public IdContext id;
 		public NomeContext nome() {
 			return getRuleContext(NomeContext.class,0);
 		}
@@ -916,9 +1080,10 @@ public class AudicaoParser extends Parser {
 			return getRuleContext(IdContext.class,0);
 		}
 		public AlunoContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public AlunoContext(ParserRuleContext parent, int invokingState, Element pai) {
+		public AlunoContext(ParserRuleContext parent, int invokingState, Element pai, String atuacao_id) {
 			super(parent, invokingState);
 			this.pai = pai;
+			this.atuacao_id = atuacao_id;
 		}
 		@Override public int getRuleIndex() { return RULE_aluno; }
 		@Override
@@ -931,22 +1096,38 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final AlunoContext aluno(Element pai) throws RecognitionException {
-		AlunoContext _localctx = new AlunoContext(_ctx, getState(), pai);
+	public final AlunoContext aluno(Element pai,String atuacao_id) throws RecognitionException {
+		AlunoContext _localctx = new AlunoContext(_ctx, getState(), pai, atuacao_id);
 		enterRule(_localctx, 28, RULE_aluno);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(124);
+			setState(142);
 			match(T__15);
 
 							Element filho = doc.createElement("aluno");
 							pai.appendChild(filho);
 						
-			setState(126);
+			setState(144);
 			nome(filho);
-			setState(127);
-			id(filho);
+			setState(145);
+			((AlunoContext)_localctx).id = id(filho);
+
+					       		String q = "SELECT aluno_id FROM aluno WHERE aluno_id="+((AlunoContext)_localctx).id.dados;
+					       		String r = null;
+					       		try{
+									r = query(q,"aluno_id");
+								}catch (SQLException e ) {
+									  System.out.println(e);
+								 }
+								if(r==null)
+								{
+									System.out.println("Aluno com id "+((AlunoContext)_localctx).id.dados+" não existe!!!");
+									System.exit(1);
+								}
+					       		((AlunoContext)_localctx).query =  "INSERT INTO `atuacao_aluno` (`atuacao_id`, `aluno_id`) VALUES (`"+atuacao_id+"`, `"+((AlunoContext)_localctx).id.dados+"`)";
+
+					    
 			}
 		}
 		catch (RecognitionException re) {
@@ -962,6 +1143,7 @@ public class AudicaoParser extends Parser {
 
 	public static class NomeContext extends ParserRuleContext {
 		public Element pai;
+		public String dados;
 		public Token DADOS;
 		public TerminalNode DADOS() { return getToken(AudicaoParser.DADOS, 0); }
 		public NomeContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
@@ -986,14 +1168,15 @@ public class AudicaoParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(129);
+			setState(148);
 			match(T__16);
-			setState(130);
+			setState(149);
 			((NomeContext)_localctx).DADOS = match(DADOS);
 
 								Element filho = doc.createElement("nome");
 								filho.appendChild(doc.createTextNode((((NomeContext)_localctx).DADOS!=null?((NomeContext)_localctx).DADOS.getText():null).replaceAll("\"", "")));
 								pai.appendChild(filho);
+								((NomeContext)_localctx).dados = (((NomeContext)_localctx).DADOS!=null?((NomeContext)_localctx).DADOS.getText():null).replaceAll("\"", "");
 							
 			}
 		}
@@ -1010,6 +1193,7 @@ public class AudicaoParser extends Parser {
 
 	public static class AudIdContext extends ParserRuleContext {
 		public Element pai;
+		public String dados;
 		public Token ID;
 		public TerminalNode ID() { return getToken(AudicaoParser.ID, 0); }
 		public AudIdContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
@@ -1034,19 +1218,33 @@ public class AudicaoParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(133);
+			setState(152);
 			match(T__17);
-			setState(134);
+			setState(153);
 			((AudIdContext)_localctx).ID = match(ID);
 
 							Element filho = doc.createElement("id");
 							filho.appendChild(doc.createTextNode((((AudIdContext)_localctx).ID!=null?((AudIdContext)_localctx).ID.getText():null).replaceAll("\"", "")));
 							pai.appendChild(filho);
-							file = (((AudIdContext)_localctx).ID!=null?((AudIdContext)_localctx).ID.getText():null).replaceAll("\"", "")+".xml";
-							if(new File("../../audicoes/"+file).exists()){
-								System.out.println("Audição com nome "+file+" já existe!!!");
+							String q = "SELECT audicao_id FROM audicao WHERE audicao_id="+(((AudIdContext)_localctx).ID!=null?((AudIdContext)_localctx).ID.getText():null);
+							String r = null;
+							try{
+							 	r = query(q,"audicao_id");
+							}catch (SQLException e ) {
+								  System.out.println(e);
+							 }
+							if(r!=null)
+							{
+								System.out.println("Audição com id "+(((AudIdContext)_localctx).ID!=null?((AudIdContext)_localctx).ID.getText():null)+" já existe!!!");
 								System.exit(1);
 							}
+
+							/*if(new File("../../audicoes/"+file).exists()){
+								System.out.println("Audição com nome "+file+" já existe!!!");
+								System.exit(1);
+							}*/
+							file = (((AudIdContext)_localctx).ID!=null?((AudIdContext)_localctx).ID.getText():null).replaceAll("\"", "")+".xml";
+							((AudIdContext)_localctx).dados = (((AudIdContext)_localctx).ID!=null?((AudIdContext)_localctx).ID.getText():null).replaceAll("\"", "");
 						
 			}
 		}
@@ -1063,6 +1261,7 @@ public class AudicaoParser extends Parser {
 
 	public static class IdContext extends ParserRuleContext {
 		public Element pai;
+		public String dados;
 		public Token ID;
 		public TerminalNode ID() { return getToken(AudicaoParser.ID, 0); }
 		public IdContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
@@ -1087,14 +1286,15 @@ public class AudicaoParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(137);
+			setState(156);
 			match(T__17);
-			setState(138);
+			setState(157);
 			((IdContext)_localctx).ID = match(ID);
 
 							Element filho = doc.createElement("id");
 							filho.appendChild(doc.createTextNode((((IdContext)_localctx).ID!=null?((IdContext)_localctx).ID.getText():null).replaceAll("\"", "")));
 							pai.appendChild(filho);
+							((IdContext)_localctx).dados = (((IdContext)_localctx).ID!=null?((IdContext)_localctx).ID.getText():null).replaceAll("\"", "");
 						
 			}
 		}
@@ -1111,6 +1311,10 @@ public class AudicaoParser extends Parser {
 
 	public static class ProfessoresContext extends ParserRuleContext {
 		public Element pai;
+		public String atuacao_id;
+		public String professoresInsert;
+		public ProfessorContext a1;
+		public ProfessorContext a2;
 		public List<ProfessorContext> professor() {
 			return getRuleContexts(ProfessorContext.class);
 		}
@@ -1118,9 +1322,10 @@ public class AudicaoParser extends Parser {
 			return getRuleContext(ProfessorContext.class,i);
 		}
 		public ProfessoresContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public ProfessoresContext(ParserRuleContext parent, int invokingState, Element pai) {
+		public ProfessoresContext(ParserRuleContext parent, int invokingState, Element pai, String atuacao_id) {
 			super(parent, invokingState);
 			this.pai = pai;
+			this.atuacao_id = atuacao_id;
 		}
 		@Override public int getRuleIndex() { return RULE_professores; }
 		@Override
@@ -1133,37 +1338,42 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final ProfessoresContext professores(Element pai) throws RecognitionException {
-		ProfessoresContext _localctx = new ProfessoresContext(_ctx, getState(), pai);
+	public final ProfessoresContext professores(Element pai,String atuacao_id) throws RecognitionException {
+		ProfessoresContext _localctx = new ProfessoresContext(_ctx, getState(), pai, atuacao_id);
 		enterRule(_localctx, 36, RULE_professores);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(141);
+			setState(160);
 			match(T__18);
-			setState(142);
+			setState(161);
 			match(T__10);
 
 												Element filho = doc.createElement("professores");
 												pai.appendChild(filho);
 											
-			setState(145); 
+			setState(163);
+			((ProfessoresContext)_localctx).a1 = professor(filho,atuacao_id);
+			((ProfessoresContext)_localctx).professoresInsert =  ((ProfessoresContext)_localctx).a1.query;
+			setState(170);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			do {
+			while (_la==T__19) {
 				{
 				{
-				setState(144);
-				professor(filho);
+				setState(165);
+				((ProfessoresContext)_localctx).a2 = professor(filho,atuacao_id);
+				((ProfessoresContext)_localctx).professoresInsert =  _localctx.professoresInsert+", "+((ProfessoresContext)_localctx).a2.query;
 				}
 				}
-				setState(147); 
+				setState(172);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( _la==T__19 );
-			setState(149);
+			}
+			setState(173);
 			match(T__11);
+			((ProfessoresContext)_localctx).professoresInsert =  _localctx.professoresInsert+";";
 			}
 		}
 		catch (RecognitionException re) {
@@ -1179,6 +1389,9 @@ public class AudicaoParser extends Parser {
 
 	public static class ProfessorContext extends ParserRuleContext {
 		public Element pai;
+		public String atuacao_id;
+		public String query;
+		public IdContext id;
 		public NomeContext nome() {
 			return getRuleContext(NomeContext.class,0);
 		}
@@ -1186,9 +1399,10 @@ public class AudicaoParser extends Parser {
 			return getRuleContext(IdContext.class,0);
 		}
 		public ProfessorContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public ProfessorContext(ParserRuleContext parent, int invokingState, Element pai) {
+		public ProfessorContext(ParserRuleContext parent, int invokingState, Element pai, String atuacao_id) {
 			super(parent, invokingState);
 			this.pai = pai;
+			this.atuacao_id = atuacao_id;
 		}
 		@Override public int getRuleIndex() { return RULE_professor; }
 		@Override
@@ -1201,22 +1415,38 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final ProfessorContext professor(Element pai) throws RecognitionException {
-		ProfessorContext _localctx = new ProfessorContext(_ctx, getState(), pai);
+	public final ProfessorContext professor(Element pai,String atuacao_id) throws RecognitionException {
+		ProfessorContext _localctx = new ProfessorContext(_ctx, getState(), pai, atuacao_id);
 		enterRule(_localctx, 38, RULE_professor);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(151);
+			setState(176);
 			match(T__19);
 
 									Element filho = doc.createElement("professor");
 									pai.appendChild(filho);
 								
-			setState(153);
+			setState(178);
 			nome(filho);
-			setState(154);
-			id(filho);
+			setState(179);
+			((ProfessorContext)_localctx).id = id(filho);
+
+					       		String q = "SELECT professor_id FROM professor WHERE professor_id="+((ProfessorContext)_localctx).id.dados;
+					       		String r = null;
+					       		try{
+									r = query(q,"professor_id");
+								}catch (SQLException e ) {
+									  System.out.println(e);
+								 }
+								if(r==null)
+								{
+									System.out.println("Professor com id "+((ProfessorContext)_localctx).id.dados+" não existe!!!");
+									System.exit(1);
+								}
+					       		((ProfessorContext)_localctx).query =  "INSERT INTO `atuacao_professor` (`atuacao_id`, `professor_id`) VALUES (`"+atuacao_id+"`, `"+((ProfessorContext)_localctx).id.dados+"`)";
+
+					    
 			}
 		}
 		catch (RecognitionException re) {
@@ -1232,6 +1462,10 @@ public class AudicaoParser extends Parser {
 
 	public static class PecasContext extends ParserRuleContext {
 		public Element pai;
+		public String atuacao_id;
+		public String pecasInsert;
+		public PecaContext a1;
+		public PecaContext a2;
 		public List<PecaContext> peca() {
 			return getRuleContexts(PecaContext.class);
 		}
@@ -1239,9 +1473,10 @@ public class AudicaoParser extends Parser {
 			return getRuleContext(PecaContext.class,i);
 		}
 		public PecasContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public PecasContext(ParserRuleContext parent, int invokingState, Element pai) {
+		public PecasContext(ParserRuleContext parent, int invokingState, Element pai, String atuacao_id) {
 			super(parent, invokingState);
 			this.pai = pai;
+			this.atuacao_id = atuacao_id;
 		}
 		@Override public int getRuleIndex() { return RULE_pecas; }
 		@Override
@@ -1254,37 +1489,42 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final PecasContext pecas(Element pai) throws RecognitionException {
-		PecasContext _localctx = new PecasContext(_ctx, getState(), pai);
+	public final PecasContext pecas(Element pai,String atuacao_id) throws RecognitionException {
+		PecasContext _localctx = new PecasContext(_ctx, getState(), pai, atuacao_id);
 		enterRule(_localctx, 40, RULE_pecas);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(156);
+			setState(182);
 			match(T__20);
-			setState(157);
+			setState(183);
 			match(T__10);
 
 									Element filho = doc.createElement("pecas");
 									pai.appendChild(filho);
 								
-			setState(160); 
+			setState(185);
+			((PecasContext)_localctx).a1 = peca(filho,atuacao_id);
+			((PecasContext)_localctx).pecasInsert =  ((PecasContext)_localctx).a1.query;
+			setState(192);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			do {
+			while (_la==T__21) {
 				{
 				{
-				setState(159);
-				peca(filho);
+				setState(187);
+				((PecasContext)_localctx).a2 = peca(filho,atuacao_id);
+				((PecasContext)_localctx).pecasInsert =  _localctx.pecasInsert+", "+((PecasContext)_localctx).a2.query;
 				}
 				}
-				setState(162); 
+				setState(194);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( _la==T__21 );
-			setState(164);
+			}
+			setState(195);
 			match(T__11);
+			((PecasContext)_localctx).pecasInsert =  _localctx.pecasInsert+";";
 			}
 		}
 		catch (RecognitionException re) {
@@ -1300,6 +1540,9 @@ public class AudicaoParser extends Parser {
 
 	public static class PecaContext extends ParserRuleContext {
 		public Element pai;
+		public String atuacao_id;
+		public String query;
+		public IdContext id;
 		public TituloContext titulo() {
 			return getRuleContext(TituloContext.class,0);
 		}
@@ -1307,9 +1550,10 @@ public class AudicaoParser extends Parser {
 			return getRuleContext(IdContext.class,0);
 		}
 		public PecaContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public PecaContext(ParserRuleContext parent, int invokingState, Element pai) {
+		public PecaContext(ParserRuleContext parent, int invokingState, Element pai, String atuacao_id) {
 			super(parent, invokingState);
 			this.pai = pai;
+			this.atuacao_id = atuacao_id;
 		}
 		@Override public int getRuleIndex() { return RULE_peca; }
 		@Override
@@ -1322,22 +1566,38 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final PecaContext peca(Element pai) throws RecognitionException {
-		PecaContext _localctx = new PecaContext(_ctx, getState(), pai);
+	public final PecaContext peca(Element pai,String atuacao_id) throws RecognitionException {
+		PecaContext _localctx = new PecaContext(_ctx, getState(), pai, atuacao_id);
 		enterRule(_localctx, 42, RULE_peca);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(166);
+			setState(198);
 			match(T__21);
 
 							Element filho = doc.createElement("peca");
 							pai.appendChild(filho);
 						
-			setState(168);
+			setState(200);
 			titulo(filho);
-			setState(169);
-			id(filho);
+			setState(201);
+			((PecaContext)_localctx).id = id(filho);
+
+					       		String q = "SELECT obra_id FROM obra WHERE obra_id="+((PecaContext)_localctx).id.dados;
+					       		String r = null;
+					       		try{
+									r = query(q,"obra_id");
+								}catch (SQLException e ) {
+									  System.out.println(e);
+								 }
+								if(r==null)
+								{
+									System.out.println("Obra com id "+((PecaContext)_localctx).id.dados+" não existe!!!");
+									System.exit(1);
+								}
+					       		((PecaContext)_localctx).query =  "INSERT INTO `atuacao_obra` (`atuacao_id`, `obra_id`) VALUES (`"+atuacao_id+"`, `"+((PecaContext)_localctx).id.dados+"`)";
+
+					    
 			}
 		}
 		catch (RecognitionException re) {
@@ -1352,51 +1612,63 @@ public class AudicaoParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\35\u00ae\4\2\t\2"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\35\u00cf\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
-		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\3\2\3\2\3\2\3\3\3\3"+
-		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\5\3\5\3\5\3"+
-		"\5\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3\t\3\t\3\t\3\t\3\n"+
-		"\3\n\3\n\3\n\3\13\3\13\3\13\3\13\3\f\3\f\3\f\3\f\6\fb\n\f\r\f\16\fc\3"+
-		"\f\3\f\3\r\3\r\3\r\3\r\3\r\5\rm\n\r\3\r\3\r\3\16\3\16\3\16\3\16\3\17\3"+
-		"\17\3\17\3\17\6\17y\n\17\r\17\16\17z\3\17\3\17\3\20\3\20\3\20\3\20\3\20"+
-		"\3\21\3\21\3\21\3\21\3\22\3\22\3\22\3\22\3\23\3\23\3\23\3\23\3\24\3\24"+
-		"\3\24\3\24\6\24\u0094\n\24\r\24\16\24\u0095\3\24\3\24\3\25\3\25\3\25\3"+
-		"\25\3\25\3\26\3\26\3\26\3\26\6\26\u00a3\n\26\r\26\16\26\u00a4\3\26\3\26"+
-		"\3\27\3\27\3\27\3\27\3\27\3\27\2\2\30\2\4\6\b\n\f\16\20\22\24\26\30\32"+
-		"\34\36 \"$&(*,\2\2\u009c\2.\3\2\2\2\4\61\3\2\2\2\6=\3\2\2\2\bA\3\2\2\2"+
-		"\nE\3\2\2\2\fI\3\2\2\2\16M\3\2\2\2\20Q\3\2\2\2\22U\3\2\2\2\24Y\3\2\2\2"+
-		"\26]\3\2\2\2\30g\3\2\2\2\32p\3\2\2\2\34t\3\2\2\2\36~\3\2\2\2 \u0083\3"+
-		"\2\2\2\"\u0087\3\2\2\2$\u008b\3\2\2\2&\u008f\3\2\2\2(\u0099\3\2\2\2*\u009e"+
-		"\3\2\2\2,\u00a8\3\2\2\2./\5\4\3\2/\60\5\26\f\2\60\3\3\2\2\2\61\62\7\3"+
-		"\2\2\62\63\b\3\1\2\63\64\5\"\22\2\64\65\5\6\4\2\65\66\5\b\5\2\66\67\5"+
-		"\n\6\2\678\5\f\7\289\5\16\b\29:\5\20\t\2:;\5\22\n\2;<\5\24\13\2<\5\3\2"+
-		"\2\2=>\7\4\2\2>?\7\31\2\2?@\b\4\1\2@\7\3\2\2\2AB\7\5\2\2BC\7\31\2\2CD"+
-		"\b\5\1\2D\t\3\2\2\2EF\7\6\2\2FG\7\31\2\2GH\b\6\1\2H\13\3\2\2\2IJ\7\7\2"+
-		"\2JK\7\31\2\2KL\b\7\1\2L\r\3\2\2\2MN\7\b\2\2NO\7\31\2\2OP\b\b\1\2P\17"+
-		"\3\2\2\2QR\7\t\2\2RS\7\31\2\2ST\b\t\1\2T\21\3\2\2\2UV\7\n\2\2VW\7\31\2"+
-		"\2WX\b\n\1\2X\23\3\2\2\2YZ\7\13\2\2Z[\7\31\2\2[\\\b\13\1\2\\\25\3\2\2"+
-		"\2]^\7\f\2\2^_\7\r\2\2_a\b\f\1\2`b\5\30\r\2a`\3\2\2\2bc\3\2\2\2ca\3\2"+
-		"\2\2cd\3\2\2\2de\3\2\2\2ef\7\16\2\2f\27\3\2\2\2gh\7\17\2\2hi\b\r\1\2i"+
-		"j\5\32\16\2jl\5\34\17\2km\5&\24\2lk\3\2\2\2lm\3\2\2\2mn\3\2\2\2no\5*\26"+
-		"\2o\31\3\2\2\2pq\7\20\2\2qr\7\31\2\2rs\b\16\1\2s\33\3\2\2\2tu\7\21\2\2"+
-		"uv\7\r\2\2vx\b\17\1\2wy\5\36\20\2xw\3\2\2\2yz\3\2\2\2zx\3\2\2\2z{\3\2"+
-		"\2\2{|\3\2\2\2|}\7\16\2\2}\35\3\2\2\2~\177\7\22\2\2\177\u0080\b\20\1\2"+
-		"\u0080\u0081\5 \21\2\u0081\u0082\5$\23\2\u0082\37\3\2\2\2\u0083\u0084"+
-		"\7\23\2\2\u0084\u0085\7\31\2\2\u0085\u0086\b\21\1\2\u0086!\3\2\2\2\u0087"+
-		"\u0088\7\24\2\2\u0088\u0089\7\33\2\2\u0089\u008a\b\22\1\2\u008a#\3\2\2"+
-		"\2\u008b\u008c\7\24\2\2\u008c\u008d\7\33\2\2\u008d\u008e\b\23\1\2\u008e"+
-		"%\3\2\2\2\u008f\u0090\7\25\2\2\u0090\u0091\7\r\2\2\u0091\u0093\b\24\1"+
-		"\2\u0092\u0094\5(\25\2\u0093\u0092\3\2\2\2\u0094\u0095\3\2\2\2\u0095\u0093"+
-		"\3\2\2\2\u0095\u0096\3\2\2\2\u0096\u0097\3\2\2\2\u0097\u0098\7\16\2\2"+
-		"\u0098\'\3\2\2\2\u0099\u009a\7\26\2\2\u009a\u009b\b\25\1\2\u009b\u009c"+
-		"\5 \21\2\u009c\u009d\5$\23\2\u009d)\3\2\2\2\u009e\u009f\7\27\2\2\u009f"+
-		"\u00a0\7\r\2\2\u00a0\u00a2\b\26\1\2\u00a1\u00a3\5,\27\2\u00a2\u00a1\3"+
-		"\2\2\2\u00a3\u00a4\3\2\2\2\u00a4\u00a2\3\2\2\2\u00a4\u00a5\3\2\2\2\u00a5"+
-		"\u00a6\3\2\2\2\u00a6\u00a7\7\16\2\2\u00a7+\3\2\2\2\u00a8\u00a9\7\30\2"+
-		"\2\u00a9\u00aa\b\27\1\2\u00aa\u00ab\5\6\4\2\u00ab\u00ac\5$\23\2\u00ac"+
-		"-\3\2\2\2\7clz\u0095\u00a4";
+		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\3\2\3\2\3\2\3\2\3\3"+
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3"+
+		"\5\3\5\3\5\3\5\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3\t\3\t"+
+		"\3\t\3\t\3\n\3\n\3\n\3\n\3\13\3\13\3\13\3\13\3\f\3\f\3\f\3\f\3\f\3\f\3"+
+		"\f\3\f\7\fi\n\f\f\f\16\fl\13\f\3\f\3\f\3\f\3\r\3\r\3\r\3\r\3\r\3\r\3\r"+
+		"\5\rx\n\r\3\r\3\r\3\r\3\16\3\16\3\16\3\16\3\17\3\17\3\17\3\17\3\17\3\17"+
+		"\3\17\3\17\7\17\u0089\n\17\f\17\16\17\u008c\13\17\3\17\3\17\3\17\3\20"+
+		"\3\20\3\20\3\20\3\20\3\20\3\21\3\21\3\21\3\21\3\22\3\22\3\22\3\22\3\23"+
+		"\3\23\3\23\3\23\3\24\3\24\3\24\3\24\3\24\3\24\3\24\3\24\7\24\u00ab\n\24"+
+		"\f\24\16\24\u00ae\13\24\3\24\3\24\3\24\3\25\3\25\3\25\3\25\3\25\3\25\3"+
+		"\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\7\26\u00c1\n\26\f\26\16\26\u00c4"+
+		"\13\26\3\26\3\26\3\26\3\27\3\27\3\27\3\27\3\27\3\27\3\27\2\2\30\2\4\6"+
+		"\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,\2\2\u00bd\2.\3\2\2\2\4\62\3"+
+		"\2\2\2\6@\3\2\2\2\bD\3\2\2\2\nH\3\2\2\2\fL\3\2\2\2\16P\3\2\2\2\20T\3\2"+
+		"\2\2\22X\3\2\2\2\24\\\3\2\2\2\26`\3\2\2\2\30p\3\2\2\2\32|\3\2\2\2\34\u0080"+
+		"\3\2\2\2\36\u0090\3\2\2\2 \u0096\3\2\2\2\"\u009a\3\2\2\2$\u009e\3\2\2"+
+		"\2&\u00a2\3\2\2\2(\u00b2\3\2\2\2*\u00b8\3\2\2\2,\u00c8\3\2\2\2./\5\4\3"+
+		"\2/\60\5\26\f\2\60\61\b\2\1\2\61\3\3\2\2\2\62\63\7\3\2\2\63\64\b\3\1\2"+
+		"\64\65\5\"\22\2\65\66\b\3\1\2\66\67\5\6\4\2\678\5\b\5\289\5\n\6\29:\5"+
+		"\f\7\2:;\5\16\b\2;<\5\20\t\2<=\5\22\n\2=>\5\24\13\2>?\b\3\1\2?\5\3\2\2"+
+		"\2@A\7\4\2\2AB\7\31\2\2BC\b\4\1\2C\7\3\2\2\2DE\7\5\2\2EF\7\31\2\2FG\b"+
+		"\5\1\2G\t\3\2\2\2HI\7\6\2\2IJ\7\31\2\2JK\b\6\1\2K\13\3\2\2\2LM\7\7\2\2"+
+		"MN\7\31\2\2NO\b\7\1\2O\r\3\2\2\2PQ\7\b\2\2QR\7\31\2\2RS\b\b\1\2S\17\3"+
+		"\2\2\2TU\7\t\2\2UV\7\31\2\2VW\b\t\1\2W\21\3\2\2\2XY\7\n\2\2YZ\7\31\2\2"+
+		"Z[\b\n\1\2[\23\3\2\2\2\\]\7\13\2\2]^\7\31\2\2^_\b\13\1\2_\25\3\2\2\2`"+
+		"a\7\f\2\2ab\7\r\2\2bc\b\f\1\2cd\5\30\r\2dj\b\f\1\2ef\5\30\r\2fg\b\f\1"+
+		"\2gi\3\2\2\2he\3\2\2\2il\3\2\2\2jh\3\2\2\2jk\3\2\2\2km\3\2\2\2lj\3\2\2"+
+		"\2mn\7\16\2\2no\b\f\1\2o\27\3\2\2\2pq\7\17\2\2qr\b\r\1\2rs\5$\23\2st\5"+
+		"\32\16\2tu\b\r\1\2uw\5\34\17\2vx\5&\24\2wv\3\2\2\2wx\3\2\2\2xy\3\2\2\2"+
+		"yz\5*\26\2z{\b\r\1\2{\31\3\2\2\2|}\7\20\2\2}~\7\31\2\2~\177\b\16\1\2\177"+
+		"\33\3\2\2\2\u0080\u0081\7\21\2\2\u0081\u0082\7\r\2\2\u0082\u0083\b\17"+
+		"\1\2\u0083\u0084\5\36\20\2\u0084\u008a\b\17\1\2\u0085\u0086\5\36\20\2"+
+		"\u0086\u0087\b\17\1\2\u0087\u0089\3\2\2\2\u0088\u0085\3\2\2\2\u0089\u008c"+
+		"\3\2\2\2\u008a\u0088\3\2\2\2\u008a\u008b\3\2\2\2\u008b\u008d\3\2\2\2\u008c"+
+		"\u008a\3\2\2\2\u008d\u008e\7\16\2\2\u008e\u008f\b\17\1\2\u008f\35\3\2"+
+		"\2\2\u0090\u0091\7\22\2\2\u0091\u0092\b\20\1\2\u0092\u0093\5 \21\2\u0093"+
+		"\u0094\5$\23\2\u0094\u0095\b\20\1\2\u0095\37\3\2\2\2\u0096\u0097\7\23"+
+		"\2\2\u0097\u0098\7\31\2\2\u0098\u0099\b\21\1\2\u0099!\3\2\2\2\u009a\u009b"+
+		"\7\24\2\2\u009b\u009c\7\33\2\2\u009c\u009d\b\22\1\2\u009d#\3\2\2\2\u009e"+
+		"\u009f\7\24\2\2\u009f\u00a0\7\33\2\2\u00a0\u00a1\b\23\1\2\u00a1%\3\2\2"+
+		"\2\u00a2\u00a3\7\25\2\2\u00a3\u00a4\7\r\2\2\u00a4\u00a5\b\24\1\2\u00a5"+
+		"\u00a6\5(\25\2\u00a6\u00ac\b\24\1\2\u00a7\u00a8\5(\25\2\u00a8\u00a9\b"+
+		"\24\1\2\u00a9\u00ab\3\2\2\2\u00aa\u00a7\3\2\2\2\u00ab\u00ae\3\2\2\2\u00ac"+
+		"\u00aa\3\2\2\2\u00ac\u00ad\3\2\2\2\u00ad\u00af\3\2\2\2\u00ae\u00ac\3\2"+
+		"\2\2\u00af\u00b0\7\16\2\2\u00b0\u00b1\b\24\1\2\u00b1\'\3\2\2\2\u00b2\u00b3"+
+		"\7\26\2\2\u00b3\u00b4\b\25\1\2\u00b4\u00b5\5 \21\2\u00b5\u00b6\5$\23\2"+
+		"\u00b6\u00b7\b\25\1\2\u00b7)\3\2\2\2\u00b8\u00b9\7\27\2\2\u00b9\u00ba"+
+		"\7\r\2\2\u00ba\u00bb\b\26\1\2\u00bb\u00bc\5,\27\2\u00bc\u00c2\b\26\1\2"+
+		"\u00bd\u00be\5,\27\2\u00be\u00bf\b\26\1\2\u00bf\u00c1\3\2\2\2\u00c0\u00bd"+
+		"\3\2\2\2\u00c1\u00c4\3\2\2\2\u00c2\u00c0\3\2\2\2\u00c2\u00c3\3\2\2\2\u00c3"+
+		"\u00c5\3\2\2\2\u00c4\u00c2\3\2\2\2\u00c5\u00c6\7\16\2\2\u00c6\u00c7\b"+
+		"\26\1\2\u00c7+\3\2\2\2\u00c8\u00c9\7\30\2\2\u00c9\u00ca\b\27\1\2\u00ca"+
+		"\u00cb\5\6\4\2\u00cb\u00cc\5$\23\2\u00cc\u00cd\b\27\1\2\u00cd-\3\2\2\2"+
+		"\7jw\u008a\u00ac\u00c2";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

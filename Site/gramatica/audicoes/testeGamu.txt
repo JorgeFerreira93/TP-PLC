@@ -11,7 +11,7 @@ METADATA
 
 ATUACOES {
 	ATUACAO
-		ID "AT1"
+		ID AT1
 		DESIGNACAO "atuacao1"
 		ALUNOS{
 			ALUNO
@@ -35,7 +35,7 @@ ATUACOES {
 				ID O2
 		}	
 	ATUACAO
-		ID "AT2"
+		ID AT2
 		DESIGNACAO "atuacao2"
 		ALUNOS {
 			ALUNO

@@ -183,7 +183,7 @@ grammar Audicao;
         import org.w3c.dom.Document;
         import org.w3c.dom.Element;
 
-        import java.sql.*
+        import java.sql.*;
 }
 
 @members{
@@ -202,7 +202,7 @@ grammar Audicao;
 				Properties p = new Properties();
 				p.put("user","root");
 				p.put("password","root");
-				Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/gamu",p);
+				Connection c = DriverManager.getConnection("jdbc:mysql://localhost:8080/gamu",p);
 
 				Statement stmt = null;
 
@@ -211,27 +211,27 @@ grammar Audicao;
 					ResultSet rs = stmt.executeQuery(query);
                     result = rs.getString(coluna);
 				}catch (SQLException e ) {
-					 JDBCTutorialUtilities.printSQLException(e);
+					 System.out.println(e);
 				 } finally {
 					 if (stmt != null) { stmt.close(); }
 				 }
 				 return result;
 			}
 
-			public String insert(String query) throws SQLException
+			public void insert(String query) throws SQLException
 			{
 				Properties p = new Properties();
 				p.put("user","root");
 				p.put("password","root");
-				Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/gamu",p);
+				Connection c = DriverManager.getConnection("jdbc:mysql://localhost:8080/gamu",p);
 
 				Statement stmt = null;
 
 				try{
 					stmt = c.createStatement();
-					ResultSet rs = stmt.executeUpdate(query);
+					int rs = stmt.executeUpdate(query);
 				}catch (SQLException e ) {
-					 JDBCTutorialUtilities.printSQLException(e);
+					  System.out.println(e);
 				 } finally {
 					 if (stmt != null) { stmt.close(); }
 				 }
@@ -266,22 +266,29 @@ s
 	  }
 
   : metadata
-    atuacoes[$metadata.audId]
+    atuacoes[$metadata.audicaoId]
     	{
-    		insert($metadata.query);
-    		insert($atuacoes.atuacoesInsert);
-    		insert($atuacoes.alunosInsert);
-    		insert($atuacoes.professoresInsert);
-    		insert($atuacoes.pecasInsert);
+    		try{
+				insert($metadata.query);
+				insert($atuacoes.atuacoesInsert);
+				insert($atuacoes.alunosInsert);
+				insert($atuacoes.professoresInsert);
+				insert($atuacoes.pecasInsert);
+			}catch (SQLException e ) {
+				  System.out.println(e);
+			 }
     	}
   ;
 
-metadata: returns [String audId, String query] 
-		'METADATA'{
+metadata returns [String audicaoId, String query]
+		:'METADATA'{
 						Element filho = doc.createElement("metadata");
                         rootElement.appendChild(filho);
 					}
 		  audId[filho]
+			  {
+			  	$audicaoId = $audId.dados;
+			  }
 		  titulo[filho]
           subtitulo[filho]
           tema[filho]
@@ -291,9 +298,8 @@ metadata: returns [String audId, String query]
           organizador[filho]
           duracao[filho]
  			{
- 				query = "INSERT INTO `audicao` (`audicao_id`, `audicao_titulo`, `audicao_subtitulo`, `audicao_tema`, `audicao_data`, `audicao_hora`, `audicao_local`, `audicao_responsavel`, `audicao_duracao`) VALUES
-				('"+$audId.id+"', '"+$titulo.dados+"', '"+$subtitulo.dados+"', '"+$tema.dados+"', '"+$data.dados+"', '"+$hora.dados+"', '"+$local.dados+"', '"+$organizador.dados+"', '"+$duracao.dados+"');";
-				
+ 				$query = "INSERT INTO `audicao` (`audicao_id`, `audicao_titulo`, `audicao_subtitulo`, `audicao_tema`, `audicao_data`, `audicao_hora`, `audicao_local`, `audicao_responsavel`, `audicao_duracao`) VALUES (`"+$audId.dados+"`, `"+$titulo.dados+"`, `"+$subtitulo.dados+"`, `"+$tema.dados+"`, `"+$data.dados+"`, `"+$hora.dados+"`, `"+$local.dados+"`, `"+$organizador.dados+"`, `"+$duracao.dados+"`);";
+
  			}
 		;
 
@@ -303,7 +309,7 @@ titulo [Element pai]
 							Element filho = doc.createElement("titulo");
 							filho.appendChild(doc.createTextNode($DADOS.text.replaceAll("\"", "")));
 							pai.appendChild(filho);
-							dados=$DADOS.text.replaceAll("\"", "");
+							$dados=$DADOS.text.replaceAll("\"", "");
 						}
 	  ;
 
@@ -313,7 +319,7 @@ subtitulo [Element pai]
 								Element filho = doc.createElement("subtitulo");
 								filho.appendChild(doc.createTextNode($DADOS.text.replaceAll("\"", "")));
 								pai.appendChild(filho);
-								dados=$DADOS.text.replaceAll("\"", "");
+								$dados=$DADOS.text.replaceAll("\"", "");
 							}
 	   	 ;
 
@@ -323,7 +329,7 @@ tema [Element pai]
 					Element filho = doc.createElement("tema");
 					filho.appendChild(doc.createTextNode($DADOS.text.replaceAll("\"", "")));
 					pai.appendChild(filho);
-					dados=$DADOS.text.replaceAll("\"", "");
+					$dados=$DADOS.text.replaceAll("\"", "");
 				}
 	;
 
@@ -333,7 +339,7 @@ data [Element pai]
 					Element filho = doc.createElement("data");
 					filho.appendChild(doc.createTextNode($DADOS.text.replaceAll("\"", "")));
 					pai.appendChild(filho);
-					dados=$DADOS.text.replaceAll("\"", "");
+					$dados=$DADOS.text.replaceAll("\"", "");
 				}
 	;
 
@@ -343,7 +349,7 @@ hora [Element pai]
 					Element filho = doc.createElement("hora");
 					filho.appendChild(doc.createTextNode($DADOS.text.replaceAll("\"", "")));
 					pai.appendChild(filho);
-					dados=$DADOS.text.replaceAll("\"", "");
+					$dados=$DADOS.text.replaceAll("\"", "");
 				}
 	;
 
@@ -353,7 +359,7 @@ local [Element pai]
 						Element filho = doc.createElement("local");
 						filho.appendChild(doc.createTextNode($DADOS.text.replaceAll("\"", "")));
 						pai.appendChild(filho);
-						dados=$DADOS.text.replaceAll("\"", "");
+						$dados=$DADOS.text.replaceAll("\"", "");
 					}
 	 ;
 
@@ -363,7 +369,7 @@ organizador [Element pai]
 									Element filho = doc.createElement("organizador");
 									filho.appendChild(doc.createTextNode($DADOS.text.replaceAll("\"", "")));
 									pai.appendChild(filho);
-									dados=$DADOS.text.replaceAll("\"", "");
+									$dados=$DADOS.text.replaceAll("\"", "");
 								}
 ;
 
@@ -373,30 +379,30 @@ duracao [Element pai]
 							Element filho = doc.createElement("duracao");
 							filho.appendChild(doc.createTextNode($DADOS.text.replaceAll("\"", "")));
 							pai.appendChild(filho);
-							dados=$DADOS.text.replaceAll("\"", "");
+							$dados=$DADOS.text.replaceAll("\"", "");
 						}
 	   ;
 
-atuacoes: [String audId] 
+atuacoes [String audicaoId]
 		returns [String atuacoesInsert, String alunosInsert,String professoresInsert,String pecasInsert ]
-	 	'ATUACOES' '{' {
+	 	:'ATUACOES' '{' {
 							Element filho = doc.createElement("atuacoes");
 							rootElement.appendChild(filho);
 						}
-			 a1=atuacao[filho, audiId] {atuacoesInsert = $a1.query;
-			 							alunosInsert = alunosInsert+$a1.alunosInsert;
-							       		professoresInsert = alunosInsert+$a1.professoresInsert;
-							       		pecasInsert = alunosInsert+$a1.pecasInsert;}
-			(a2=atuacao[filho, audiId]{atuacoesInsert = atuacoesInsert+", "+$a2.query;
-										alunosInsert = alunosInsert+$a2.alunosInsert;
-							       		professoresInsert = alunosInsert+$a2.professoresInsert;
-							       		pecasInsert = alunosInsert+$a2.pecasInsert;})* '}' 
-										{atuacoesInsert = atuacoesInsert+";";
-											
+			 a1=atuacao[filho, $audicaoId] {$atuacoesInsert = $a1.query;
+			 							$alunosInsert = $alunosInsert+$a1.alunosInsert;
+							       		$professoresInsert = $alunosInsert+$a1.professoresInsert;
+							       		$pecasInsert = $alunosInsert+$a1.pecasInsert;}
+			(a2=atuacao[filho, $audicaoId]{$atuacoesInsert = $atuacoesInsert+", "+$a2.query;
+										$alunosInsert = $alunosInsert+$a2.alunosInsert;
+							       		$professoresInsert = $alunosInsert+$a2.professoresInsert;
+							       		$pecasInsert = $alunosInsert+$a2.pecasInsert;})* '}'
+										{$atuacoesInsert = $atuacoesInsert+";";
+
 										}
 		;
 
-atuacao [Element pai, String audId]
+atuacao [Element pai, String audicaoId]
 		returns [String query, String alunosInsert,String professoresInsert,String pecasInsert]
 	   : 'ATUACAO' {
 						Element filho = doc.createElement("atuacao");
@@ -405,23 +411,27 @@ atuacao [Element pai, String audId]
 	   id[filho]
        designacao[filho]
 	       {
-	       		String q = "SELECT atuacao_id FROM atuacao WHERE atuacao_id="+$id.id;
-				String r = query(q,"atuacao_id");
+	       		String q = "SELECT atuacao_id FROM atuacao WHERE atuacao_id="+$id.dados;
+	       		String r = null;
+	       		try{
+					r = query(q,"atuacao_id");
+				}catch (SQLException e ) {
+					  System.out.println(e);
+				 }
 				if(r!=null)
 				{
-					System.out.println("Atuacao com id "+$id.id+" já existe!!!");
+					System.out.println("Atuacao com id "+$id.dados+" já existe!!!");
 					System.exit(1);
 				}
-	       		query = "INSERT INTO `atuacao` (`atuacao_id`, `atuacao_designacao`, `atuacao_audicao`) VALUES
-						('"+$id.id+"', '"+$designacao.dados+"', '"+audId+"')";
+	       		$query = "INSERT INTO `atuacao` (`atuacao_id`, `atuacao_designacao`, `atuacao_audicao`) VALUES (`"+$id.dados+"`, `"+$designacao.dados+"`, `"+$audicaoId+"`)";
 	       }
-       alunos[filho,$id.id]
-       professores[filho,$id.id]?
-       pecas[filho,$id.id]
+       alunos[filho,$id.dados]
+       professores[filho,$id.dados]?
+       pecas[filho,$id.dados]
 	       {
-	       		alunosInsert = $alunos.alunosInsert;
-	       		professoresInsert = $professores.professoresInsert;
-	       		pecasInsert = $pecas.pecasInsert;
+	       		$alunosInsert = $alunos.alunosInsert;
+	       		$professoresInsert = $professores.professoresInsert;
+	       		$pecasInsert = $pecas.pecasInsert;
 	       }
 	   ;
 
@@ -431,7 +441,7 @@ designacao [Element pai]
 								Element filho = doc.createElement("designacao");
 								filho.appendChild(doc.createTextNode($DADOS.text.replaceAll("\"", "")));
 								pai.appendChild(filho);
-								dados=$DADOS.text.replaceAll("\"", "");
+								$dados=$DADOS.text.replaceAll("\"", "");
 							}
 		  ;
 
@@ -441,9 +451,9 @@ alunos [Element pai, String atuacao_id]
 						Element filho = doc.createElement("alunos");
 						pai.appendChild(filho);
 					}
-					a1=aluno[filho,atuacao_id] {alunosInsert = $a1.query;}
-			(a2=aluno[filho,atuacao_id]{alunosInsert = alunosInsert+", "+$a2.query;})* '}' 
-										{alunosInsert = alunosInsert+";";}
+					a1=aluno[filho,atuacao_id] {$alunosInsert = $a1.query;}
+			(a2=aluno[filho,atuacao_id]{$alunosInsert = $alunosInsert+", "+$a2.query;})* '}'
+										{$alunosInsert = $alunosInsert+";";}
 	  ;
 
 aluno [Element pai, String atuacao_id]
@@ -455,15 +465,19 @@ aluno [Element pai, String atuacao_id]
 	  	nome[filho]
 	  	id[filho]
 		  	{
-		       		String q = "SELECT aluno_id FROM aluno WHERE aluno_id="+$id.id;
-					String r = query(q,"aluno_id");
+		       		String q = "SELECT aluno_id FROM aluno WHERE aluno_id="+$id.dados;
+		       		String r = null;
+		       		try{
+						r = query(q,"aluno_id");
+					}catch (SQLException e ) {
+						  System.out.println(e);
+					 }
 					if(r==null)
 					{
-						System.out.println("Aluno com id "+$id.id+" não existe!!!");
+						System.out.println("Aluno com id "+$id.dados+" não existe!!!");
 						System.exit(1);
 					}
-		       		query = "INSERT INTO `atuacao_aluno` (`atuacao_id`, `aluno_id`) VALUES
-							('"+atuacao_id+"', '"+$id.id+"')";
+		       		$query = "INSERT INTO `atuacao_aluno` (`atuacao_id`, `aluno_id`) VALUES (`"+atuacao_id+"`, `"+$id.dados+"`)";
 
 		    }
 	  ;
@@ -474,40 +488,45 @@ nome [Element pai]
 					Element filho = doc.createElement("nome");
 					filho.appendChild(doc.createTextNode($DADOS.text.replaceAll("\"", "")));
 					pai.appendChild(filho);
-					dados=$DADOS.text.replaceAll("\"", "");
+					$dados=$DADOS.text.replaceAll("\"", "");
 				}
 	;
 
 audId [Element pai]
-	  returns [String id]
+	  returns [String dados]
   : 'ID' ID{
 				Element filho = doc.createElement("id");
 				filho.appendChild(doc.createTextNode($ID.text.replaceAll("\"", "")));
 				pai.appendChild(filho);
 				String q = "SELECT audicao_id FROM audicao WHERE audicao_id="+$ID.text;
-				String r = query(q,"audicao_id");
+				String r = null;
+				try{
+				 	r = query(q,"audicao_id");
+				}catch (SQLException e ) {
+					  System.out.println(e);
+				 }
 				if(r!=null)
 				{
 					System.out.println("Audição com id "+$ID.text+" já existe!!!");
 					System.exit(1);
 				}
-				
+
 				/*if(new File("../../audicoes/"+file).exists()){
 					System.out.println("Audição com nome "+file+" já existe!!!");
 					System.exit(1);
 				}*/
 				file = $ID.text.replaceAll("\"", "")+".xml";
-				id=$ID.text.replaceAll("\"", "");
+				$dados=$ID.text.replaceAll("\"", "");
 			}
   ;
 
 id [Element pai]
-	returns [String id]
+	returns [String dados]
   : 'ID' ID{
 				Element filho = doc.createElement("id");
 				filho.appendChild(doc.createTextNode($ID.text.replaceAll("\"", "")));
 				pai.appendChild(filho);
-				id=$ID.text.replaceAll("\"", "");
+				$dados=$ID.text.replaceAll("\"", "");
 			}
   ;
 
@@ -517,13 +536,13 @@ professores [Element pai, String atuacao_id]
 									Element filho = doc.createElement("professores");
 									pai.appendChild(filho);
 								}
-			a1=professor[filho,atuacao_id] {professoresInsert = $a1.query;}
-			(a2=professor[filho,atuacao_id]{professoresInsert = professoresInsert+", "+$a2.query;})* '}' 
-										{professoresInsert = professoresInsert+";";}
-			(professor[filho])+ '}'
+			a1=professor[filho,atuacao_id] {$professoresInsert = $a1.query;}
+			(a2=professor[filho,atuacao_id]{$professoresInsert = $professoresInsert+", "+$a2.query;})* '}'
+										{$professoresInsert = $professoresInsert+";";}
 		   ;
 
-professor [Element pai]
+professor [Element pai, String atuacao_id]
+		returns[String query]
 		 : 'PROFESSOR'{
 						Element filho = doc.createElement("professor");
 						pai.appendChild(filho);
@@ -531,32 +550,36 @@ professor [Element pai]
 		  	nome[filho]
 		  	id [filho]
 		  	{
-		       		String q = "SELECT professor_id FROM professor WHERE professor_id="+$id.id;
-					String r = query(q,"professor_id");
+		       		String q = "SELECT professor_id FROM professor WHERE professor_id="+$id.dados;
+		       		String r = null;
+		       		try{
+						r = query(q,"professor_id");
+					}catch (SQLException e ) {
+						  System.out.println(e);
+					 }
 					if(r==null)
 					{
-						System.out.println("Professor com id "+$id.id+" não existe!!!");
+						System.out.println("Professor com id "+$id.dados+" não existe!!!");
 						System.exit(1);
 					}
-		       		query = "INSERT INTO `atuacao_professor` (`atuacao_id`, `professor_id`) VALUES
-								('"+atuacao_id+"', '"+$id.id+"')";
+		       		$query = "INSERT INTO `atuacao_professor` (`atuacao_id`, `professor_id`) VALUES (`"+atuacao_id+"`, `"+$id.dados+"`)";
 
 		    }
 		 ;
 
 pecas [Element pai, String atuacao_id]
-		returns [pecasInsert]
+		returns [String pecasInsert]
 	 : 'PECAS' '{' {
 						Element filho = doc.createElement("pecas");
 						pai.appendChild(filho);
 					}
-		a1=peca[filho,atuacao_id] {pecasInsert = $a1.query;}
-			(a2=peca[filho,atuacao_id]{pecasInsert = pecasInsert+", "+$a2.query;})* '}' 
-										{pecasInsert = pecasInsert+";";}
-		(peca[filho])+ '}'
+		a1=peca[filho,atuacao_id] {$pecasInsert = $a1.query;}
+			(a2=peca[filho,atuacao_id]{$pecasInsert = $pecasInsert+", "+$a2.query;})* '}'
+										{$pecasInsert = $pecasInsert+";";}
 	 ;
 
-peca [Element pai]
+peca [Element pai, String atuacao_id]
+	returns[String query]
 	: 'PECA' {
 				Element filho = doc.createElement("peca");
 				pai.appendChild(filho);
@@ -566,15 +589,19 @@ peca [Element pai]
 		titulo[filho]
 		id[filho]
 		{
-		       		String q = "SELECT obra_id FROM obra WHERE obra_id="+$id.id;
-					String r = query(q,"obra_id");
+		       		String q = "SELECT obra_id FROM obra WHERE obra_id="+$id.dados;
+		       		String r = null;
+		       		try{
+						r = query(q,"obra_id");
+					}catch (SQLException e ) {
+						  System.out.println(e);
+					 }
 					if(r==null)
 					{
-						System.out.println("Obra com id "+$id.id+" não existe!!!");
+						System.out.println("Obra com id "+$id.dados+" não existe!!!");
 						System.exit(1);
 					}
-		       		query = "INSERT INTO `atuacao_obra` (`atuacao_id`, `obra_id`) VALUES
-								('"+atuacao_id+"', '"+$id.id+"')";
+		       		$query = "INSERT INTO `atuacao_obra` (`atuacao_id`, `obra_id`) VALUES (`"+atuacao_id+"`, `"+$id.dados+"`)";
 
 		    }
 	;
@@ -594,32 +621,34 @@ ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|'-')*
 INT :	'0'..'9'+
     ;
 
-WS  :   [ \t\r\n]  -> skip
-    ;
+
+
+ WS
+	  :   [ \t\r\n]  -> skip
+	  ;
 
 fragment
 STRING
-    :  '"' ( ESC_SEQ | ~('"') )* '"'
-    ;
+	   :  '"' ( ESC_SEQ | ~('"') )* '"';
 
 fragment
 ESC_SEQ
-    :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\')
-    |   UNICODE_ESC
-    |   OCTAL_ESC
-    ;
+  :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\')
+  |   UNICODE_ESC
+  |   OCTAL_ESC
+  ;
 
 fragment
 OCTAL_ESC
-    :   '\\' ('0'..'3') ('0'..'7') ('0'..'7')
-    |   '\\' ('0'..'7') ('0'..'7')
-    |   '\\' ('0'..'7')
-    ;
+  :   '\\' ('0'..'3') ('0'..'7') ('0'..'7')
+  |   '\\' ('0'..'7') ('0'..'7')
+  |   '\\' ('0'..'7')
+  ;
 
 fragment
 UNICODE_ESC
-    :   '\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
-    ;
+  :   '\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
+  ;
 fragment
 HEX_DIGIT : ('0'..'9'|'a'..'f'|'A'..'F')
-    ;
+  ;
