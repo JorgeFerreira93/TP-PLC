@@ -37,6 +37,7 @@ DURACAO "</xsl:text><xsl:value-of select="duracao"/><xsl:text>"
     <xsl:template match="atuacao">
         <xsl:text>ATUACAO
 DESIGNACAO "</xsl:text><xsl:value-of select="designacao"/><xsl:text>"
+ID "</xsl:text><xsl:value-of select="id"/><xsl:text>"
 </xsl:text>
         <xsl:apply-templates select="alunos"></xsl:apply-templates>
         <xsl:apply-templates select="professores"></xsl:apply-templates>
