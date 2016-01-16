@@ -98,9 +98,12 @@ public class FileUploadController {
                         return json;
                     }
                     else{
-                        insereAudicao(audicao, con);
-
-                        String json = "{\"erro\": \"false\"}";
+                        if(insereAudicao(audicao, con)){
+                            String json = "{\"erro\": \"false\"}";
+                        }
+                        else{
+                            String json = "{\"erro\": \"sql\"}";
+                        }
 
                         return json;
                     }
@@ -116,7 +119,7 @@ public class FileUploadController {
         }
     }
 
-    private void insereAudicao(Audicao audicao, Connection con){
+    private boolean insereAudicao(Audicao audicao, Connection con){
         try {
             PreparedStatement ps = con.prepareStatement("INSERT INTO audicao VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, audicao.id);
@@ -164,7 +167,7 @@ public class FileUploadController {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            return false;
         } finally {
             try {
                 con.close();
@@ -172,5 +175,6 @@ public class FileUploadController {
                 e.printStackTrace();
             }
         }
+        return true;
     }
 }

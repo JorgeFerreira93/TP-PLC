@@ -152,13 +152,11 @@ designacao[Atuacao at]
 		  ;
 
 alunos[Connection con, Atuacao at, Erro erro]
-	  : 'ALUNOS' '{' aluno[con, at, erro]+ '}'
+	  : 'ALUNOS' '{' aluno[con, at, erro](',' aluno[con, at, erro])* '}'
 	  ;
 
 aluno[Connection con, Atuacao at, Erro erro]
-      : 'ALUNO'
-	  	nome
-	  	id {
+      : id {
             try {
                 String nome;
                 PreparedStatement ps = con.prepareStatement("SELECT 1 FROM aluno WHERE aluno_id = '" + $id.idd + "'");
@@ -175,26 +173,20 @@ aluno[Connection con, Atuacao at, Erro erro]
 	  	}
 	  ;
 
-nome
-    : 'NOME' DADOS
-	;
-
 audId[Audicao audicao]
   : 'ID' ID {audicao.id = $ID.text;}
   ;
 
 id returns[String idd]
-  : 'ID' ID {$idd = $ID.text;}
+  : ID {$idd = $ID.text;}
   ;
 
 professores[Connection con, Atuacao at, Erro erro]
-           : 'PROFESSORES' '{' professor[con, at, erro]+ '}'
+           : 'PROFESSORES' '{' professor[con, at, erro](',' professor[con, at, erro])* '}'
 		   ;
 
 professor[Connection con, Atuacao at, Erro erro]
-		 : 'PROFESSOR'
-		  	nome
-		  	id{
+		 : id{
                   try {
                       String nome;
                       PreparedStatement ps = con.prepareStatement("SELECT 1 FROM professor WHERE professor_id = '" + $id.idd + "'");
@@ -213,13 +205,11 @@ professor[Connection con, Atuacao at, Erro erro]
 		 ;
 
 pecas[Connection con, Atuacao at, Erro erro]
-	 : 'PECAS' '{' peca[con, at, erro]+ '}'
+	 : 'PECAS' '{' peca[con, at, erro](',' peca[con, at, erro])* '}'
 	 ;
 
 peca[Connection con, Atuacao at, Erro erro]
-	: 'PECA'
-		'TITULO' DADOS
-		id{
+	: id{
             try {
                 String nome;
                 PreparedStatement ps = con.prepareStatement("SELECT 1 FROM obra WHERE obra_id = '" + $id.idd + "'");

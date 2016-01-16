@@ -172,16 +172,6 @@ public interface AudicaoListener extends ParseTreeListener {
 	 */
 	void exitAluno(AudicaoParser.AlunoContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AudicaoParser#nome}.
-	 * @param ctx the parse tree
-	 */
-	void enterNome(AudicaoParser.NomeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AudicaoParser#nome}.
-	 * @param ctx the parse tree
-	 */
-	void exitNome(AudicaoParser.NomeContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link AudicaoParser#audId}.
 	 * @param ctx the parse tree
 	 */

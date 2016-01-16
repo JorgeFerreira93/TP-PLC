@@ -210,18 +210,6 @@ public class AudicaoBaseListener implements AudicaoListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNome(AudicaoParser.NomeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNome(AudicaoParser.NomeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterAudId(AudicaoParser.AudIdContext ctx) { }
 	/**
 	 * {@inheritDoc}

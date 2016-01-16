@@ -7,43 +7,17 @@ METADATA
 	HORA "17:30"
 	LOCAL "auditorio"
 	ORGANIZADOR "P1"
-	DURACsaAO "35:00"
+	DURACAO "35:00"
 
 ATUACOES {
 	ATUACAO
 		DESIGNACAO "atuacao1"
-		ALUNOS{
-			ALUNO
-				NOME "aluno1"
-				ID A1
-			ALUNO
-				NOME "aluno2"
-				ID A2
-		}
-		PROFESSORES {
-			PROFESSOR
-				NOME "professor1"
-				ID P1
-		}
-		PECAS {
-			PECA
-				TITULO "peca1"
-				ID O100
-			PECA
-				TITULO "peca2"
-				ID O146
-		}	
+		ALUNOS { A1, A2 }
+		PROFESSORES { P1 }
+		PECAS { O100, O146 }	
 	ATUACAO
 		DESIGNACAO "atuacao2"
-		ALUNOS {
-			ALUNO
-				NOME "aluno1"
-				ID A1
-		}
-		PECAS {
-			PECA
-				TITULO "peca3"
-				ID O121
-		}	
+		ALUNOS { A1 }
+		PECAS { O121 }	
 }
 	

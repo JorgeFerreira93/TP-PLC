@@ -23,8 +23,14 @@ $(document).ready(function(){
 					}
 					$("#erro").html(aux);
 				}
+				else if(json.erro === "gram"){
+					alert("Erro sintáxico!");
+				}
+				else if(json.erro === "sql"){
+					alert("Erro ao inserir a audição!");
+				}
 				else{
-					alert("Erro na gramatica!");
+					alert("Audição inserida com sucesso!");
 				}
 			},
 			cache: false,
