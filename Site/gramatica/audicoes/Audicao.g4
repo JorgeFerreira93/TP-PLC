@@ -269,6 +269,10 @@ s
     atuacoes[$metadata.audId]
     	{
     		insert($metadata.query);
+    		insert($atuacoes.atuacoesInsert);
+    		insert($atuacoes.alunosInsert);
+    		insert($atuacoes.professoresInsert);
+    		insert($atuacoes.pecasInsert);
     	}
   ;
 
@@ -374,18 +378,26 @@ duracao [Element pai]
 	   ;
 
 atuacoes: [String audId] 
-		returns [String atuacoesInsert]
+		returns [String atuacoesInsert, String alunosInsert,String professoresInsert,String pecasInsert ]
 	 	'ATUACOES' '{' {
 							Element filho = doc.createElement("atuacoes");
 							rootElement.appendChild(filho);
 						}
-			 a1=atuacao[filho, audiId] {atuacoesInsert = $a1.query;}
-			(a2=atuacao[filho, audiId]{atuacoesInsert = atuacoesInsert+", "+$a2.query;})* '}' 
-										{atuacoesInsert = atuacoesInsert+";";}
+			 a1=atuacao[filho, audiId] {atuacoesInsert = $a1.query;
+			 							alunosInsert = alunosInsert+$a1.alunosInsert;
+							       		professoresInsert = alunosInsert+$a1.professoresInsert;
+							       		pecasInsert = alunosInsert+$a1.pecasInsert;}
+			(a2=atuacao[filho, audiId]{atuacoesInsert = atuacoesInsert+", "+$a2.query;
+										alunosInsert = alunosInsert+$a2.alunosInsert;
+							       		professoresInsert = alunosInsert+$a2.professoresInsert;
+							       		pecasInsert = alunosInsert+$a2.pecasInsert;})* '}' 
+										{atuacoesInsert = atuacoesInsert+";";
+											
+										}
 		;
 
 atuacao [Element pai, String audId]
-		returns [String query]
+		returns [String query, String alunosInsert,String professoresInsert,String pecasInsert]
 	   : 'ATUACAO' {
 						Element filho = doc.createElement("atuacao");
 						pai.appendChild(filho);
@@ -406,6 +418,11 @@ atuacao [Element pai, String audId]
        alunos[filho,$id.id]
        professores[filho,$id.id]?
        pecas[filho,$id.id]
+	       {
+	       		alunosInsert = $alunos.alunosInsert;
+	       		professoresInsert = $professores.professoresInsert;
+	       		pecasInsert = $pecas.pecasInsert;
+	       }
 	   ;
 
 designacao [Element pai]
