@@ -13,6 +13,8 @@ import org.antlr.runtime.tree.CommonTree;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import parser.*;
 
 import parser.AudicaoParser.Audicao;
@@ -23,6 +25,10 @@ import parser.AudicaoParser.Erro;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 @Controller
 public class FileUploadController {
