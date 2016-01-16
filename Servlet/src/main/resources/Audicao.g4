@@ -8,6 +8,12 @@ grammar Audicao;
     import java.sql.*;
     import java.util.ArrayList;
     import java.util.HashMap;
+    import java.text.DateFormat;
+    import java.text.SimpleDateFormat;
+    import java.util.Date;
+    import java.util.Locale;
+    import java.time.format.DateTimeFormatter;
+    import java.time.LocalDate;
 }
 
 @members{
@@ -71,7 +77,7 @@ s returns[String a]
         metadata[audicao]
         atuacoes[con, audicao.atuacoes, erro]
         {
-            if(!erro.haErro()){
+            if(erro.haErro()){
 
                 System.out.println(audicao.toString());
 
@@ -103,7 +109,7 @@ s returns[String a]
             }
             else{
                 try {
-                    PreparedStatement ps = con.prepareStatement("INSERT INTO audicao(Designacao) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                    PreparedStatement ps = con.prepareStatement("INSERT INTO audicao VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
                     ps.setString(1, audicao.id);
                     ps.setString(2, audicao.titulo);
                     ps.setString(3, audicao.subtitulo);
@@ -111,8 +117,39 @@ s returns[String a]
                     ps.setString(5, audicao.data);
                     ps.setString(6, audicao.hora);
                     ps.setString(7, audicao.local);
-                    System.out.println(ps.toString());
-                    //ps.executeUpdate();
+                    ps.setString(8, audicao.organizador);
+                    ps.setString(9, audicao.duracao);
+                    ps.executeUpdate();
+
+                    for(Atuacao a: audicao.atuacoes){
+                        ps = con.prepareStatement("INSERT INTO atuacao VALUES (?, ?, ?)");
+                        ps.setString(1, a.designacao);
+                        ps.setString(2, a.designacao);
+                        ps.setString(3, audicao.id);
+
+                        ps.executeUpdate();
+
+                        for(String aluno: a.alunos){
+                            ps = con.prepareStatement("INSERT INTO atuacao_aluno VALUES (?, ?)");
+                            ps.setString(1, a.designacao);
+                            ps.setString(2, aluno);
+                            ps.executeUpdate();
+                        }
+
+                        for(String professor: a.professores){
+                            ps = con.prepareStatement("INSERT INTO atuacao_professor VALUES (?, ?)");
+                            ps.setString(1, a.designacao);
+                            ps.setString(2, professor);
+                            ps.executeUpdate();
+                        }
+
+                        for(String obra: a.pecas){
+                            ps = con.prepareStatement("INSERT INTO atuacao_obra VALUES (?, ?)");
+                            ps.setString(1, a.designacao);
+                            ps.setString(2, obra);
+                            ps.executeUpdate();
+                        }
+                    }
                  } catch (SQLException e) {
                      e.printStackTrace();
                  } finally {
@@ -145,31 +182,33 @@ metadata[Audicao audicao]: 'METADATA'
           duracao[audicao]
 		;
 
-titulo[Audicao audicao]: 'TITULO' DADOS {audicao.titulo = $DADOS.text;}
+titulo[Audicao audicao]: 'TITULO' DADOS {audicao.titulo = $DADOS.text.replaceAll("(^\")|(\"$)","");}
 	  ;
 
-subtitulo[Audicao audicao]: 'SUBTITULO' DADOS {audicao.subtitulo = $DADOS.text;}
+subtitulo[Audicao audicao]: 'SUBTITULO' DADOS {audicao.subtitulo = $DADOS.text.replaceAll("(^\")|(\"$)","");}
 	   	 ;
 
-tema[Audicao audicao] : 'TEMA' DADOS {audicao.tema = $DADOS.text;}
+tema[Audicao audicao] : 'TEMA' DADOS {audicao.tema = $DADOS.text.replaceAll("(^\")|(\"$)","");}
 	;
 
-data[Audicao audicao]: 'DATA' DADOS {audicao.data = $DADOS.text;}
+data[Audicao audicao]: 'DATA' a=INT '-' m=INT '-' d=INT {
+                            String aux = "" + $a.int + "-" + $m.int + "-" + $d.int;
+                            audicao.data = aux;}
 	;
 
 hora[Audicao audicao]
-    : 'HORA' DADOS {audicao.hora = $DADOS.text;}
+    : 'HORA' DADOS {audicao.hora = $DADOS.text.replaceAll("(^\")|(\"$)","");}
 	;
 
-local[Audicao audicao]: 'LOCAL' DADOS {audicao.local = $DADOS.text;}
+local[Audicao audicao]: 'LOCAL' DADOS {audicao.local = $DADOS.text.replaceAll("(^\")|(\"$)","");}
 	 ;
 
 organizador[Audicao audicao]
-           : 'ORGANIZADOR' DADOS {audicao.organizador = $DADOS.text;}
+           : 'ORGANIZADOR' DADOS {audicao.organizador = $DADOS.text.replaceAll("(^\")|(\"$)","");}
 ;
 
 duracao[Audicao audicao]
-       : 'DURACAO' DADOS {audicao.duracao = $DADOS.text;}
+       : 'DURACAO' DADOS {audicao.duracao = $DADOS.text.replaceAll("(^\")|(\"$)","");}
 	   ;
 
 atuacoes[Connection con, ArrayList<Atuacao> ats, Erro erro]:
@@ -188,7 +227,7 @@ atuacao[Connection con, Atuacao at, Erro erro]
 	   ;
 
 designacao[Atuacao at]
-		  : 'DESIGNACAO' DADOS {at.designacao = $DADOS.text;}
+		  : 'DESIGNACAO' DADOS {at.designacao = $DADOS.text.replaceAll("(^\")|(\"$)","");}
 		  ;
 
 alunos[Connection con, Atuacao at, Erro erro]

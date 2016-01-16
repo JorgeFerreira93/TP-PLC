@@ -3,10 +3,10 @@ METADATA
 	TITULO "audicao1"
 	SUBTITULO "audicao experimental"
 	TEMA "tema1"
-	DATA "11-01-2016"
+	DATA 2016-01-11
 	HORA "17:30"
 	LOCAL "auditorio"
-	ORGANIZADOR "organizador1"
+	ORGANIZADOR "P1"
 	DURACAO "35:00"
 
 ATUACOES {
@@ -18,7 +18,7 @@ ATUACOES {
 				ID A1
 			ALUNO
 				NOME "aluno2"
-				ID ABB2
+				ID A2
 		}
 		PROFESSORES {
 			PROFESSOR
@@ -28,10 +28,10 @@ ATUACOES {
 		PECAS {
 			PECA
 				TITULO "peca1"
-				ID O1
+				ID O100
 			PECA
 				TITULO "peca2"
-				ID O2
+				ID O146
 		}	
 	ATUACAO
 		DESIGNACAO "atuacao2"
@@ -43,7 +43,7 @@ ATUACOES {
 		PECAS {
 			PECA
 				TITULO "peca3"
-				ID O3
+				ID O121
 		}	
 }
 	
