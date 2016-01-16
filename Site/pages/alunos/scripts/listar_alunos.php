@@ -27,7 +27,7 @@
 				<td>".$aluno['aluno_nome']."</td>
 				<td>
 					<a href='consultar_aluno.html?id=".$aluno['aluno_id']."'><i class='fa fa-search fa-fw'></i></a>					
-					<a href='scripts/remover_aluno.php?id=".$aluno['aluno_id']."'><i class='fa fa-times fa-fw'></i></a>
+					<a href='scripts/remover_aluno.php?id=".$aluno['aluno_id']."' onclick=\"return confirm('Tem a certeza que quer remover?');\"><i class='fa fa-times fa-fw'></i></a>
 					<a href='alterar_aluno.html?id=".$aluno['aluno_id']."'><i class='fa fa-pencil fa-fw'></i></a>
 				</td></tr>";
 	}
