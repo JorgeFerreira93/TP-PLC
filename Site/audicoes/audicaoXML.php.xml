@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<audicoes>
+    <audicao>
+        <metadata>
+            <titulo>Teste</titulo>
+            <subtitulo>Subteste</subtitulo>
+            <tema/>
+            <data>2016-01-14</data>
+            <hora>15:26</hora>
+            <local>DI - Uminho</local>
+            <organizador>Semi-amado Sandalinhas Cal&#xED;gula</organizador>
+            <duracao>20:00:00</duracao>
+        </metadata>
+        <atuacoes>
+            <atuacao>
+                <designacao>Sumthing sumthing</designacao>
+                <alunos>
+                    <aluno>
+                        <Nome>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</Nome>
+                        <Instrumento>Violino</Instrumento>
+                    </aluno>
+                    <aluno>
+                        <Nome>jorge</Nome>
+                        <Instrumento>Fliscorne</Instrumento>
+                    </aluno>
+                </alunos>
+                <professores>
+                    <professor>
+                        <Nome>Semi-amado Sandalinhas Cal&#xED;gula</Nome>
+                    </professor>
+                </professores>
+                <pecas>
+                    <peca>
+                        <Nome>Hungarian Rhapsody No. 111</Nome>
+                        <compositor>Peri, Jacopo</compositor>
+                        <dataNasc>1561-08-20</dataNasc>
+                        <dataMorte>1633-08-12</dataMorte>
+                        <duracao>01:30:51</duracao>
+                    </peca>
+                </pecas>
+            </atuacao>
+            <atuacao>
+                <designacao>badabada</designacao>
+                <alunos>
+                    <aluno>
+                        <Nome>Jose Antonio Pereira Cibrao</Nome>
+                        <Instrumento>Viola de Arco</Instrumento>
+                    </aluno>
+                    <aluno>
+                        <Nome>Tiago</Nome>
+                        <Instrumento>Fliscorne</Instrumento>
+                    </aluno>
+                </alunos>
+                <pecas>
+                    <peca>
+                        <Nome>Hungarian Rhapsody No. 111</Nome>
+                        <compositor>Peri, Jacopo</compositor>
+                        <dataNasc>1561-08-20</dataNasc>
+                        <dataMorte>1633-08-12</dataMorte>
+                        <duracao>01:30:51</duracao>
+                    </peca>
+                </pecas>
+            </atuacao>
+        </atuacoes>
+    </audicao>
+</audicoes>
