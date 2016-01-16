@@ -194,7 +194,7 @@ public class AudicaoParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(42);
-			metadata(audicao);
+			metadata(audicao, con, erro);
 			setState(43);
 			atuacoes(con, audicao.atuacoes, erro);
 
@@ -217,6 +217,8 @@ public class AudicaoParser extends Parser {
 
 	public static class MetadataContext extends ParserRuleContext {
 		public Audicao audicao;
+		public Connection con;
+		public Erro erro;
 		public AudIdContext audId() {
 			return getRuleContext(AudIdContext.class,0);
 		}
@@ -245,9 +247,11 @@ public class AudicaoParser extends Parser {
 			return getRuleContext(DuracaoContext.class,0);
 		}
 		public MetadataContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public MetadataContext(ParserRuleContext parent, int invokingState, Audicao audicao) {
+		public MetadataContext(ParserRuleContext parent, int invokingState, Audicao audicao, Connection con, Erro erro) {
 			super(parent, invokingState);
 			this.audicao = audicao;
+			this.con = con;
+			this.erro = erro;
 		}
 		@Override public int getRuleIndex() { return RULE_metadata; }
 		@Override
@@ -260,8 +264,8 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final MetadataContext metadata(Audicao audicao) throws RecognitionException {
-		MetadataContext _localctx = new MetadataContext(_ctx, getState(), audicao);
+	public final MetadataContext metadata(Audicao audicao,Connection con,Erro erro) throws RecognitionException {
+		MetadataContext _localctx = new MetadataContext(_ctx, getState(), audicao, con, erro);
 		enterRule(_localctx, 2, RULE_metadata);
 		try {
 			enterOuterAlt(_localctx, 1);
@@ -283,7 +287,7 @@ public class AudicaoParser extends Parser {
 			setState(53);
 			local(audicao);
 			setState(54);
-			organizador(audicao);
+			organizador(audicao, con, erro);
 			setState(55);
 			duracao(audicao);
 			}
@@ -580,12 +584,16 @@ public class AudicaoParser extends Parser {
 
 	public static class OrganizadorContext extends ParserRuleContext {
 		public Audicao audicao;
+		public Connection con;
+		public Erro erro;
 		public Token DADOS;
 		public TerminalNode DADOS() { return getToken(AudicaoParser.DADOS, 0); }
 		public OrganizadorContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public OrganizadorContext(ParserRuleContext parent, int invokingState, Audicao audicao) {
+		public OrganizadorContext(ParserRuleContext parent, int invokingState, Audicao audicao, Connection con, Erro erro) {
 			super(parent, invokingState);
 			this.audicao = audicao;
+			this.con = con;
+			this.erro = erro;
 		}
 		@Override public int getRuleIndex() { return RULE_organizador; }
 		@Override
@@ -598,8 +606,8 @@ public class AudicaoParser extends Parser {
 		}
 	}
 
-	public final OrganizadorContext organizador(Audicao audicao) throws RecognitionException {
-		OrganizadorContext _localctx = new OrganizadorContext(_ctx, getState(), audicao);
+	public final OrganizadorContext organizador(Audicao audicao,Connection con,Erro erro) throws RecognitionException {
+		OrganizadorContext _localctx = new OrganizadorContext(_ctx, getState(), audicao, con, erro);
 		enterRule(_localctx, 16, RULE_organizador);
 		try {
 			enterOuterAlt(_localctx, 1);
@@ -608,7 +616,24 @@ public class AudicaoParser extends Parser {
 			match(T__8);
 			setState(86);
 			((OrganizadorContext)_localctx).DADOS = match(DADOS);
-			audicao.organizador = (((OrganizadorContext)_localctx).DADOS!=null?((OrganizadorContext)_localctx).DADOS.getText():null).replaceAll("(^\")|(\"$)","");
+
+			                    String id = (((OrganizadorContext)_localctx).DADOS!=null?((OrganizadorContext)_localctx).DADOS.getText():null).replaceAll("(^\")|(\"$)","");
+
+			                    try {
+			                          PreparedStatement ps = con.prepareStatement("SELECT 1 FROM professor WHERE professor_id = '" + id + "'");
+
+			                          ResultSet rs = ps.executeQuery();
+			                          if(rs.next()) {
+			                              audicao.organizador = id;
+			                          }
+			                          else{
+			                              erro.professores.add(id);
+			                          }
+			                      } catch (SQLException e) {
+			                          e.printStackTrace();
+			                      }
+
+			                    
 			}
 		}
 		catch (RecognitionException re) {

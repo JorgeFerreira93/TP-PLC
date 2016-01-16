@@ -82,7 +82,7 @@ s returns[Audicao a, Erro e, Connection con]
                 e.printStackTrace();
             }
         } :
-        metadata[audicao]
+        metadata[audicao, con, erro]
         atuacoes[con, audicao.atuacoes, erro]
         {
             $a = audicao;
@@ -91,7 +91,7 @@ s returns[Audicao a, Erro e, Connection con]
         }
   ;
 
-metadata[Audicao audicao]: 'METADATA'
+metadata[Audicao audicao, Connection con, Erro erro]: 'METADATA'
 		  audId[audicao]
 		  titulo[audicao]
 		  subtitulo[audicao]
@@ -99,7 +99,7 @@ metadata[Audicao audicao]: 'METADATA'
           data[audicao]
           hora[audicao]
           local[audicao]
-          organizador[audicao]
+          organizador[audicao, con, erro]
           duracao[audicao]
 		;
 
@@ -124,8 +124,25 @@ hora[Audicao audicao]
 local[Audicao audicao]: 'LOCAL' DADOS {audicao.local = $DADOS.text.replaceAll("(^\")|(\"$)","");}
 	 ;
 
-organizador[Audicao audicao]
-           : 'ORGANIZADOR' DADOS {audicao.organizador = $DADOS.text.replaceAll("(^\")|(\"$)","");}
+organizador[Audicao audicao, Connection con, Erro erro]
+           : 'ORGANIZADOR' DADOS {
+                    String id = $DADOS.text.replaceAll("(^\")|(\"$)","");
+
+                    try {
+                          PreparedStatement ps = con.prepareStatement("SELECT 1 FROM professor WHERE professor_id = '" + id + "'");
+
+                          ResultSet rs = ps.executeQuery();
+                          if(rs.next()) {
+                              audicao.organizador = id;
+                          }
+                          else{
+                              erro.professores.add(id);
+                          }
+                      } catch (SQLException e) {
+                          e.printStackTrace();
+                      }
+
+                    }
 ;
 
 duracao[Audicao audicao]
