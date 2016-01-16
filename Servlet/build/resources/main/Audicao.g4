@@ -33,6 +33,7 @@ grammar Audicao;
     }
 
     public class Atuacao {
+        public String id = "";
         public String designacao = "";
         public ArrayList<String> alunos;
         public ArrayList<String> professores;
@@ -158,6 +159,7 @@ atuacoes[Connection con, ArrayList<Atuacao> ats, Erro erro]:
 
 atuacao[Connection con, Atuacao at, Erro erro]
 	   : 'ATUACAO'
+	   id {at.id = $id.idd; System.out.println("ID ATUACAO: " +  at.id);}
        designacao[at]
        alunos[con, at, erro]
        professores[con, at, erro]?

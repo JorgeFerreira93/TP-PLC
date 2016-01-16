@@ -106,6 +106,7 @@ public class AudicaoLexer extends Lexer {
 	    }
 
 	    public class Atuacao {
+	        public String id = "";
 	        public String designacao = "";
 	        public ArrayList<String> alunos;
 	        public ArrayList<String> professores;

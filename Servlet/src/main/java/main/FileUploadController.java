@@ -98,7 +98,6 @@ public class FileUploadController {
                         return json;
                     }
                     else{
-
                         String json = "";
 
                         if(insereAudicao(audicao, con)){
@@ -124,6 +123,9 @@ public class FileUploadController {
 
     private boolean insereAudicao(Audicao audicao, Connection con){
         try {
+
+           con.setAutoCommit(false);
+
             PreparedStatement ps = con.prepareStatement("INSERT INTO audicao VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, audicao.id);
             ps.setString(2, audicao.titulo);
@@ -139,7 +141,7 @@ public class FileUploadController {
 
             for(Atuacao a: audicao.atuacoes){
                 ps = con.prepareStatement("INSERT INTO atuacao VALUES (?, ?, ?)");
-                ps.setString(1, a.designacao);
+                ps.setString(1, a.id);
                 ps.setString(2, a.designacao);
                 ps.setString(3, audicao.id);
                 //System.out.println(ps.toString());
@@ -147,7 +149,7 @@ public class FileUploadController {
 
                 for(String aluno: a.alunos){
                     ps = con.prepareStatement("INSERT INTO atuacao_aluno VALUES (?, ?)");
-                    ps.setString(1, a.designacao);
+                    ps.setString(1, a.id);
                     ps.setString(2, aluno);
                     //System.out.println(ps.toString());
                     ps.executeUpdate();
@@ -155,7 +157,7 @@ public class FileUploadController {
 
                 for(String professor: a.professores){
                     ps = con.prepareStatement("INSERT INTO atuacao_professor VALUES (?, ?)");
-                    ps.setString(1, a.designacao);
+                    ps.setString(1, a.id);
                     ps.setString(2, professor);
                     //System.out.println(ps.toString());
                     ps.executeUpdate();
@@ -163,13 +165,20 @@ public class FileUploadController {
 
                 for(String obra: a.pecas){
                     ps = con.prepareStatement("INSERT INTO atuacao_obra VALUES (?, ?)");
-                    ps.setString(1, a.designacao);
+                    ps.setString(1, a.id);
                     ps.setString(2, obra);
                     //System.out.println(ps.toString());
                     ps.executeUpdate();
                 }
             }
+            con.commit();
         } catch (SQLException e) {
+            try {
+                con.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
             return false;
         } finally {
             try {
