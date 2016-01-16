@@ -27,7 +27,7 @@
 				<td>".$compositor['compositor_nome']."</td>
 				<td>
 					<a href='consultar_obra.html?id=".$obra['obra_id']."'><i class='fa fa-search fa-fw'></i></a>					
-					<a href='scripts/remover_obra.php?id=".$obra['obra_id']."'><i class='fa fa-times fa-fw'></i></a>
+					<a href='scripts/remover_obra.php?id=".$obra['obra_id']."' onclick=\"return confirm('Tem a certeza que quer remover?');\"><i class='fa fa-times fa-fw'></i></a>
 					<a href='alterar_obra.html?id=".$obra['obra_id']."'><i class='fa fa-pencil fa-fw'></i></a>
 				</td>
 			</tr>";

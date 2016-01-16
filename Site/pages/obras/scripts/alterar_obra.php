@@ -19,8 +19,6 @@
 					obra_duracao='".$duracao."'
 					WHERE obra_id='".$_REQUEST['oldid']."'";
 					
-	echo $qstring;
-					
 	$dbh->query($qstring);
-	echo "Sucesso";
+	echo "Sucesso!";
 ?>

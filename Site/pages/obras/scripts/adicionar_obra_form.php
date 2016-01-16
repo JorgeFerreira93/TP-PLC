@@ -22,5 +22,5 @@
 				)";
 	
 	$dbh->query($query);
-	echo "Obra Inserida";
+	echo "Sucesso";
 ?>
