@@ -3,7 +3,7 @@
 	$dbh = new PDO('mysql:host=localhost;dbname=gamu', 'root', 'root');
 	
 	$qstring = "SELECT * FROM instrumento";
-	$instrumento = $dbh->query($qstring);
+	$instrumentos = $dbh->query($qstring);
 	
 	$res = "";
 	

@@ -1,6 +1,6 @@
 $(function(){
 
-	$("#lista_instrumentos").load("scripts/listar_compositores.php");
+	$("#lista_instrumentos").load("scripts/lista_instrumentos.php");
 
 	$("#newComp").click(function(){
 		
@@ -16,9 +16,9 @@ $(function(){
             success : function( data ) {
                          alert(data);       
                       },
-        cache: false,
-        contentType: false,
-        processData: false
+			cache: false,
+			contentType: false,
+			processData: false
 		});
 		
 		return false;
