@@ -23,6 +23,9 @@ $(document).ready(function(){
 					}
 					$("#erro").html(aux);
 				}
+				else{
+					alert("Erro na gramatica!");
+				}
 			},
 			cache: false,
 			contentType: false,

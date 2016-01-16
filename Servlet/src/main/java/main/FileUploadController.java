@@ -61,7 +61,8 @@ public class FileUploadController {
                 Connection con = s.con;
 
                 if(e.getErros() > 0){
-                    System.out.println("ERRO");
+                    String json = "{\"erro\": \"gram\"}";
+                    System.out.println(json);
                 }
                 else{
                     if(erro.haErro()){
@@ -92,6 +93,10 @@ public class FileUploadController {
                     }
                     else{
                         insereAudicao(audicao, con);
+
+                        String json = "{\"erro\": \"false\"}";
+
+                        return json;
                     }
                 }
 
