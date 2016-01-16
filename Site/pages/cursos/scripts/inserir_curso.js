@@ -1,11 +1,7 @@
 $(function(){
 
-	$("#lista_instrumentos").load("scripts/listar_compositores.php");
+	$("#lista_instrumentos").load("scripts/listae_instrumentos.php");
 
-	$("#newComp").click(function(){
-		
-	});
-	
 	$("#xml_form").submit(function(){
 
 		$.ajax({
