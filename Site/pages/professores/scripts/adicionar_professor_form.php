@@ -12,8 +12,5 @@
 				);";
 	
 	$dbh->query($query);
-
-	echo $query;
-
-	echo "Professor inserido com sucesso!";
+	echo "Sucesso!";
 ?>

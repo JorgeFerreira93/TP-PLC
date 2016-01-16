@@ -19,7 +19,7 @@
 		</div>
 		<div class='form-group'>
 			<label>Data de Nascimento</label>
-			<input class='form-control' placeholder='yyyy' name='ano' value='".$professor['professor_data_nasc']."'>
+			<input class='form-control' placeholder='yyyy-mm-dd' name='ano' value='".$professor['professor_data_nasc']."'>
 		</div>
 		<div class='form-group'>
 			<label>Habilitações</label>
