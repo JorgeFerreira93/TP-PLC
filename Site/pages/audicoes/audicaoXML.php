@@ -60,7 +60,6 @@
 				$aluno->addChild("Instrumento", $instrumento['instrumento_designacao']);
 			}
 			
-			$professores = $atuacao->addChild("professores");
 			
 			$qstring = "SELECT professor_nome FROM professor
 							WHERE professor_id IN(
@@ -69,6 +68,10 @@
 							)";
 			
 			$resProfessores = $dbh->query($qstring);
+			
+			if($resProfessores){
+				$professores = $atuacao->addChild("professores");
+			}
 			
 			while($p = $resProfessores->fetch()){
 				$professor = $professores->addChild("professor");
