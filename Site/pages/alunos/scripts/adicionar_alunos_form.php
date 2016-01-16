@@ -25,7 +25,5 @@
 		$dbh->query($query);
 	}
 	
-	echo "Sucesso";
-
-	header("Location: ../listar_alunos.html");
+	echo "Sucesso!";
 ?>

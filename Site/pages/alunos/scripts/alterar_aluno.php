@@ -7,8 +7,6 @@
 	
 	$curso = $res->fetch();
 	
-	echo "doashoda";
-	
 	$qstring = "UPDATE aluno SET 
 					aluno_id='".$_REQUEST['id']."',
 					aluno_nome='".$_REQUEST['nome']."',
@@ -17,9 +15,7 @@
 					aluno_curso='".$_REQUEST['curso']."'
 					WHERE aluno_id='".$_REQUEST['oldid']."'";
 					
-	echo $qstring;
-					
 	$dbh->query($qstring);
 
-	echo "<p>Sucesso</p>";
+	echo "Sucesso!";
 ?>

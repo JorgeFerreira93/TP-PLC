@@ -10,7 +10,6 @@
 	$professor = $dbh->query($qstring)->fetch();
 
 	$qstring = "SELECT * FROM atuacao WHERE atuacao_audicao = ".$_REQUEST['id'];
-		echo $qstring;
 	$atuacoes = $dbh->query($qstring);
 
 	echo "<p><b>Título:</b> ".$audicao['audicao_titulo']."</p><hr/>";
@@ -38,9 +37,7 @@
 		echo "<td>".$atuacao['atuacao_id']."</td>
 				<td>".$atuacao['atuacao_designacao']."</td>
 				<td>
-					<a href='consultar_atuacao.html?id=".$atuacao['atuacao_id']."'><i class='fa fa-search fa-fw'></i></a>					
-					<a href='scripts/remover_atuacao.php?id=".$atuacao['atuacao_id']."'><i class='fa fa-times fa-fw'></i></a>
-					<a href='alterar_atuacao.html?id=".$atuacao['atuacao_id']."'><i class='fa fa-pencil fa-fw'></i></a>
+					<a href='consultar_atuacao.html?id=".$atuacao['atuacao_id']."'><i class='fa fa-search fa-fw'></i></a>
 				</td>
 			</tr>";
 	}
