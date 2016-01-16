@@ -18,7 +18,7 @@
 		</div>
 		<div class='form-group'>
 			<label>Instrumento</label>
-			<select class='form-control' id='lista_instrumentos' name='curso'>";
+			<select class='form-control' id='lista_instrumentos' name='instrumento'>";
 				
 				$qstring = "SELECT * FROM instrumento";
 				$resultado = $dbh->query($qstring);
