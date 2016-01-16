@@ -37,7 +37,7 @@
 			
 			$alunos = $atuacao->addChild("alunos");
 			
-			$qstring = "SELECT aluno_nome FROM aluno
+			$qstring = "SELECT aluno_nome, aluno_id FROM aluno
 							WHERE aluno_id IN(
 								SELECT aluno_id FROM atuacao_aluno
 									WHERE atuacao_id = '".$at['atuacao_id']."'
@@ -48,6 +48,16 @@
 			while($a = $resAlunos->fetch()){
 				$aluno = $alunos->addChild("aluno");
 				$aluno->addChild("Nome", $a['aluno_nome']);
+				
+				$qstring = "SELECT instrumento_designacao FROM instrumento
+							WHERE instrumento_id IN(
+								SELECT aluno_instrumento FROM aluno
+									WHERE aluno_id = '".$a['aluno_id']."'
+							)";
+							
+				$instrumento = $dbh->query($qstring)->fetch();
+				
+				$aluno->addChild("Instrumento", $instrumento['instrumento_designacao']);
 			}
 			
 			$professores = $atuacao->addChild("professores");
