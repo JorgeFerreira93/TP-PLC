@@ -91,6 +91,7 @@ public class AudicaoLexer extends Lexer {
 	}
 
 
+
 	    public class Audicao {
 
 	        public String id, titulo, subtitulo, tema, data, hora, local, organizador, duracao = "";

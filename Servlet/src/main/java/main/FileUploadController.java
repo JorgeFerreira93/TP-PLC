@@ -4,12 +4,22 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.BitSet;
 
+import org.antlr.runtime.tree.CommonTree;
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.atn.ATNConfigSet;
+import org.antlr.v4.runtime.dfa.DFA;
 import parser.*;
 
+import parser.AudicaoParser.Audicao;
+import parser.AudicaoParser.Atuacao;
+import parser.AudicaoParser.Erro;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,20 +44,58 @@ public class FileUploadController {
                 stream.write(bytes);
                 stream.close();
 
+                Error e = new Error();
+
                 ANTLRInputStream in = new ANTLRInputStream(new FileInputStream(new File("ficheiro")));
                 AudicaoLexer lexer = new AudicaoLexer(in);
                 CommonTokenStream tokens = new CommonTokenStream(lexer);
                 AudicaoParser parser = new AudicaoParser(tokens);
 
-                return parser.s().a;
+                parser.removeErrorListeners();
+                parser.addErrorListener(e);
 
+                AudicaoParser.SContext s = parser.s();
 
-                /*
-                * Le ficheiro txt
-                * Manda-o para o parser do antlr e faz as cenas                *
-                * */
+                Audicao audicao = s.a;
+                Erro erro = s.e;
+                Connection con = s.con;
 
-                //return "Li bem o ficheiro";
+                if(e.getErros() > 0){
+                    System.out.println("ERRO");
+                }
+                else{
+                    if(erro.haErro()){
+
+                        String json = "{\"erro\": \"true\",\"alunos\": [ ";
+
+                        for(String aluno: erro.alunos){
+                            json += "\"" + aluno + "\",";
+                        }
+                        json = json.substring(0, json.length() - 1);
+                        json += "],\"professores\": [ ";
+
+                        for(String professor: erro.professores){
+                            json += "\"" + professor + "\",";
+                        }
+                        json = json.substring(0, json.length() - 1);
+                        json += "],\"obras\": [ ";
+
+                        for(String peca: erro.pecas){
+                            json += "\"" + peca + "\",";
+                        }
+
+                        json = json.substring(0, json.length() - 1);
+
+                        json += "]}";
+
+                        return json;
+                    }
+                    else{
+                        insereAudicao(audicao, con);
+                    }
+                }
+
+                return "Li bem o ficheiro";
             } catch (Exception e) {
                 return "Houve um erro qql" + e.getMessage();
             }
@@ -57,4 +105,61 @@ public class FileUploadController {
         }
     }
 
+    private void insereAudicao(Audicao audicao, Connection con){
+        try {
+            PreparedStatement ps = con.prepareStatement("INSERT INTO audicao VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            ps.setString(1, audicao.id);
+            ps.setString(2, audicao.titulo);
+            ps.setString(3, audicao.subtitulo);
+            ps.setString(4, audicao.tema);
+            ps.setString(5, audicao.data);
+            ps.setString(6, audicao.hora);
+            ps.setString(7, audicao.local);
+            ps.setString(8, audicao.organizador);
+            ps.setString(9, audicao.duracao);
+            //System.out.println(ps.toString());
+            ps.executeUpdate();
+
+            for(Atuacao a: audicao.atuacoes){
+                ps = con.prepareStatement("INSERT INTO atuacao VALUES (?, ?, ?)");
+                ps.setString(1, a.designacao);
+                ps.setString(2, a.designacao);
+                ps.setString(3, audicao.id);
+                //System.out.println(ps.toString());
+                ps.executeUpdate();
+
+                for(String aluno: a.alunos){
+                    ps = con.prepareStatement("INSERT INTO atuacao_aluno VALUES (?, ?)");
+                    ps.setString(1, a.designacao);
+                    ps.setString(2, aluno);
+                    //System.out.println(ps.toString());
+                    ps.executeUpdate();
+                }
+
+                for(String professor: a.professores){
+                    ps = con.prepareStatement("INSERT INTO atuacao_professor VALUES (?, ?)");
+                    ps.setString(1, a.designacao);
+                    ps.setString(2, professor);
+                    //System.out.println(ps.toString());
+                    ps.executeUpdate();
+                }
+
+                for(String obra: a.pecas){
+                    ps = con.prepareStatement("INSERT INTO atuacao_obra VALUES (?, ?)");
+                    ps.setString(1, a.designacao);
+                    ps.setString(2, obra);
+                    //System.out.println(ps.toString());
+                    ps.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

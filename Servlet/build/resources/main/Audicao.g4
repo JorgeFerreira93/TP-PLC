@@ -17,6 +17,7 @@ grammar Audicao;
 }
 
 @members{
+
     public class Audicao {
 
         public String id, titulo, subtitulo, tema, data, hora, local, organizador, duracao = "";
@@ -61,7 +62,14 @@ grammar Audicao;
     }
 }
 
-s returns[String a]
+@rulecatch{
+    catch (RecognitionException e) {
+            System.out.println("das");
+            throw e;
+        }
+}
+
+s returns[Audicao a, Erro e, Connection con]
     @init{
             Connection con = null;
             Audicao audicao = new Audicao();
@@ -77,102 +85,9 @@ s returns[String a]
         metadata[audicao]
         atuacoes[con, audicao.atuacoes, erro]
         {
-            if(erro.haErro()){
-
-                System.out.println(audicao.toString());
-
-                String json = "{\"erro\": \"true\",\"alunos\": [ ";
-
-                for(String s: erro.alunos){
-                    json += "\"" + s + "\",";
-                }
-                json = json.substring(0, json.length() - 1);
-                json += "],\"professores\": [ ";
-
-                for(String s: erro.professores){
-                    json += "\"" + s + "\",";
-                }
-                json = json.substring(0, json.length() - 1);
-                json += "],\"obras\": [ ";
-
-                for(String s: erro.pecas){
-                    json += "\"" + s + "\",";
-                }
-
-                json = json.substring(0, json.length() - 1);
-
-                json += "]}";
-
-                System.out.println(json);
-
-                $a = json;
-            }
-            else{
-                try {
-                    PreparedStatement ps = con.prepareStatement("INSERT INTO audicao VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                    ps.setString(1, audicao.id);
-                    ps.setString(2, audicao.titulo);
-                    ps.setString(3, audicao.subtitulo);
-                    ps.setString(4, audicao.tema);
-                    ps.setString(5, audicao.data);
-                    ps.setString(6, audicao.hora);
-                    ps.setString(7, audicao.local);
-                    ps.setString(8, audicao.organizador);
-                    ps.setString(9, audicao.duracao);
-                    System.out.println(ps.toString());
-                            ps.executeUpdate();
-
-                    for(Atuacao a: audicao.atuacoes){
-                        ps = con.prepareStatement("INSERT INTO atuacao VALUES (?, ?, ?)");
-                        ps.setString(1, a.designacao);
-                        ps.setString(2, a.designacao);
-                        ps.setString(3, audicao.id);
-
-                        System.out.println(ps.toString());
-
-                        ps.executeUpdate();
-
-                        for(String aluno: a.alunos){
-                            ps = con.prepareStatement("INSERT INTO atuacao_aluno VALUES (?, ?)");
-                            ps.setString(1, a.designacao);
-                            ps.setString(2, aluno);
-                            ps.executeUpdate();
-                            System.out.println(ps.toString());
-                        }
-
-                        for(String professor: a.professores){
-                            ps = con.prepareStatement("INSERT INTO atuacao_professor VALUES (?, ?)");
-                            ps.setString(1, a.designacao);
-                            ps.setString(2, professor);
-                            ps.executeUpdate();
-                            System.out.println(ps.toString());
-                        }
-
-                        for(String obra: a.pecas){
-                            ps = con.prepareStatement("INSERT INTO atuacao_obra VALUES (?, ?)");
-                            ps.setString(1, a.designacao);
-                            ps.setString(2, obra);
-                            ps.executeUpdate();
-                            System.out.println(ps.toString());
-                        }
-                    }
-                 } catch (SQLException e) {
-                     e.printStackTrace();
-                 } finally {
-                     try {
-                         con.close();
-                     } catch (Exception e) {
-                         e.printStackTrace();
-                     }
-                 }
-            }
-
-            try {
-                con.close();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                }
+            $a = audicao;
+            $e = erro;
+            $con = con;
         }
   ;
 

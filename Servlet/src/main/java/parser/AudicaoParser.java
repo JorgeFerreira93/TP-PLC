@@ -104,6 +104,7 @@ public class AudicaoParser extends Parser {
 	public ATN getATN() { return _ATN; }
 
 
+
 	    public class Audicao {
 
 	        public String id, titulo, subtitulo, tema, data, hora, local, organizador, duracao = "";
@@ -152,7 +153,9 @@ public class AudicaoParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 	public static class SContext extends ParserRuleContext {
-		public String a;
+		public Audicao a;
+		public Erro e;
+		public Connection con;
 		public MetadataContext metadata() {
 			return getRuleContext(MetadataContext.class,0);
 		}
@@ -196,96 +199,9 @@ public class AudicaoParser extends Parser {
 			setState(45);
 			atuacoes(con, audicao.atuacoes, erro);
 
-			            if(erro.haErro()){
-
-			                System.out.println(audicao.toString());
-
-			                String json = "{\"erro\": \"true\",\"alunos\": [ ";
-
-			                for(String s: erro.alunos){
-			                    json += "\"" + s + "\",";
-			                }
-			                json = json.substring(0, json.length() - 1);
-			                json += "],\"professores\": [ ";
-
-			                for(String s: erro.professores){
-			                    json += "\"" + s + "\",";
-			                }
-			                json = json.substring(0, json.length() - 1);
-			                json += "],\"obras\": [ ";
-
-			                for(String s: erro.pecas){
-			                    json += "\"" + s + "\",";
-			                }
-
-			                json = json.substring(0, json.length() - 1);
-
-			                json += "]}";
-
-			                System.out.println(json);
-
-			                ((SContext)_localctx).a =  json;
-			            }
-			            else{
-			                try {
-			                    PreparedStatement ps = con.prepareStatement("INSERT INTO audicao VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			                    ps.setString(1, audicao.id);
-			                    ps.setString(2, audicao.titulo);
-			                    ps.setString(3, audicao.subtitulo);
-			                    ps.setString(4, audicao.tema);
-			                    ps.setString(5, audicao.data);
-			                    ps.setString(6, audicao.hora);
-			                    ps.setString(7, audicao.local);
-			                    ps.setString(8, audicao.organizador);
-			                    ps.setString(9, audicao.duracao);
-			                    ps.executeUpdate();
-
-			                    for(Atuacao a: audicao.atuacoes){
-			                        ps = con.prepareStatement("INSERT INTO atuacao VALUES (?, ?, ?)");
-			                        ps.setString(1, a.designacao);
-			                        ps.setString(2, a.designacao);
-			                        ps.setString(3, audicao.id);
-
-			                        ps.executeUpdate();
-
-			                        for(String aluno: a.alunos){
-			                            ps = con.prepareStatement("INSERT INTO atuacao_aluno VALUES (?, ?)");
-			                            ps.setString(1, a.designacao);
-			                            ps.setString(2, aluno);
-			                            ps.executeUpdate();
-			                        }
-
-			                        for(String professor: a.professores){
-			                            ps = con.prepareStatement("INSERT INTO atuacao_professor VALUES (?, ?)");
-			                            ps.setString(1, a.designacao);
-			                            ps.setString(2, professor);
-			                            ps.executeUpdate();
-			                        }
-
-			                        for(String obra: a.pecas){
-			                            ps = con.prepareStatement("INSERT INTO atuacao_obra VALUES (?, ?)");
-			                            ps.setString(1, a.designacao);
-			                            ps.setString(2, obra);
-			                            ps.executeUpdate();
-			                        }
-			                    }
-			                 } catch (SQLException e) {
-			                     e.printStackTrace();
-			                 } finally {
-			                     try {
-			                         con.close();
-			                     } catch (Exception e) {
-			                         e.printStackTrace();
-			                     }
-			                 }
-			            }
-
-			            try {
-			                con.close();
-			            }
-			            catch (Exception e) {
-			                e.printStackTrace();
-			                }
+			            ((SContext)_localctx).a =  audicao;
+			            ((SContext)_localctx).e =  erro;
+			            ((SContext)_localctx).con =  con;
 			        
 			}
 		}
