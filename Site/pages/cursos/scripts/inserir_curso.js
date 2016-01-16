@@ -1,6 +1,6 @@
 $(function(){
 
-	$("#lista_instrumentos").load("scripts/lista_instrumentos.php");
+	$("#lista_instrumentos").load("scripts/listar_instrumentos.php");
 
 	$("#newComp").click(function(){
 		
