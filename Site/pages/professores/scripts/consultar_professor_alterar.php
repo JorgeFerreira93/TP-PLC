@@ -30,7 +30,7 @@
 				
 				while($habilitacao = $resultado->fetch()){
 					if($habilitacao['habilitacao_id'] == $professor['professor_habilitacao']){
-						echo "<option value='".$habilitacao['habilitacao_id']."' selected>".$composior['habilitacao_designacao']."</option>";
+						echo "<option value='".$habilitacao['habilitacao_id']."' selected>".$habilitacao['habilitacao_designacao']."</option>";
 					}
 					else{
 						echo "<option value='".$habilitacao['habilitacao_id']."'>".$habilitacao['habilitacao_designacao']."</option>";
@@ -48,7 +48,7 @@
 				
 				while($curso = $resultado->fetch()){
 					if($curso['curso_id'] == $professor['professor_curso']){
-						echo "<option value='".$curso['curso_id']."' selected>".$composior['curso_designacao']."</option>";
+						echo "<option value='".$curso['curso_id']."' selected>".$curso['curso_designacao']."</option>";
 					}
 					else{
 						echo "<option value='".$curso['curso_id']."'>".$curso['curso_designacao']."</option>";
