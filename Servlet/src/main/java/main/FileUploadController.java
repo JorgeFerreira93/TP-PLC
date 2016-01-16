@@ -98,11 +98,14 @@ public class FileUploadController {
                         return json;
                     }
                     else{
+
+                        String json = "";
+
                         if(insereAudicao(audicao, con)){
-                            String json = "{\"erro\": \"false\"}";
+                            json = "{\"erro\": \"false\"}";
                         }
                         else{
-                            String json = "{\"erro\": \"sql\"}";
+                            json = "{\"erro\": \"sql\"}";
                         }
 
                         return json;
