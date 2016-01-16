@@ -7,4 +7,6 @@ $(function(){
 	$("#ncursos").load("pages/inicio/scripts/ncursos.php");
 
 	$("#naudicoes").load("pages/inicio/scripts/naudicoes.php");
+
+	$("#top_auds").load("pages/inicio/scripts/top_auds.php");
 });
