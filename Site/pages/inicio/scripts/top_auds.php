@@ -1,6 +1,4 @@
 <?php
-	echo "<tr><th>ola</th></td>";
-
 	$dbh = new PDO('mysql:host=localhost;dbname=gamu', 'root', 'root');
 
 	$qstring = "SELECT * FROM audicao ORDER BY audicao_data LIMIT 5";
@@ -15,7 +13,7 @@
 		$nums = $dbh->query($qstring)->fetch();
 
 		echo "<tr><th>";
-		echo "<a href='pages/audicoes/consultar_audicao.html?id=".$aud['audicao_id']."'>Audição dia ".$aud['audicao_data']." às ".$aud['audicao_hora'].", com o título ".$aud['audicao_titulo']." - ".$aud['audicao_subtitulo'].", onde será(ão) apresentada(s) ".$nums['o']." ao longo de ".$nums['a']."atuação(ões)</a>";
+		echo "<a href='pages/audicoes/consultar_audicao.html?id=".$aud['audicao_id']."' style='color:#666666;'>Audição dia ".$aud['audicao_data']." às ".$aud['audicao_hora'].", com o título <i>\"".$aud['audicao_titulo']." - ".$aud['audicao_subtitulo']."\"</i>, onde será(ão) apresentada(s) ".$nums['o']." obra(s) musical(is) ao longo de ".$nums['a']." atuação(ões)</a>";
 		echo "</th></tr>";
 	}
 
