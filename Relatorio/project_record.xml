@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sip SYSTEM "file:/C:/Users/PC/Documents/Aulas/PLC/PRI/sip.dtd">
+<sip>
+    <metadata>
+        <keyname>PLC::ProjetoFinal</keyname>
+        <title>GAMu - Gestor de Audições Musicais</title>
+        <subtitle>Project Final (1º semestre - perfil de PLC::MIEI::2015)</subtitle>
+        <sdate>Nov. 2015</sdate>
+        <edate>18 Jan. 2016</edate>
+        <supervisors>
+            <supervisor>
+                <name>José Carlos Ramalho</name>
+                <email>jcr@di.uminho.pt</email>
+                <webpage>http://www4.di.uminho.pt/~jcr/</webpage>
+            </supervisor>
+            <supervisor>
+                <name>Pedro Rangel Henriques</name>
+                <email>pedrorangelhenriques@gmail.com</email>
+                <webpage>http://www4.di.uminho.pt/~prh/</webpage>
+            </supervisor>
+        </supervisors>
+    </metadata>
+    <workteam>
+        <member>
+            <name>Carlos Manuel Magalhães Gonçalves</name>
+            <id>a67650</id>
+            <email>a67650@alunos.uminho.pt</email>
+        </member>
+        <member>
+            <name>Jorge Miguel Sol Ferreira</name>
+            <id>a64293</id>
+            <email>a64293@alunos.uminho.pt</email>
+        </member>
+        <member>
+            <name>Tomás Moreira Ferreira</name>
+            <id>a67701</id>
+            <email>tomas.ferreira.einf@gmail.com</email>
+        </member>
+    </workteam>
+    <abstract>
+        <p><b>JavaScript</b> é uma linguagem de programação interpretada. Foi originalmente implementada como parte dos navegadores web para que scripts pudessem ser executados do lado do cliente e interagissem com o utilizador sem a necessidade deste script passar pelo servidor, controlando o navegador, realizando comunicação assíncrona e alterando o conteúdo do documento exibido.</p>
+		<p>É atualmente a principal linguagem para programação <i>client-side</i> em navegadores web.</p>
+        <p>Neste trabalho utilizou-se esta linguagem juntamente com html e php de forma a criar uma pagina para adicionar obras musicais, com as respectivas partituras a uma possível base de dados.</p>
+    </abstract>
+    <deliverables>
+        <deliverable path="\tp8.xml" format="XML">SIP.xml</deliverable>
+        <deliverable path="\f-obra.html" format="HTML">f-obra.html</deliverable>
+        <deliverable path="\f-obra.js" format="JS">f-obra.js</deliverable>
+		<deliverable path="\obra.php" format="PHP">obra.php</deliverable>
+    </deliverables>
+</sip>
