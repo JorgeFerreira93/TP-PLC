@@ -17,15 +17,15 @@
 	echo "<p><b>Data de Nascimento:</b> ".$aluno['aluno_data_nasc']."</p><hr/>";
 	echo "<p><b>Curso:</b> ".$curso['curso_designacao']." - ".$aluno['aluno_ano_curso']."º ano</p><hr/>";	
 	echo "<p><b>Instrumento:</b> ".$instrumento['instrumento_designacao']."</p><hr/>";
-	echo "<p><b>Audi??es:</b></p>";
+	echo "<p><b>Audições:</b></p>";
 	
 	echo "<table class='table table-striped table-bordered table-hover' id='audtable'>";
 	echo "<thead>
 			<tr>
 				<th>ID</th>
-				<th>T?TULO</th>
+				<th>TÍTULO</th>
 				<th>DATA</th>
-				<th>OPERA??ES</th>
+				<th>OPERAÇÕES</th>
 			</tr>
 		</thead>";
 

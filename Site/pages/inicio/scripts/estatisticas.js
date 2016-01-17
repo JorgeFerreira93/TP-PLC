@@ -9,4 +9,6 @@ $(function(){
 	$("#naudicoes").load("pages/inicio/scripts/naudicoes.php");
 
 	$("#top_auds").load("pages/inicio/scripts/top_auds.php");
+
+	$("#estatisticas").load("pages/inicio/scripts/stats.php");
 });

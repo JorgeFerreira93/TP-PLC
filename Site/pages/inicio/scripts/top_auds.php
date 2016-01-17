@@ -1,7 +1,7 @@
 <?php
 	$dbh = new PDO('mysql:host=localhost;dbname=gamu', 'root', 'root');
 
-	$qstring = "SELECT * FROM audicao ORDER BY audicao_data LIMIT 5";
+	$qstring = "SELECT * FROM audicao ORDER BY audicao_data DESC LIMIT 5";
 	$audicoes = $dbh->query($qstring);
 
 	while($aud = $audicoes->fetch()){
