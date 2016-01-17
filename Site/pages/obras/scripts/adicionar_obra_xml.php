@@ -3,20 +3,21 @@
 		die("Erro, por favor insira um ficheiro XML");
 	}
 		
-	$alunos = simplexml_load_file($_FILES['ficheiro']['tmp_name']);
+	$obras = simplexml_load_file($_FILES['ficheiro']['tmp_name']);
 	$dbh = new PDO('mysql:host=localhost;dbname=gamu', 'root', 'root');
 		
-	foreach ($alunos->aluno as $a){
-		$qstring = "INSERT INTO aluno 
+	foreach ($obras->obra as $a){
+		$qstring = "INSERT INTO obra 
 					VALUES(	'".(string)$a['id']."', 
 							'".(string)$a->nome."',
-							'".(string)$a->dataNasc."',
-							'".(string)$a->curso."',
-							".(string)$a->anoCurso.",
-							'".(string)$a->instrumento."')";
+							'".(string)$a->descricao."',
+							".(string)$a->ano.",
+							'".(string)$a->periodo."',
+							'".(string)$a->compositor."',
+							'".(string)$a->duracao."')";
 							
 		$dbh->query($qstring);
 	}
 		
-	echo "Alunos inseridos com sucesso!";
+	echo "Sucesso!";
 ?>
