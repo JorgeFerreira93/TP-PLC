@@ -18,5 +18,5 @@
 		$dbh->query($qstring);
 	}
 		
-	echo "Alunos inseridos com sucesso!";
+	echo "Sucesso!";
 ?>

@@ -30,7 +30,6 @@
 				<td>
 					<a href='consultar_audicao.html?id=".$audicao['audicao_id']."'><i class='fa fa-search fa-fw'></i></a>					
 					<a href='scripts/remover_audicao.php?id=".$audicao['audicao_id']."' onclick=\"return confirm('Tem a certeza que quer remover?');\"><i class='fa fa-times fa-fw'></i></a>
-					<a href='alterar_audicao.html?id=".$audicao['audicao_id']."'><i class='fa fa-pencil fa-fw'></i></a>
 				</td>
 			</tr>";
 	}
