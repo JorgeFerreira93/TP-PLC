@@ -10,5 +10,5 @@ $(function(){
 
 	$("#top_auds").load("pages/inicio/scripts/top_auds.php");
 
-	$("#estatisticas").load("pages/inicio/scripts/stats.php");
+	$("#stats").load("pages/inicio/scripts/stats.php");
 });

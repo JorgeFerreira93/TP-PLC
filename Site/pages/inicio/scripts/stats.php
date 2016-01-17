@@ -1,7 +1,5 @@
 <?php
 
-	echo "ola";
-
 	$dbh = new PDO('mysql:host=localhost;dbname=gamu', 'root', 'root');
 
 	$qstring = "SELECT compositor_nome AS Compositor, COUNT(obra_id) AS Obras
@@ -26,24 +24,24 @@
 
 
 	echo "<div class='panel panel-default'>
-	<div class='panel panel-heading'>Compositores com mais Obras no GAMu</div>
-	<div class='panel panel-body'>
+	<div class='panel-heading'>Compositores com mais Obras no GAMu</div>
+	<div class='panel-body'>
 
 	<div class='table-responsive'>
         <table class='table'>
         	<thead>
-        		<th>
-        			<tr>Compositor</tr>
-        			<tr>Obras</tr>
-        		</th>
+        		<tr>
+        			<th>Compositor</th>
+        			<th>Obras</th>
+        		</tr>
         	</thead>
             <tbody>";
 
     while($comp = $topcompositores->fetch()){
-    	echo "<th>
-    			<tr>".$comp['Compositor']."</tr>
-    			<tr>".$comp['Obras']."</tr>
-    		</th>";
+    	echo "<tr>
+    			<td>".$comp['Compositor']."</td>
+    			<td>".$comp['Obras']."</td>
+    		</tr>";
     }
 	echo "</tbody></table></div></div></div>";
 
@@ -51,24 +49,24 @@
 
 
 	echo "<div class='panel panel-default'>
-	<div class='panel panel-heading'>Cursos com mais Alunos</div>
-	<div class='panel panel-body'>
+	<div class='panel-heading'>Cursos com mais Alunos</div>
+	<div class='panel-body'>
 
 	<div class='table-responsive'>
         <table class='table'>
         	<thead>
-        		<th>
-        			<tr>Curso</tr>
-        			<tr>Alunos</tr>
-        		</th>
+        		<tr>
+        			<th>Curso</th>
+        			<th>Alunos</th>
+        		</tr>
         	</thead>
             <tbody>";
 
     while($curs = $topcursos->fetch()){
-    	echo "<th>
-    			<tr>".$curs['Curso']."</tr>
-    			<tr>".$curs['Alunos']."</tr>
-    		</th>";
+    	echo "<tr>
+    			<td>".$curs['Curso']."</td>
+    			<td>".$curs['Alunos']."</td>
+    		</tr>";
     }
 	echo "</tbody></table></div></div></div>";
 
