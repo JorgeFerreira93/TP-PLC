@@ -1,10 +1,4 @@
 $(function(){
-
-	$("#lista_cursos").load("scripts/listar_cursos.php");
-	$("#lista_habilitacoes").load("scripts/listar_habilitacoes.php");
-	
-	var nProfs = 1;
-	
 	$("#xml_form").submit(function(){
 		
 		$.ajax({
