@@ -99,13 +99,20 @@
 				$peca->addChild("dataMorte", $compositor['compositor_data_obit']);
 				$peca->addChild("duracao", $p['obra_duracao']);
 			}
-			
-			//cada peça é composta pelo título da peça, compositor e data (nascimento e morte, opcional) e duração aproximada.
-			
 		}
 	}
 	
-	Header('Content-type: text/xml');
-	print($xml->asXML());
+	$xslDoc = new DOMDocument();
+	$xslDoc->load("AudicaoPDF.xsl");
+	
+	$proc = new XSLTProcessor();
+	$proc->importStylesheet($xslDoc);
+	
+	$newdom = $proc->transformToDoc($xml);
+
+	$newdom->save("teste.pdf");
+	
+	/*Header('Content-type: text/xml');
+	print($xml->asXML());*/
 
 ?>

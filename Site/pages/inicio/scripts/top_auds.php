@@ -15,7 +15,7 @@
 		$nums = $dbh->query($qstring)->fetch();
 
 		echo "<tr><th>";
-		echo "Audição dia ".$aud['audicao_data']." às ".$aud['audicao_hora'].", com o título ".$aud['audicao_titulo']." - ".$aud['audicao_subtitulo'].", onde será(ão) apresentada(s) ".$nums['o']." ao longo de ".$nums['a']."atuação(ões)";
+		echo "<a href='pages/audicoes/consultar_audicao.html?id=".$aud['audicao_id']."'>Audição dia ".$aud['audicao_data']." às ".$aud['audicao_hora'].", com o título ".$aud['audicao_titulo']." - ".$aud['audicao_subtitulo'].", onde será(ão) apresentada(s) ".$nums['o']." ao longo de ".$nums['a']."atuação(ões)</a>";
 		echo "</th></tr>";
 	}
 
