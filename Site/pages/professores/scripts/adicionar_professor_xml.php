@@ -11,7 +11,7 @@
 					VALUES(	'".(string)$a['id']."', 
 							'".(string)$a->nome."',
 							'".(string)$a->dataNasc."',
-							'".(string)$a->habilitacao."',
+							'".(string)$a->habilitacoes."',
 							'".(string)$a->curso."')";
 							
 		$dbh->query($qstring);

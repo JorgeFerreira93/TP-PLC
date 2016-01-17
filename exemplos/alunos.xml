@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<alunos>
+    <aluno id="A1510">
+        <nome>Matilde Amanda Erasmo Antonio</nome>
+        <dataNasc>1990-03-01</dataNasc>
+        <curso>CB14</curso>
+        <anoCurso>1</anoCurso>
+        <instrumento>I14</instrumento>
+    </aluno>
+    <aluno id="A1888">
+        <nome>Rui Francisco Aurelio Norberto</nome>
+        <dataNasc>1990-11-06</dataNasc>
+        <curso>CS21</curso>
+        <anoCurso>2</anoCurso>
+        <instrumento>I21</instrumento>
+    </aluno>
+    <aluno id="A25446">
+        <nome>Joana Constancia Centia Sol</nome>
+        <dataNasc>1992-05-09</dataNasc>
+        <curso>CB12</curso>
+        <anoCurso>5</anoCurso>
+        <instrumento>I12</instrumento>
+    </aluno>
+    <aluno id="A5552">
+        <nome>Liliana Carmo Ida Genoveva</nome>
+        <dataNasc>1992-12-18</dataNasc>
+        <curso>CS17</curso>
+        <anoCurso>2</anoCurso>
+        <instrumento>I17</instrumento>
+    </aluno>
+    <aluno id="A8996">
+        <nome>Feliciano Egedio Ulisses Fabiano</nome>
+        <dataNasc>1995-10-20</dataNasc>
+        <curso>CS5</curso>
+        <anoCurso>1</anoCurso>
+        <instrumento>I5</instrumento>
+    </aluno>	
+</alunos>

@@ -114,5 +114,18 @@
 	
 	/*Header('Content-type: text/xml');
 	print($xml->asXML());*/
+	
+	$xml2 = new DOMDocument(); 
+	$xml2->loadXML($xml->asXML());
+
+	$xslt = new XSLTProcessor();
+	$XSL = new DOMDocument();
+	$XSL->load('AudicaoPDF.xsl', LIBXML_NOCDATA);
+	$xslt->importStylesheet($XSL);
+
+	print $xslt->transformToXML($xml);
+	
+	/*$audicaoFile = fopen('audicao.txt','w');
+	fwrite($audicaoFile,$xslt->transformToXML($xml));*/
 
 ?>

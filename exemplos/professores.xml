@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<professores>
+    <professor id="P155">
+        <nome>Celestino Carmo Horacio Candido</nome>
+        <dataNasc>1970-01-09</dataNasc>
+        <habilitacoes>HM9</habilitacoes>
+        <curso>CS9</curso>
+    </professor>
+    <professor id="P122">
+        <nome>Doroteia Desideria Ines Roselia</nome>
+        <dataNasc>1984-02-11</dataNasc>
+        <habilitacoes>HM6</habilitacoes>
+        <curso>CS6</curso>
+    </professor>
+    <professor id="P199">
+        <nome>Monica Genoveva Alex Marianita</nome>
+        <dataNasc>1983-11-06</dataNasc>
+        <habilitacoes>HM12</habilitacoes>
+        <curso>CS12</curso>
+    </professor>
+    <professor id="P188">
+        <nome>Gabriela Valeria Juliana Glaucia</nome>
+        <dataNasc>1970-10-23</dataNasc>
+        <habilitacoes>HM16</habilitacoes>
+        <curso>CS16</curso>
+    </professor>
+    <professor id="P154">
+        <nome>Tiago Anibal Carmo Cristiano</nome>
+        <dataNasc>1967-01-03</dataNasc>
+        <habilitacoes>HM22</habilitacoes>
+        <curso>CS22</curso>
+    </professor>
+    <professor id="P105">
+        <nome>Viriato Horacio Nicolau Agostinho</nome>
+        <dataNasc>1952-06-10</dataNasc>
+        <habilitacoes>HM5</habilitacoes>
+        <curso>CS5</curso>
+    </professor>
+</professores>
