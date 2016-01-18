@@ -28,6 +28,7 @@
 				$qstring = "CALL sp_removeAudicao('".$atuacao['atuacao_audicao']."')";
 				$dbh->query($qstring);
 
+				echo "A atuação ".$atuacao['atuacao_id']." foi removida por ficar sem alunos!";
 				echo "A audição ".$atuacao['atuacao_audicao']." foi removida por ficar sem atuações!"; 
 			}
 			else {

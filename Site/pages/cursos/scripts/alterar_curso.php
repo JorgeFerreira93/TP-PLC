@@ -13,8 +13,6 @@
 					curso_instrumento='".$instrumento."'
 					WHERE curso_id='".$_REQUEST['oldid']."'";
 					
-	echo $qstring;
-					
 	$dbh->query($qstring);
 	echo "Sucesso";
 ?>
