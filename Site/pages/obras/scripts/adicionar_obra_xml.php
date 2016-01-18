@@ -10,8 +10,8 @@
 		$qstring = "INSERT INTO obra 
 					VALUES(	'".(string)$a['id']."', 
 							'".(string)$a->nome."',
-							'".(string)$a->descricao."',
-							".(string)$a->ano.",
+							'".(string)$a->desc."',
+							".(string)$a->anoCriacao.",
 							'".(string)$a->periodo."',
 							'".(string)$a->compositor."',
 							'".(string)$a->duracao."')";

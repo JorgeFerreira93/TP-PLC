@@ -46,6 +46,6 @@
         <deliverable path="" format="SQL">Script de Criação da Base de Dados</deliverable>
         <deliverable path="" format="HTML">Relatório</deliverable>
         <deliverable path="" format="G4">Gramática</deliverable>
-		<deliverable path="" format="PHP">Coisas</deliverable>
+		<deliverable path="" format="HTML">Página inicial do Site</deliverable>
     </deliverables>
 </sip>
