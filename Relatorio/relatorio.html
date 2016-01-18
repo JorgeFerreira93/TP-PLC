@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt">
+    <head>
+        <meta charset="utf-8">
+        <title>GAMu - Gestor de Audições Musicais</title>
+     <!--   <style type="text/css">
+            #menu{
+                top: 0;
+                left: 0;
+                width: 100%;
+                padding:0;
+                margin: 0;
+                background:#FFFFFF;
+            }
+            #texto {
+                width: 100%;
+                margin: 5em 0 0 0;
+                padding: 0;
+                overflow:auto;
+            }            
+            .anchor {
+                position: back;
+                padding-top: 115px;           
+            }
+        </style>  -->
+
+    </head>
+    <body>
+        <div id="menu">
+            <center>
+                 <h1>GAMu - Gestor de Audições Musicais</h1>
+                 <h2>Relatório</h2>
+             </center>
+             
+             <div style="height:0;border-top:2px double #000000;font-size:0;"></div>
+             
+             <center>
+                <table width="100%" style="text-decoration: none">
+                    <tr>
+                        <th><a href="#inicio">Início</a></th>
+                        <th><a href="#contx">Contextualização</a></th>
+                        <th><a href="#func">Funcionalidades</a></th>
+                        <th><a href="#impl">Implementação</a></th>
+                        <th><a href="#gram">Gramática</a></th>
+                        <th><a href="#conc">Conclusão</a></th>
+                    </tr>
+                </table>
+             </center>
+             
+             <div style="height:0;border-top:2px dotted #000000;font-size:0;">-</div>
+        </div> 
+        <center>
+            <div id="texto">
+                <table width="75%">
+                    <tr>
+                        <td>
+                            <center>
+                                <h2><a id="inicio" class="anchor">Trabalho Prático PLC</a></h2>
+                                <h3 style="color:grey">
+                                    Mestrado Integrado em Engenharia Informática<br/>
+                                    4º Ano<br/>
+                                </h3>
+                                <img src="img/di.jpg"/>
+                                <p>Carlos Gonçalves, A67650<br/>
+                                    Jorge Ferreira, A64293<br/>
+                                    Tomás Ferreira, A67701<br/>
+                                </p>
+                            </center>
+                            <hr/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h2><a id="contx" class="anchor">Contextualização</a></h2>
+                            <p>Num mercado como o de hoje, em que ser-se competitivo é quase equivalente a sobreviver, é fundamental sobrepormos as restrições que nos são postas e procurar e investir em mercados com necessidades específicas.</p>
+                            <p>Por vezes as instituições focam-se em criar soluções exclusivas para o grande mercado genérico, negligenciando necessidades mais específicas e é neste contexto microaplicacional que se vem propor este projecto, isto é, sendo possível desenvolver uma componente que interopere com o panorama geral e que trabalhe com essas necessidades específicas, podem daí resultar pequenos produtos com uma economia de escala associada.</p>
+                            <p>Assim sendo, fixou-se um tema que nasceu no ceio de conversas e vivências de um dos docentes: uma escola de música. Existem actualmente algumas dezenas de aplicações para a gestão de escolas mas nenhuma se foca nas especificidades de uma escola de música. Para tal, identificaram-se algumas necessidades específicas através de uma reunião com a direcção de uma escola de música, necessidades essas que poderão ser solucionadas por microaplicações: um gestor de audições/concertos e um gestor de programas específicos.</p>
+                            <hr/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h2><a id="func" class="anchor">Funcionalidades</a></h2>
+                            <p>A aplicação criada neste projeto permite aos utilizadores:</p>
+                            <ul>
+                                <li>Criar uma nova audição a partir de informação fornecidapelo utilizador através de um ficheiro;</li>
+                                <li>Alterar metainformação relativa a uma audição que ainda não tenha ocorrido;</li>
+                                <li>Consultar toda a informação relativa a uma audição;</li>
+                                <li>Consultar a lista de todas as Audições;</li>
+                                <li>Ver as últimas audições criadas;</li>
+                                <li>Inserir Alunos, Professores, Cursos e Obras utilizando um formulário no site ou um ficheiro XML com os dados;</li>
+                                <li>Consultar toda a informação relativa a Alunos, Professores, Cursos e Obras;</li>
+                                <li>Alterar Alunos, Professores, Cursos e Obras;</li>
+                                <li>Remover Alunos, Professores, Cursos e Obras;</li>
+                                <li>Verificar algumas estatísticas sobre a informação contida na base de dados.</li>
+                            </ul>
+                            <hr/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h2><a id="impl" class="anchor">Implementação</a></h2>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <center>
+                                            <img src="img/arquitetura2.jpg" alt="Arquitetura2" style="width:350px;height:150px;"/>
+                                        </center>
+                                    </td>
+                                    <td>
+                                        <p>As operações no site são feitas através de formulários atendidos por várias scripts PHP para fazer a consulta à base de dados.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Para a criação das audições, o site comunica com um servlet enviando um ficheiro escrito numa linguagem própria. O servlet invoca o ANTLR para fazer a análise do ficheiro, inserindo a informação referente à audição na base de dados. Após a inserção o servlet responde ao cliente através de JSON com o resultado do parse/inserção.</p>
+                                    </td>
+                                    <td>
+                                        <img src="img/arquitetura.jpg" alt="Arquitetura" style="width:350px;height:300px;"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <hr/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h2><a id="gram" class="anchor">Gramática</a></h2>
+
+                            <p>Uma audição é criada através de uma ficheiro escrito numa linguagem própria. Para tal desenvolvemos a seguinte gramática:</p>
+
+                            <code>
+                                s       : metadata atuacoes  ;<br/>
+                                metadata    : 'METADATA'  audId  titulo subtitulo tema data hora local organizador duracao      ;<br/>
+                                titulo      : 'TITULO' DADOS         ;<br/>
+                                subtitulo   : 'SUBTITULO' DADOS      ;<br/>
+                                tema        : 'TEMA' DADOS      ;<br/>
+                                data        : 'DATA' INT '-' INT '-' INT        ;<br/>
+                                hora        : 'HORA' DADOS      ;<br/>
+                                local       : 'LOCAL' DADOS      ;<br/>
+                                organizador : 'ORGANIZADOR' DADOS ;<br/>
+                                duracao         : 'DURACAO' DADOS      ;<br/>
+                                atuacoes    : 'ATUACOES'  '{'   (atuacao)+ ’'}'     ;<br/>
+                                atuacao : 'ATUACAO' id designacao alunos professores? pecas;<br/>
+                                designacao  : 'DESIGNACAO' DADOS          ;<br/>
+                                alunos      : 'ALUNOS' '{' aluno (',' aluno)* '}'     ;<br/>
+                                aluno       : id      ;<br/>
+                                audId       : 'ID' ID   ;<br/>
+                                id      : ID   ;<br/>
+                                professores : 'PROFESSORES' '{' professor (',' professor])* '}'        ;<br/>
+                                professor   : id         ;<br/>
+                                pecas       : 'PECAS'  '{'   peca (',' peca)* '}'    ;<br/>
+
+                                peca        : id ;<br/>
+                            </code>
+                            <hr/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h2><a id="conc" class="anchor">Conclusão</a></h2>
+                            <hr/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </center>
+    </body>
+</html>
