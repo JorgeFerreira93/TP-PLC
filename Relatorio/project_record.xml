@@ -43,9 +43,9 @@
         <p>Assim sendo, fixou-se um tema que nasceu no ceio de conversas e vivências de um dos docentes: uma escola de música. Existem actualmente algumas dezenas de aplicações para a gestão de escolas mas nenhuma se foca nas especificidades de uma escola de música. Para tal, identificaram-se algumas necessidades específicas através de uma reunião com a direcção de uma escola de música, necessidades essas que poderão ser solucionadas por microaplicações: um gestor de audições/concertos e um gestor de programas específicos.</p>
     </abstract>
     <deliverables>
-        <deliverable path="" format="SQL">Script de Criação da Base de Dados</deliverable>
-        <deliverable path="" format="HTML">Relatório</deliverable>
-        <deliverable path="" format="G4">Gramática</deliverable>
-		<deliverable path="" format="HTML">Página inicial do Site</deliverable>
+        <deliverable path="..\Site\index.html" format="HTML">Página inicial do Site</deliverable>
+        <deliverable path="relatorio.html" format="HTML">Relatório</deliverable>
+        <deliverable path="..\Site\gramatica\audicoes" format="G4">Gramática</deliverable>
+        <deliverable path="gamu.sql" format="SQL">Script de Criação da Base de Dados</deliverable>
     </deliverables>
 </sip>
