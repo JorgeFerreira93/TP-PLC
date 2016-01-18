@@ -131,31 +131,34 @@
                         <td>
                             <h2><a id="gram" class="anchor">Gramática</a></h2>
 
-                            <p>Uma audição é criada através de uma ficheiro escrito numa linguagem própria. Para tal desenvolvemos a seguinte gramática:</p>
+                            <p>Uma audição é criada através de um ficheiro escrito numa linguagem própria. Para tal desenvolvemos a seguinte gramática:</p>
 
                             <code>
-                                s       : metadata atuacoes  ;<br/>
-                                metadata    : 'METADATA'  audId  titulo subtitulo tema data hora local organizador duracao      ;<br/>
-                                titulo      : 'TITULO' DADOS         ;<br/>
-                                subtitulo   : 'SUBTITULO' DADOS      ;<br/>
-                                tema        : 'TEMA' DADOS      ;<br/>
-                                data        : 'DATA' INT '-' INT '-' INT        ;<br/>
-                                hora        : 'HORA' DADOS      ;<br/>
-                                local       : 'LOCAL' DADOS      ;<br/>
-                                organizador : 'ORGANIZADOR' DADOS ;<br/>
-                                duracao         : 'DURACAO' DADOS      ;<br/>
-                                atuacoes    : 'ATUACOES'  '{'   (atuacao)+ ’'}'     ;<br/>
-                                atuacao : 'ATUACAO' id designacao alunos professores? pecas;<br/>
-                                designacao  : 'DESIGNACAO' DADOS          ;<br/>
-                                alunos      : 'ALUNOS' '{' aluno (',' aluno)* '}'     ;<br/>
-                                aluno       : id      ;<br/>
-                                audId       : 'ID' ID   ;<br/>
-                                id      : ID   ;<br/>
-                                professores : 'PROFESSORES' '{' professor (',' professor])* '}'        ;<br/>
-                                professor   : id         ;<br/>
-                                pecas       : 'PECAS'  '{'   peca (',' peca)* '}'    ;<br/>
-
-                                peca        : id ;<br/>
+                                <table>
+                                    <tr>
+                                        <td width="10%" valign="top">s       </td><td>: metadata atuacoes  <br/>;</td>
+                                    </tr>
+                                    <td valign="top">metadata    </td><td>: 'METADATA'  audId  titulo subtitulo tema data hora local organizador duracao      <br/>;</td></tr><tr>
+                                    <td valign="top">titulo      </td><td>: 'TITULO' DADOS         <br/>;</td></tr><tr>
+                                    <td valign="top">subtitulo   </td><td>: 'SUBTITULO' DADOS      <br/>;</td></tr><tr>
+                                    <td valign="top">tema        </td><td>: 'TEMA' DADOS      <br/>;</td></tr><tr>
+                                    <td valign="top">data        </td><td>: 'DATA' INT '-' INT '-' INT        <br/>;</td></tr><tr>
+                                    <td valign="top">hora        </td><td>: 'HORA' DADOS      <br/>;</td></tr><tr>
+                                    <td valign="top">local       </td><td>: 'LOCAL' DADOS      <br/>;</td></tr><tr>
+                                    <td valign="top">organizador </td><td>: 'ORGANIZADOR' DADOS <br/>;</td></tr><tr>
+                                    <td valign="top">duracao         </td><td>: 'DURACAO' DADOS      <br/>;</td></tr><tr>
+                                    <td valign="top">atuacoes    </td><td>: 'ATUACOES'  '{'   (atuacao)+ ’'}'     <br/>;</td></tr><tr>
+                                    <td valign="top">atuacao </td><td>: 'ATUACAO' id designacao alunos professores? pecas<br/>;</td></tr><tr>
+                                    <td valign="top">designacao  </td><td>: 'DESIGNACAO' DADOS          <br/>;</td></tr><tr>
+                                    <td valign="top">alunos      </td><td>: 'ALUNOS' '{' aluno (',' aluno)* '}'     <br/>;</td></tr><tr>
+                                    <td valign="top">aluno       </td><td>: id      <br/>;</td></tr><tr>
+                                    <td valign="top">audId       </td><td>: 'ID' ID   <br/>;</td></tr><tr>
+                                    <td valign="top">id      </td><td>: ID   <br/>;</td></tr><tr>
+                                    <td valign="top">professores </td><td>: 'PROFESSORES' '{' professor (',' professor])* '}'        <br/>;</td></tr><tr>
+                                    <td valign="top">professor   </td><td>: id         <br/>;</td></tr><tr>
+                                    <td valign="top">pecas       </td><td>: 'PECAS'  '{'   peca (',' peca)* '}'    <br/>;</td></tr><tr>
+                                    <td valign="top">peca        </td><td>: id <br/>;</td></tr>
+                                </table>
                             </code>
                             <hr/>
                         </td>
@@ -164,7 +167,7 @@
                     <tr>
                         <td>
                             <h2><a id="conc" class="anchor">Conclusão</a></h2>
-                            <p>Concluído o projeto verificamos que pudemos aplicar os conhecimentos adquiridos nas cadeiras de Processamento e Representação de Informação (PRI) e Gramáticas na Compreensão de Software (GCS) para criar uma aplicação que permite providenciar ao utilizador diferentes funcionalidades.</p>
+                            <p>Concluído o projeto verificamos que pudemos aplicar os conhecimentos adquiridos nas cadeiras de Processamento e Representação de Informação (PRI) e Gramáticas na Compreensão de Software (GCS) para criar uma aplicação que permite providenciar ao utilizador diferentes funcionalidades necessárias à gestão de uma escola de música.</p>
                             <hr/>
                         </td>
                     </tr>
