@@ -110,10 +110,10 @@
 	
 	$newdom = $proc->transformToDoc($xml);
 
-	$newdom->save("teste.pdf");
+	//$newdom->save("teste.pdf");
 	
 	/*Header('Content-type: text/xml');
-	print($xml->asXML());*/
+	print($xml->asXML());
 	
 	$xml2 = new DOMDocument(); 
 	$xml2->loadXML($xml->asXML());
@@ -123,7 +123,7 @@
 	$XSL->load('AudicaoPDF.xsl', LIBXML_NOCDATA);
 	$xslt->importStylesheet($XSL);
 
-	print $xslt->transformToXML($xml);
+	print $xslt->transformToXML($xml);*/
 	
 	/*$audicaoFile = fopen('audicao.txt','w');
 	fwrite($audicaoFile,$xslt->transformToXML($xml));*/
